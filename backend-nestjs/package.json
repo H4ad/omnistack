@@ -1,10 +1,10 @@
 {
-  "name": "backend-nestjs",
+  "name": "@h4ad/omnistack-api",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "A API para o projeto Be The Hero da semana OmniStack 11 feita em NestJS.",
+  "author": "Vinícius Lourenço",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
