@@ -3,6 +3,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 
+import { UserEntity } from '../../../typeorm/entities/user.entity';
 import { EnvService } from '../../env/services/env.service';
 
 //#endregion
@@ -38,7 +39,7 @@ export class TypeOrmService implements TypeOrmOptionsFactory {
       migrationsRun: this.env.DB_MIGRATIONS_RUN,
       logging: this.env.isDevelopment,
       entities: [
-        // Defina suas entidades aqui dentro
+        UserEntity,
       ],
       migrations: [
         __dirname + '/../../../typeorm/migrations/**/*{.ts,.js}',
