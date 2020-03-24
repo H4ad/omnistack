@@ -1,8 +1,9 @@
 //#region Imports
 
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 
 import { BaseEntity } from '../../common/base-entity';
+import { OngEntity } from './ong.entity';
 
 //#endregion
 
@@ -44,6 +45,12 @@ export class UserEntity extends BaseEntity {
    */
   @Column({ nullable: false })
   public roles: string;
+
+  /**
+   * A lista com as ongs na qual esse usuário tem controle
+   */
+  @OneToMany(() => OngEntity, ong => ong.user)
+  public ongs: OngEntity[];
 
   //#endregion
 
