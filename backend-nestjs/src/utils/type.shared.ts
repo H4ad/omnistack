@@ -1,4 +1,3 @@
-import { CrudRequest } from '@nestjsx/crud';
 import { UserEntity } from '../typeorm/entities/user.entity';
 
 export interface NestJSRequest {
@@ -35,10 +34,10 @@ export interface NestJSRequest {
   rateLimit: RateLimit;
   route: Route;
   user: UserEntity;
-  NESTJSX_PARSED_CRUD_REQUEST_KEY: CrudRequest;
 }
 
 export interface Events {
+
 }
 
 export interface ParsedURL {
