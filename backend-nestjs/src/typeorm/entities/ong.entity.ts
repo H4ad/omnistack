@@ -3,7 +3,7 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 import { BaseEntity } from '../../common/base-entity';
-import { CaseEntity } from './case.entity';
+import { IncidentEntity } from './incident.entity';
 import { UserEntity } from './user.entity';
 
 //#endregion
@@ -46,8 +46,8 @@ export class OngEntity extends BaseEntity {
   /**
    * O estado na qual está localizada essa ong
    */
-  @Column({ nullable: false })
-  public state: string;
+  @Column({ nullable: false, length: 2 })
+  public uf: string;
 
   /**
    * O número de WhatsApp para entrar em contato com essa ong
@@ -70,8 +70,8 @@ export class OngEntity extends BaseEntity {
   /**
    * Os casos que pertencem a essa ong
    */
-  @OneToMany(() => CaseEntity, u => u.ong)
-  public cases: CaseEntity[];
+  @OneToMany(() => IncidentEntity, u => u.ong)
+  public cases: IncidentEntity[];
 
   //#endregion
 

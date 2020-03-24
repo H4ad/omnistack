@@ -8,10 +8,10 @@ import { OngEntity } from './ong.entity';
 //#endregion
 
 /**
- * A class que representa a entidade que lida com as informações de um caso
+ * A class que representa a entidade que lida com as informações de um incidente
  */
-@Entity('cases')
-export class CaseEntity extends BaseEntity {
+@Entity('incidents')
+export class IncidentEntity extends BaseEntity {
 
   //#region Constructor
 
@@ -19,7 +19,7 @@ export class CaseEntity extends BaseEntity {
    * Construtor padrão
    */
   constructor(
-    partial: Partial<CaseEntity> | CaseEntity,
+    partial: Partial<IncidentEntity> | IncidentEntity,
   ) {
     super();
 
@@ -31,10 +31,10 @@ export class CaseEntity extends BaseEntity {
   //#region Public Properties
 
   /**
-   * O resumo desse caso
+   * O titulo desse incidente
    */
   @Column({ nullable: false })
-  public case: string;
+  public title: string;
 
   /**
    * A descrição desse caso

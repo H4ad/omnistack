@@ -19,13 +19,13 @@ Apesar das Ongs aparentemente serem um usuário de certa forma, eu ainda irei se
 Ongs:
 - Name
 - Cidade
-- Estado
+- UF
 - Whatsapp
-- User ( uma relação ManyToOne )
+- Usuário ( uma relação ManyToOne )
 - Casos[] ( uma relação OneToMany )
 
-Casos:
-- Caso
+Incidentes:
+- Título
 - Descrição
 - Valor
 - Ong ( uma relação ManyToOne )
