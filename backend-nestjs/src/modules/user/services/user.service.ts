@@ -144,6 +144,7 @@ export class UserService {
       ...isValid(entityId) && { id: entityId },
       ...isValid(payload.email) && { email: payload.email },
       ...isValid(payload.password) && { password: payload.password },
+      ...isValid(payload.isActive) && { isActive: payload.isActive },
     });
   }
 
