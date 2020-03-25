@@ -72,7 +72,7 @@ export class OngProxy extends BaseCrudProxy {
   /**
    * As informações sobre o usuário
    */
-  @ApiPropertyOptional({ type: () => UserEntity })
+  @ApiPropertyOptional({ type: () => UserProxy })
   @Type(() => UserProxy)
   public user: UserProxy;
 
