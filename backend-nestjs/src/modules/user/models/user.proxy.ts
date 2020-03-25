@@ -4,8 +4,8 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 
 import { BaseCrudProxy } from '../../../common/base-crud.proxy';
-import { OngEntity } from '../../../typeorm/entities/ong.entity';
 import { UserEntity } from '../../../typeorm/entities/user.entity';
+import { OngProxy } from '../../ong/models/ong.proxy';
 
 //#endregion
 
@@ -26,8 +26,7 @@ export class UserProxy extends BaseCrudProxy {
 
     this.email = entity.email;
     this.roles = entity.roles;
-    // TODO: Refatorar para substituir por um proxy
-    this.ongs = entity.ongs;
+    this.ongs = Array.isArray(entity.ongs) && entity.ongs.map(ong => new OngProxy(ong)) || [];
   }
 
   //#endregion
@@ -47,8 +46,8 @@ export class UserProxy extends BaseCrudProxy {
   /**
    * A lista com as ongs na qual esse usuário tem controle
    */
-  @ApiProperty({ type: () => OngEntity, isArray: true })
-  @Type(() => OngEntity)
-  public ongs: OngEntity[];
+  @ApiProperty({ type: () => OngProxy, isArray: true })
+  @Type(() => OngProxy)
+  public ongs: OngProxy[];
 
 }

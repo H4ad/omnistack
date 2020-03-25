@@ -3,6 +3,7 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 
 import { BaseEntity } from '../../common/base-entity';
+import { OngProxy } from '../../modules/ong/models/ong.proxy';
 import { OngEntity } from './ong.entity';
 
 //#endregion
