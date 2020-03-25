@@ -14,6 +14,9 @@ import { UserService } from './services/user.service';
   providers: [
     UserService,
   ],
+  exports: [
+    UserService,
+  ],
   controllers: [
     UserController,
   ],
