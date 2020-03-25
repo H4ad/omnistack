@@ -1,6 +1,6 @@
 //#region Imports
 
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import * as bcryptjs from 'bcryptjs';
@@ -47,9 +47,13 @@ export class UserService {
   /**
    * Método que retorna um usuário pela sua identificação
    *
+   * @param requestUserId A identificação do usuário que está fazendo a requisição
    * @param userId A identificação do usuário
    */
-  public async getOne(userId: number): Promise<UserEntity> {
+  public async getOne(requestUserId: number, userId: number): Promise<UserEntity> {
+    if (requestUserId !== userId)
+      throw new UnauthorizedException('Você não tem permissão para visualizar as informações de outro usuário.');
+
     const user = await this.repository.findOne({
       where: {
         id: userId,
@@ -84,11 +88,15 @@ export class UserService {
   /**
    * Método que atualiza um usuário
    *
+   * @param requestUserId A identificação do usuário que está fazendo a requisição
    * @param userId A identificação do usuário que será atualizado
    * @param payload As informações para a criação do usuário
    */
-  public async updateOne(userId: number, payload: UpdateUserPayload): Promise<UserEntity> {
+  public async updateOne(requestUserId: number, userId: number, payload: UpdateUserPayload): Promise<UserEntity> {
     const user = this.getEntityFromPayload(payload, userId);
+
+    if (requestUserId !== userId)
+      throw new UnauthorizedException('Você não tem permissão para atualizar as informações de outro usuário.');
 
     if (isValid(user.email)) {
       const alreadyHasUser = await this.alreadyHasUserWith(user.email);
@@ -99,8 +107,6 @@ export class UserService {
 
     if (isValid(user.password))
       user.password = await this.getEncryptedPassword(user.password);
-
-    // TODO: Adicionar verifição depois quando houver autenticação
 
     return await this.repository.save(user);
   }

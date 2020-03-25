@@ -2,6 +2,9 @@
 
 import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, Post, Put, UseInterceptors } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ProtectTo } from '../../../decorators/protect/protect.decorator';
+import { User } from '../../../decorators/user/user.decorator';
+import { UserEntity } from '../../../typeorm/entities/user.entity';
 
 import { CrudProxy, mapCrud } from '../../../utils/crud';
 import { CreateUserPayload } from '../models/create-user.payload';
@@ -36,6 +39,7 @@ export class UserController {
   /**
    * Método que retorna várias informações da entidade
    */
+  @ProtectTo('admin')
   @Get('/')
   @ApiOperation({ summary: 'Busca todos os usuários' })
   @ApiOkResponse({ type: UserProxy, isArray: true })
@@ -47,13 +51,15 @@ export class UserController {
   /**
    * Método que retorna as informações de uma entidade
    *
+   * @param requestUser As informações do usuário que está fazendo a requisição
    * @param id A identificação do usuário
    */
+  @ProtectTo('user')
   @Get('/:id')
   @ApiOperation({ summary: 'Busca um usuário pelo ID' })
   @ApiOkResponse({ type: UserProxy })
-  public async getOne(@Param('id') id: number): Promise<CrudProxy<UserProxy>> {
-    return await this.service.getOne(+id)
+  public async getOne(@User() requestUser: UserEntity, @Param('id') id: number): Promise<CrudProxy<UserProxy>> {
+    return await this.service.getOne(requestUser.id, +id)
       .then(response => mapCrud(UserProxy, response));
   }
 
@@ -73,14 +79,16 @@ export class UserController {
   /**
    * Método que atualiza uma entidade
    *
+   * @param requestUser As informações do usuário que está fazendo a requisição
    * @param id A identificação do usuário
    * @param payload As informações para a atualização da entidade
    */
+  @ProtectTo('user')
   @Put(':id')
   @ApiOperation({ summary: 'Atualiza um usuário' })
   @ApiOkResponse({ type: UserProxy })
-  public async updateOne(@Param('id') id: number, @Body() payload: UpdateUserPayload): Promise<CrudProxy<UserProxy>> {
-    return await this.service.updateOne(+id, payload)
+  public async updateOne(@User() requestUser: UserEntity, @Param('id') id: number, @Body() payload: UpdateUserPayload): Promise<CrudProxy<UserProxy>> {
+    return await this.service.updateOne(requestUser.id, +id, payload)
       .then(response => mapCrud(UserProxy, response));
   }
 
