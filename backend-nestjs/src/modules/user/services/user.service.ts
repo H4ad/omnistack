@@ -106,17 +106,6 @@ export class UserService {
     return await this.repository.save(user);
   }
 
-  /**
-   * Método que deleta um usuário
-   *
-   * @param userId A identificação do usuário que será deletado
-   */
-  public async deleteOne(userId: number): Promise<void> {
-    const user = await this.getOne(userId);
-
-    await this.repository.delete(user);
-  }
-
   //#endregion
 
   //#region Private Methods

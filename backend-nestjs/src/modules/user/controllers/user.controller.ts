@@ -84,18 +84,6 @@ export class UserController {
       .then(response => mapCrud(UserProxy, response));
   }
 
-  /**
-   * Método que deleta uma entidade
-   *
-   * @param id A identificação do usuário
-   */
-  @Delete(':id')
-  @ApiOperation({ summary: 'Deleta um usuário' })
-  @ApiNoContentResponse({ type: void 0 })
-  public async deleteOne(@Param(':id') id: number): Promise<void> {
-    return await this.service.deleteOne(+id);
-  }
-
   //#endregion
 
 }
