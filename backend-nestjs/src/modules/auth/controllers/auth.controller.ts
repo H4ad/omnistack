@@ -2,7 +2,7 @@
 
 import { Body, ClassSerializerInterceptor, Controller, Post, Request, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiNotFoundResponse, ApiOkResponse, ApiUnauthorizedResponse, ApiTags } from '@nestjs/swagger';
+import { ApiNotFoundResponse, ApiOkResponse, ApiUnauthorizedResponse, ApiTags, ApiOperation } from '@nestjs/swagger';
 
 import { TokenProxy } from '../models/token.proxy';
 import { NestJSRequest } from '../../../utils/type.shared';
@@ -38,6 +38,7 @@ export class AuthController {
    * @param req As informações da requisição
    * @param payload As informações para o login
    */
+  @ApiOperation({ summary: 'Autentica um usuário' })
   @ApiOkResponse({ description: 'O usuário foi logado com sucesso', type: TokenProxy })
   @ApiUnauthorizedResponse({ description: 'A senha digitada está incorreta.' })
   @ApiNotFoundResponse({ description: 'Não foi encontrado um usuário com esse e-mail.' })
