@@ -1,6 +1,6 @@
 //#region Imports
 
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
@@ -80,14 +80,15 @@ export class IncidentService {
   /**
    * Método que cria uma nova entidade
    *
+   * @param requestUserId A identificação do usuário que está fazendo a requisição
    * @param payload As informações para a criação da entidade
    */
-  public async createOne(payload: CreateIncidentPayload): Promise<IncidentEntity> {
+  public async createOne(requestUserId: number, payload: CreateIncidentPayload): Promise<IncidentEntity> {
     const incident = this.getEntityFromPayload(payload);
-    const isOngExist = await this.ongService.exists(incident.ongId);
+    const ong = await this.ongService.getOne(incident.ongId);
 
-    if (!isOngExist)
-      throw new NotFoundException('A ong na qual você deseja cadastrar esse incidente não existe ou está desativada.');
+    if (ong.userId !== requestUserId)
+      throw new UnauthorizedException('Você não tem permissão para criar um incidente em uma ONG que não pertence a você.');
 
     return await this.repository.save(incident);
   }

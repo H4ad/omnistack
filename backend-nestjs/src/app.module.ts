@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { AuthModule } from './modules/auth/auth.module';
+import { AuthTokenModule } from './modules/auth/auth-token.module';
 import { EnvModule } from './modules/env/env.module';
 import { IncidentModule } from './modules/incidents/incident.module';
 import { OngModule } from './modules/ong/ong.module';
@@ -12,6 +14,8 @@ import { UserModule } from './modules/user/user.module';
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmService,
     }),
+    AuthModule,
+    AuthTokenModule,
     EnvModule,
     UserModule,
     OngModule,

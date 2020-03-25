@@ -4,6 +4,9 @@ import { Body, ClassSerializerInterceptor, Controller, Get, Param, ParseIntPipe,
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { PaginationOptions } from '../../../common/pagination.options';
+import { ProtectTo } from '../../../decorators/protect/protect.decorator';
+import { User } from '../../../decorators/user/user.decorator';
+import { UserEntity } from '../../../typeorm/entities/user.entity';
 import { CrudProxy, mapCrud } from '../../../utils/crud';
 import { CreateOngPayload } from '../models/create-ong.payload';
 import { OngProxy } from '../models/ong.proxy';
@@ -63,27 +66,31 @@ export class OngController {
   /**
    * Método que cria uma nova entidade
    *
+   * @param requestUser As informações do usuário que está fazendo a requisição
    * @param payload As informações para a criação da entidade
    */
+  @ProtectTo('user')
   @Post('/')
   @ApiOperation({ summary: 'Cria uma ong' })
   @ApiCreatedResponse({ type: OngProxy })
-  public createOne(@Body() payload: CreateOngPayload): Promise<CrudProxy<OngProxy>> {
-    return this.service.createOne(payload)
+  public createOne(@User() requestUser: UserEntity, @Body() payload: CreateOngPayload): Promise<CrudProxy<OngProxy>> {
+    return this.service.createOne(requestUser.id, payload)
       .then(response => mapCrud(OngProxy, response));
   }
 
   /**
    * Método que atualiza uma entidade
    *
+   * @param requestUser As informações do usuário que está fazendo a requisição
    * @param id A identificação da entidade
    * @param payload As informações para a atualização da entidade
    */
+  @ProtectTo('user')
   @Put(':id')
   @ApiOperation({ summary: 'Atualiza uma ong' })
   @ApiOkResponse({ type: OngProxy })
-  public async updateOne(@Param('id') id: number, @Body() payload: UpdateOngPayload): Promise<CrudProxy<OngProxy>> {
-    return await this.service.updateOne(+id, payload)
+  public async updateOne(@User() requestUser: UserEntity, @Param('id') id: number, @Body() payload: UpdateOngPayload): Promise<CrudProxy<OngProxy>> {
+    return await this.service.updateOne(requestUser.id, +id, payload)
       .then(response => mapCrud(OngProxy, response));
   }
 

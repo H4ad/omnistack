@@ -4,6 +4,9 @@ import { Body, ClassSerializerInterceptor, Controller, Get, Param, Post, Query, 
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { PaginationOptions } from '../../../common/pagination.options';
+import { ProtectTo } from '../../../decorators/protect/protect.decorator';
+import { User } from '../../../decorators/user/user.decorator';
+import { UserEntity } from '../../../typeorm/entities/user.entity';
 import { CrudProxy, mapCrud } from '../../../utils/crud';
 import { CreateIncidentPayload } from '../models/create-incident.payload';
 import { IncidentProxy } from '../models/incidents.proxy';
@@ -62,13 +65,15 @@ export class IncidentController {
   /**
    * Método que cria uma nova entidade
    *
+   * @param requestUser As informações do usuário que está fazendo a requisição
    * @param payload As informações para a criação da entidade
    */
+  @ProtectTo('user')
   @Post('/')
   @ApiOperation({ summary: 'Cria um incidente' })
   @ApiCreatedResponse({ type: IncidentProxy })
-  public createOne(@Body() payload: CreateIncidentPayload): Promise<CrudProxy<IncidentProxy>> {
-    return this.service.createOne(payload)
+  public createOne(@User() requestUser: UserEntity, @Body() payload: CreateIncidentPayload): Promise<CrudProxy<IncidentProxy>> {
+    return this.service.createOne(requestUser.id, payload)
       .then(response => mapCrud(IncidentProxy, response));
   }
 

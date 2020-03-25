@@ -1,6 +1,6 @@
 //#region Imports
 
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import * as bcryptjs from 'bcryptjs';
@@ -12,7 +12,6 @@ import { UserEntity } from '../../../typeorm/entities/user.entity';
 import { isValid } from '../../../utils/functions';
 import { CreateUserPayload } from '../models/create-user.payload';
 import { UpdateUserPayload } from '../models/update-user.payload';
-import { UserProxy } from '../models/user.proxy';
 
 //#endregion
 
@@ -39,7 +38,7 @@ export class UserService {
   /**
    * Método que retorna vários usuários cadastrados no banco de dados
    */
-  public async getMany(): Promise<UserProxy[]> {
+  public async getMany(): Promise<UserEntity[]> {
     return await this.repository.createQueryBuilder('user')
       .where('user.isActive = :isActive', { isActive: TypeOrmValueTypes.TRUE })
       .getMany();
@@ -48,9 +47,13 @@ export class UserService {
   /**
    * Método que retorna um usuário pela sua identificação
    *
+   * @param requestUserId A identificação do usuário que está fazendo a requisição
    * @param userId A identificação do usuário
    */
-  public async getOne(userId: number): Promise<UserProxy> {
+  public async getOne(requestUserId: number, userId: number): Promise<UserEntity> {
+    if (requestUserId !== userId)
+      throw new UnauthorizedException('Você não tem permissão para visualizar as informações de outro usuário.');
+
     const user = await this.repository.findOne({
       where: {
         id: userId,
@@ -69,7 +72,7 @@ export class UserService {
    *
    * @param payload As informações para a criação do usuário
    */
-  public async createOne(payload: CreateUserPayload): Promise<UserProxy> {
+  public async createOne(payload: CreateUserPayload): Promise<UserEntity> {
     const user = this.getEntityFromPayload(payload);
     const alreadyHasUser = await this.alreadyHasUserWith(user.email);
 
@@ -85,11 +88,15 @@ export class UserService {
   /**
    * Método que atualiza um usuário
    *
+   * @param requestUserId A identificação do usuário que está fazendo a requisição
    * @param userId A identificação do usuário que será atualizado
    * @param payload As informações para a criação do usuário
    */
-  public async updateOne(userId: number, payload: UpdateUserPayload): Promise<UserProxy> {
+  public async updateOne(requestUserId: number, userId: number, payload: UpdateUserPayload): Promise<UserEntity> {
     const user = this.getEntityFromPayload(payload, userId);
+
+    if (requestUserId !== userId)
+      throw new UnauthorizedException('Você não tem permissão para atualizar as informações de outro usuário.');
 
     if (isValid(user.email)) {
       const alreadyHasUser = await this.alreadyHasUserWith(user.email);
@@ -100,8 +107,6 @@ export class UserService {
 
     if (isValid(user.password))
       user.password = await this.getEncryptedPassword(user.password);
-
-    // TODO: Adicionar verifição depois quando houver autenticação
 
     return await this.repository.save(user);
   }
@@ -116,6 +121,25 @@ export class UserService {
       .where('entity.id = :entityId', { entityId })
       .getCount()
       .then(count => count > 0);
+  }
+
+  /**
+   * Método que retorna um usuário pelo seu e-mail
+   *
+   * @param email O e-mail do usuário
+   */
+  public async getUserByEmail(email: string): Promise<UserEntity> {
+    const user = await this.repository.findOne({
+      where: {
+        email,
+        isActive: TypeOrmValueTypes.TRUE,
+      },
+    });
+
+    if (!user)
+      throw new NotFoundException('O usuário que você procura não existe ou foi desativado.');
+
+    return user;
   }
 
   //#endregion

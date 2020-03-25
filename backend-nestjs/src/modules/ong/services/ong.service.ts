@@ -1,6 +1,6 @@
 //#region Imports
 
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
@@ -8,7 +8,6 @@ import { Repository } from 'typeorm';
 import { PaginationOptions } from '../../../common/pagination.options';
 import { TypeOrmValueTypes } from '../../../common/type-orm-value.types';
 import { OngEntity } from '../../../typeorm/entities/ong.entity';
-import { UserEntity } from '../../../typeorm/entities/user.entity';
 import { isValid } from '../../../utils/functions';
 import { UserService } from '../../user/services/user.service';
 import { CreateOngPayload } from '../models/create-ong.payload';
@@ -84,14 +83,13 @@ export class OngService {
   /**
    * Método que cria uma nova entidade
    *
+   * @param requestUserId A identificação do usuário que está fazendo a requisição
    * @param payload As informações para a criação da entidade
    */
-  public async createOne(payload: CreateOngPayload): Promise<OngEntity> {
+  public async createOne(requestUserId: number, payload: CreateOngPayload): Promise<OngEntity> {
     const ong = this.getEntityFromPayload(payload);
-    const isUserExists = await this.userService.exists(ong.userId);
 
-    if (!isUserExists)
-      throw new NotFoundException('O usuário enviado para a criação da ONG não existe ou está desativado.');
+    ong.userId = requestUserId;
 
     return await this.repository.save(ong);
   }
@@ -99,23 +97,17 @@ export class OngService {
   /**
    * Método que atualiza uma entidade
    *
+   * @param requestUserId A identificação do usuário que está fazendo a requisição
    * @param ongId A identificação da ong
    * @param payload As informações para a criação da entidade
    */
-  public async updateOne(ongId: number, payload: UpdateOngPayload): Promise<OngEntity> {
-    const isOngExists = await this.exists(ongId);
+  public async updateOne(requestUserId: number, ongId: number, payload: UpdateOngPayload): Promise<OngEntity> {
+    const ongEntity = await this.getOne(ongId);
 
-    if (!isOngExists)
-      throw new NotFoundException('A ong que você deseja atualizar não existe.');
+    if (ongEntity.userId !== requestUserId)
+      throw new UnauthorizedException('Você não tem permissão para alterar as informações de uma ONG que não pertence a você.');
 
     const ong = this.getEntityFromPayload(payload, ongId);
-
-    if (isValid(ong.userId)) {
-      const isUserExists = await this.userService.exists(ong.userId);
-
-      if (!isUserExists)
-        throw new NotFoundException('O usuário enviado para a criação da ONG não existe ou está desativado.');
-    }
 
     return await this.repository.save(ong);
   }
@@ -149,7 +141,6 @@ export class OngService {
       ...isValid(payload.city) && { city: payload.city },
       ...isValid(payload.uf) && { uf: payload.uf },
       ...isValid(payload.whatsapp) && { whatsapp: payload.whatsapp },
-      ...payload instanceof CreateOngPayload && { user: new UserEntity({ id: payload.userId }) },
       ...isValid(payload.isActive) && { isActive: payload.isActive },
     });
   }

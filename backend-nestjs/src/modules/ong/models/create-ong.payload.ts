@@ -52,12 +52,4 @@ export class CreateOngPayload extends BaseCrudCreatePayload {
   // TODO: Talvez adicionar uma validação melhorar para o número de WhatsApp
   public whatsapp: string;
 
-  /**
-   * A identificação do usuário que controla essa ong
-   */
-  @ApiProperty()
-  @IsDefined({ message: 'É necessário enviar a identificação do usuário que será responsável por essa ong.' })
-  @IsNumber({ allowInfinity: false, allowNaN: false }, { message: DefaultValidationMessages.IsNumber })
-  public userId: number;
-
 }
