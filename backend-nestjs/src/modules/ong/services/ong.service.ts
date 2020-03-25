@@ -10,6 +10,7 @@ import { TypeOrmValueTypes } from '../../../common/type-orm-value.types';
 import { OngEntity } from '../../../typeorm/entities/ong.entity';
 import { UserEntity } from '../../../typeorm/entities/user.entity';
 import { isValid } from '../../../utils/functions';
+import { UserService } from '../../user/services/user.service';
 import { CreateOngPayload } from '../models/create-ong.payload';
 import { UpdateOngPayload } from '../models/update-ong.payload';
 
@@ -29,6 +30,7 @@ export class OngService {
   constructor(
     @InjectRepository(OngEntity)
     private readonly repository: Repository<OngEntity>,
+    private readonly userService: UserService,
   ) { }
 
   //#endregion
@@ -86,6 +88,10 @@ export class OngService {
    */
   public async createOne(payload: CreateOngPayload): Promise<OngEntity> {
     const ong = this.getEntityFromPayload(payload);
+    const isUserExists = await this.userService.exists(ong.userId);
+
+    if (!isUserExists)
+      throw new NotFoundException('O usuário enviado para a criação da ONG não existe ou está desativado.');
 
     return await this.repository.save(ong);
   }
@@ -104,24 +110,31 @@ export class OngService {
 
     const ong = this.getEntityFromPayload(payload, ongId);
 
+    if (isValid(ong.userId)) {
+      const isUserExists = await this.userService.exists(ong.userId);
+
+      if (!isUserExists)
+        throw new NotFoundException('O usuário enviado para a criação da ONG não existe ou está desativado.');
+    }
+
     return await this.repository.save(ong);
+  }
+
+  /**
+   * Método que verifica se existe uma certa entidade
+   *
+   * @param entityId A identificação da entidade
+   */
+  public async exists(entityId: number): Promise<boolean> {
+    return await this.repository.createQueryBuilder('entity')
+      .where('entity.id = :entityId', { entityId })
+      .getCount()
+      .then(count => count > 0);
   }
 
   //#endregion
 
   //#region Private Methods
-
-  /**
-   * Método que verifica se existe uma certa ong
-   *
-   * @param ongId A identificação da ong
-   */
-  private async exists(ongId: number): Promise<boolean> {
-    return await this.repository.createQueryBuilder('ong')
-      .where('ong.id = :ongId', { ongId })
-      .getCount()
-      .then(count => count > 0);
-  }
 
   /**
    * Método que retorna as informações de uma entidade a partir das informações do payload
