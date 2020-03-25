@@ -52,7 +52,7 @@ export class UserController {
   @Get('/:id')
   @ApiOperation({ summary: 'Busca um usuário pelo ID' })
   @ApiOkResponse({ type: UserProxy })
-  public async getOne(@Param(':id') id: number): Promise<CrudProxy<UserProxy>> {
+  public async getOne(@Param('id') id: number): Promise<CrudProxy<UserProxy>> {
     return await this.service.getOne(+id)
       .then(response => mapCrud(UserProxy, response));
   }
@@ -79,7 +79,7 @@ export class UserController {
   @Put(':id')
   @ApiOperation({ summary: 'Atualiza um usuário' })
   @ApiOkResponse({ type: UserProxy })
-  public async updateOne(@Param(':id') id: number, @Body() payload: UpdateUserPayload): Promise<CrudProxy<UserProxy>> {
+  public async updateOne(@Param('id') id: number, @Body() payload: UpdateUserPayload): Promise<CrudProxy<UserProxy>> {
     return await this.service.updateOne(+id, payload)
       .then(response => mapCrud(UserProxy, response));
   }
