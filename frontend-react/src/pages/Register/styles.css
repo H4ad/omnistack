@@ -51,6 +51,20 @@
   line-height: 1.3rem;
 }
 
+.register--form--location {
+  display: flex;
+}
+
+.register--form--location input:first-child {
+  width: calc(80% - 1rem);
+  margin-right: 1rem;
+}
+
+.register--form--location input:last-child {
+  width: 20%;
+  text-transform: uppercase;
+}
+
 .register--back a {
   font-size: 1rem;
   font-style: normal;

@@ -34,11 +34,12 @@ export default function Register() {
         </div>
         <form className="register--form">
           <input placeholder="Nome"/>
-          <input placeholder="E-mail"/>
+          <input placeholder="E-mail" type="email"/>
+          <input placeholder="Senha" type="password"/>
           <input placeholder="Whatsapp"/>
           <div className="register--form--location">
             <input placeholder="Cidade"/>
-            <input placeholder="UF"/>
+            <input placeholder="UF" maxLength={2}/>
           </div>
           <button>Cadastrar</button>
           <div className="register--back">
