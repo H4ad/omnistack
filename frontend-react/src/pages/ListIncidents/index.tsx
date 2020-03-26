@@ -24,7 +24,7 @@ export default function ListIncidents() {
    * Método executado quando o usuário quer criar um novo incidente
    */
   function onClickToRegisterIncident() {
-    history.push('/incidents/new');
+    history.push('/incidents/create');
   }
 
   /**

@@ -61,7 +61,7 @@ html {
   background-color: #F0F0F5;
 }
 
-input {
+input, textarea {
   border-radius: 8px;
   background-color: #FFF;
   border: 1.5px solid #DCDCE6;
@@ -72,7 +72,7 @@ input {
   width: 100%;
 }
 
-input::placeholder {
+input::placeholder, textarea::placeholder {
   opacity: .8;
   color: #A8A8B3;
 }
