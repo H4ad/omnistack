@@ -95,6 +95,22 @@ export class IncidentService {
     return await this.repository.save(incident);
   }
 
+  /**
+   * Método que deleta uma entidade
+   *
+   * @param requestUserId A identificação do usuário que está fazendo a requisição
+   * @param incidentId A identificação incidente
+   */
+  public async deleteOne(requestUserId: number, incidentId: number): Promise<void> {
+    const incident = await this.getOne(incidentId);
+    const ong = await this.ongService.getOne(incident.ongId);
+
+    if (ong.userId !== requestUserId)
+      throw new UnauthorizedException('Você não tem permissão para criar um incidente em uma ONG que não pertence a você.');
+
+    await this.repository.remove(incident);
+  }
+
   //#endregion
 
   //#region Private Methods

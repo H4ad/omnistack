@@ -1,6 +1,6 @@
 //#region Imports
 
-import { Body, ClassSerializerInterceptor, Controller, Get, Param, Post, Query, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, Post, Query, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ProtectTo } from '../../../decorators/protect/protect.decorator';
 import { User } from '../../../decorators/user/user.decorator';
@@ -74,6 +74,20 @@ export class IncidentController {
   public createOne(@User() requestUser: UserEntity, @Body() payload: CreateIncidentPayload): Promise<CrudProxy<IncidentProxy>> {
     return this.service.createOne(requestUser.id, payload)
       .then(response => mapCrud(IncidentProxy, response));
+  }
+
+  /**
+   * Método que deleta uma entidade
+   *
+   * @param requestUser As informações do usuário que está fazendo a requisição
+   * @param id A identificação da entidade
+   */
+  @ProtectTo('user')
+  @Delete('/:id')
+  @ApiOperation({ summary: 'Deleta um incidente' })
+  @ApiCreatedResponse({ type: void 0 })
+  public deleteOne(@User() requestUser: UserEntity, @Param('id') id: number): Promise<void> {
+    return this.service.deleteOne(requestUser.id, id);
   }
 
   //#endregion
