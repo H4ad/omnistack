@@ -5,12 +5,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
 
-import { PaginationOptions } from '../../../common/pagination.options';
 import { TypeOrmValueTypes } from '../../../common/type-orm-value.types';
 import { OngEntity } from '../../../typeorm/entities/ong.entity';
 import { isValid } from '../../../utils/functions';
 import { UserService } from '../../user/services/user.service';
 import { CreateOngPayload } from '../models/create-ong.payload';
+import { OngManyPaginationOptions } from '../models/ong-many.pagination.options';
 import { UpdateOngPayload } from '../models/update-ong.payload';
 
 //#endregion
@@ -29,7 +29,6 @@ export class OngService {
   constructor(
     @InjectRepository(OngEntity)
     private readonly repository: Repository<OngEntity>,
-    private readonly userService: UserService,
   ) { }
 
   //#endregion
@@ -41,8 +40,8 @@ export class OngService {
    *
    * @param options As opções ao buscar várias ongs
    */
-  public async getMany(options?: PaginationOptions): Promise<OngEntity[]> {
-    const { limit = 15, page = 1, relations =  [] } = options;
+  public async getMany(options?: OngManyPaginationOptions): Promise<OngEntity[]> {
+    const { limit = 15, page = 1, relations = [], userId } = options;
 
     const normalizedLimit = Math.min(100, Math.max(1, limit));
     const normalizedPage = Math.max(1, page);
@@ -57,6 +56,9 @@ export class OngService {
 
     if (relations.some(relation => relation === 'cases'))
       query = query.leftJoinAndSelect('ong.cases', 'case', 'case.isActive = :isActive', { isActive: TypeOrmValueTypes.TRUE });
+
+    if (userId && Number(userId))
+      query = query.andWhere('ong.userId = :userId', { userId: Number(userId) });
 
     return query.getMany();
   }

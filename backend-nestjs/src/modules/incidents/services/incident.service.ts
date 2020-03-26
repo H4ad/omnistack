@@ -4,14 +4,13 @@ import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/co
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
-
-import { PaginationOptions } from '../../../common/pagination.options';
 import { TypeOrmValueTypes } from '../../../common/type-orm-value.types';
 import { IncidentEntity } from '../../../typeorm/entities/incident.entity';
 import { OngEntity } from '../../../typeorm/entities/ong.entity';
 import { isValid } from '../../../utils/functions';
 import { OngService } from '../../ong/services/ong.service';
 import { CreateIncidentPayload } from '../models/create-incident.payload';
+import { IncidentManyPaginationOptions } from '../models/incident-many.pagination.options';
 
 //#endregion
 
@@ -41,8 +40,8 @@ export class IncidentService {
    *
    * @param options As opções de paginação
    */
-  public async getMany(options?: PaginationOptions): Promise<IncidentEntity[]> {
-    const { limit = 15, page = 1, relations =  [] } = options;
+  public async getMany(options?: IncidentManyPaginationOptions): Promise<IncidentEntity[]> {
+    const { limit = 15, page = 1, relations = [], ongId } = options;
 
     const normalizedLimit = Math.min(100, Math.max(1, limit));
     const normalizedPage = Math.max(1, page);
@@ -54,6 +53,9 @@ export class IncidentService {
 
     if (relations.some(relation => relation === 'ong'))
       query = query.leftJoinAndSelect('incident.ong', 'ong', 'ong.isActive = :isActive', { isActive: TypeOrmValueTypes.TRUE });
+
+    if (ongId && Number(ongId))
+      query = query.andWhere('incident.ongId = :ongId', { ongId: Number(ongId) });
 
     return query.getMany();
   }
@@ -91,6 +93,22 @@ export class IncidentService {
       throw new UnauthorizedException('Você não tem permissão para criar um incidente em uma ONG que não pertence a você.');
 
     return await this.repository.save(incident);
+  }
+
+  /**
+   * Método que deleta uma entidade
+   *
+   * @param requestUserId A identificação do usuário que está fazendo a requisição
+   * @param incidentId A identificação incidente
+   */
+  public async deleteOne(requestUserId: number, incidentId: number): Promise<void> {
+    const incident = await this.getOne(incidentId);
+    const ong = await this.ongService.getOne(incident.ongId);
+
+    if (ong.userId !== requestUserId)
+      throw new UnauthorizedException('Você não tem permissão para criar um incidente em uma ONG que não pertence a você.');
+
+    await this.repository.remove(incident);
   }
 
   //#endregion

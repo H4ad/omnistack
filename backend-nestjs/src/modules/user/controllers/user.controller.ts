@@ -49,6 +49,22 @@ export class UserController {
   }
 
   /**
+   * Método que retorna as informações do próprio usuário que faz a requisição
+   *
+   * @param requestUser As informações do usuário que está fazendo a requisição
+   */
+  @ProtectTo('user')
+  @Get('/me')
+  @ApiOperation({ summary: 'Retorna as informações do próprio usuário' })
+  @ApiOkResponse({ type: UserProxy })
+  public async getMe(@User() requestUser: UserEntity): Promise<CrudProxy<UserProxy>> {
+    const requestUserId = requestUser.id;
+
+    return await this.service.getOne(requestUserId, requestUserId)
+      .then(response => mapCrud(UserProxy, response));
+  }
+
+  /**
    * Método que retorna as informações de uma entidade
    *
    * @param requestUser As informações do usuário que está fazendo a requisição

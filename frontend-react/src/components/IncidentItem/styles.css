@@ -1,0 +1,30 @@
+.incident-item {
+  padding: 2rem;
+  background: #FFFFFF;
+  border-radius: 8px;
+  position: relative;
+}
+
+.incident-item--trash {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  cursor: pointer;
+}
+
+.incident-item strong {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 1.5rem 0;
+}
+
+.incident-item p {
+  margin: 1rem 0;
+  font-size: .9rem;
+  text-align: justify;
+  color: #737380;
+}
+
+.form--error {
+  padding: 0 2rem;
+}
