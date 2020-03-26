@@ -115,3 +115,27 @@ export async function getIncidents(ongId: number): Promise<IncidentProxy[] | str
 
   return success as IncidentProxy[];
 }
+
+
+/**
+ * Método que retorna os incidentes de uma ong
+ *
+ * @param ongId A identificação da ong
+ */
+export async function getOngs(): Promise<OngProxy[] | string> {
+  const userJson = localStorage.getItem(KeysEnum.USER_PROXY);
+
+  if (!userJson)
+    return 'Você não está logado, por favor, entre novamente em sua conta.';
+
+  const user = JSON.parse(userJson) as UserProxy;
+
+  const { success, error } = await api.get<OngProxy[]>(`/ongs?userId=${ user.id }`)
+    .then((success: AxiosResponse<OngProxy[]>) => ({ success: success.data, error: void 0 }))
+    .catch((error: AxiosError<{ message: string[] | string }>) => ({ error: error.response?.data, success: void 0  }));
+
+  if (error)
+    return Array.isArray(error.message) ? error.message[0] : error.message;
+
+  return success as OngProxy[];
+}

@@ -1,9 +1,11 @@
 //#region Imports
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Header from '../../components/Header';
 import OngItem from '../../components/OngItem';
+import { OngProxy } from '../../models/proxies/ong.proxy';
+import { getOngs } from '../../services/api';
 
 import './styles.css';
 
@@ -15,13 +17,39 @@ import './styles.css';
  * @constructor
  */
 export default function ListOngs() {
+
+  //#region States
+
+  const [error, setError] = useState('');
+  const [listOngs, setListOngs] = useState<OngProxy[]>([]);
+
+  //#endregion
+
+  //#region Effects
+
+  useEffect(() => {
+    getOngs().then(ongs => {
+      if (typeof ongs === 'string')
+        return void setError(ongs);
+
+      setListOngs(ongs);
+    });
+  }, []);
+
+  //#endregion
+
   return (
     <div className="list--container">
       <Header actionButtonText="Cadastrar nova ong" actionRoute="/ongs/create"/>
       <div className="list--body">
         <h1>Ongs cadastradas</h1>
+        <h3 className="form--error">{ error }</h3>
         <div className="list--body--grid">
-          <OngItem name="Joga10" city="Sorocaba" uf="SP" whatsapp="1598861199" createdAt={new Date()} id={1} isActive={true} updatedAt={new Date()} userId={1}/>
+          { listOngs.map(ong => {
+            return (
+              <OngItem {...ong}/>
+            );
+          }) }
         </div>
       </div>
     </div>

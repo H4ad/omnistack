@@ -1,6 +1,7 @@
 //#region Imports
 
 import React, { useEffect, useState } from 'react';
+import { FiArrowLeft } from 'react-icons/fi';
 
 import Header from '../../components/Header';
 import IncidentItem from '../../components/IncidentItem';
@@ -26,6 +27,8 @@ export default function ListIncidents(history: any) {
 
   //#endregion
 
+  //#region Effects
+
   useEffect(() => {
     getIncidents(ongId).then(incidents => {
       if (typeof incidents === 'string')
@@ -35,9 +38,17 @@ export default function ListIncidents(history: any) {
     });
   }, []);
 
+  //#endregion
+
   return (
     <div className="list--container">
       <Header actionButtonText="Cadastrar novo caso" actionRoute={ `/ongs/${ ongId }/incidents/create` }/>
+      <div className="list--back">
+        <a href="/ongs">
+          <FiArrowLeft size={ 18 } color="#E02041"/>
+          <span>Voltar para as ongs</span>
+        </a>
+      </div>
       <div className="list--body">
         <h1>Casos cadastrados</h1>
         <h3 className="form--error">{ error }</h3>

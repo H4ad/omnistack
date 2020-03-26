@@ -56,7 +56,7 @@ export default function CreateOng() {
     if (typeof ongResponse === 'string')
       return void setError(ongResponse);
 
-    history.push('/incidents');
+    history.push('/ongs');
   }
 
   //#endregion
