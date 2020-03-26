@@ -1,12 +1,11 @@
 //#region Imports
 
-import * as H from 'history';
-import React, { useEffect } from 'react';
-import { BrowserRouter, NavLinkProps } from 'react-router-dom';
-import { Route } from '../../../../backend-nestjs/src/utils/type.shared';
+import React, { useEffect, useState } from 'react';
 
 import Header from '../../components/Header';
 import IncidentItem from '../../components/IncidentItem';
+import { IncidentProxy } from '../../models/proxies/incident.proxy';
+import { getIncidents } from '../../services/api';
 
 import './styles.css';
 
@@ -18,21 +17,36 @@ import './styles.css';
  * @constructor
  */
 export default function ListIncidents(history: any) {
-  const ongId = history.match.params;
+  const ongId = history.match.params.id;
+
+  //#region States
+
+  const [error, setError] = useState('');
+  const [listIncidents, setListIncidents] = useState<IncidentProxy[]>([]);
+
+  //#endregion
+
+  useEffect(() => {
+    getIncidents(ongId).then(incidents => {
+      if (typeof incidents === 'string')
+        return void setError(incidents);
+
+      setListIncidents(incidents);
+    });
+  }, []);
 
   return (
     <div className="list--container">
-      <Header actionButtonText="Cadastrar novo caso" actionRoute="/incidents/create"/>
+      <Header actionButtonText="Cadastrar novo caso" actionRoute={ `/ongs/${ ongId }/incidents/create` }/>
       <div className="list--body">
         <h1>Casos cadastrados</h1>
+        <h3 className="form--error">{ error }</h3>
         <div className="list--body--grid">
-          <IncidentItem name="Cadelinha atropelada" description="A cadelinha Jolie foi atropelada por um carro no bairro Santana e teve que passar por uma cirurgia às pressas." price="120,00"/>
-          <IncidentItem name="Cadelinha atropelada" description="A cadelinha Jolie foi atropelada por um carro no bairro Santana e teve que passar por uma cirurgia às pressas.ha Jolie foi atropelada por um carro no bairro Santana e teve que passar por uma cirurgia às pressas.ha Jolie foi atropelada por um carro no bairro Santana e teve que passar por uma cirurgia às pressas.ha Jolie foi atropelada por um carro no bairro Santana e teve que passar por uma cirurgia às pressas.ha Jolie foi atropelada por um carro no bairro Santana e teve que passar por uma cirurgia às pressas.ha Jolie foi atropelada por um carro no bairro Santana e teve que passar por uma cirurgia às pressas." price="120,00"/>
-          <IncidentItem name="Cadelinha atropelada" description="A cadelinha Jolie foi atropelada por um carro no bairro Santana e teve que passar por uma cirurgia às pressas." price="120,00"/>
-          <IncidentItem name="Cadelinha atropelada" description="A cadelinha Jolie foi atropelada por um carro no bairro Santana e teve que passar por uma cirurgia às pressas." price="120,00"/>
-          <IncidentItem name="Cadelinha atropelada" description="A cadelinha Jolie foi atropelada por um carro no bairro Santana e teve que passar por uma cirurgia às pressas." price="120,00"/>
-          <IncidentItem name="Cadelinha atropelada" description="A cadelinha Jolie foi atropelada por um carro no bairro Santana e teve que passar por uma cirurgia às pressas." price="120,00"/>
-          <IncidentItem name="Cadelinha atropelada" description="A cadelinha Jolie foi atropelada por um carro no bairro Santana e teve que passar por uma cirurgia às pressas." price="120,00"/>
+          { listIncidents.map(incident => {
+            return (
+              <IncidentItem { ...incident }/>
+            );
+          }) }
         </div>
       </div>
     </div>

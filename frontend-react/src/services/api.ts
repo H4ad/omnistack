@@ -1,11 +1,17 @@
+//#region Imports
+
 import axios, { AxiosError, AxiosResponse } from 'axios';
+
 import { KeysEnum } from '../models/enums/keys.enum';
 import { CreateOngPayload } from '../models/payloads/create-ong.payload';
 import { CreateUserPayload } from '../models/payloads/create-user.payload';
 import { LoginPayload } from '../models/payloads/login.payload';
+import { IncidentProxy } from '../models/proxies/incident.proxy';
 import { OngProxy } from '../models/proxies/ong.proxy';
 import { TokenProxy } from '../models/proxies/token.proxy';
 import { UserProxy } from '../models/proxies/user.proxy';
+
+//#endregion
 
 const api = axios.create({
   baseURL: 'http://127.0.0.1:3010',
@@ -92,4 +98,20 @@ export async function createOng(ongPayload: CreateOngPayload): Promise<OngProxy 
     return Array.isArray(error.message) ? error.message[0] : error.message;
 
   return success as OngProxy;
+}
+
+/**
+ * Método que retorna os incidentes de uma ong
+ *
+ * @param ongId A identificação da ong
+ */
+export async function getIncidents(ongId: number): Promise<IncidentProxy[] | string> {
+  const { success, error } = await api.get<IncidentProxy[]>(`/incidents?ongId=${ ongId }`)
+    .then((success: AxiosResponse<IncidentProxy[]>) => ({ success: success.data, error: void 0 }))
+    .catch((error: AxiosError<{ message: string[] | string }>) => ({ error: error.response?.data, success: void 0  }));
+
+  if (error)
+    return Array.isArray(error.message) ? error.message[0] : error.message;
+
+  return success as IncidentProxy[];
 }
