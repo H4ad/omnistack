@@ -9,7 +9,7 @@ import heroes from '../../assets/heroes.png';
 import beTheHero from '../../assets/logo.svg';
 
 import { LoginPayload } from '../../models/payloads/login.payload';
-import { auth } from '../../services/api';
+import { auth, getMe } from '../../services/api';
 
 import './styles.css';
 
@@ -54,7 +54,12 @@ export default function Logon() {
     if (typeof authResponse === 'string')
       return void setError(authResponse);
 
-    history.push('/incidents');
+    const meResponse = await getMe();
+
+    if (typeof meResponse === 'string')
+      return void setError(meResponse);
+
+    history.push('/ongs');
   }
 
   //#endregion

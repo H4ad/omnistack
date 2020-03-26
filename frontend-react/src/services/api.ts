@@ -55,6 +55,27 @@ export async function createUser(userPayload: CreateUserPayload): Promise<UserPr
 }
 
 /**
+ * Método que busca as minhas informações
+ */
+export async function getMe(): Promise<UserProxy | string> {
+  const token = localStorage.getItem(KeysEnum.TOKEN_PROXY);
+  const headers = { Authorization: token };
+
+  const { success, error } = await api.get<UserProxy>('/users/me', { headers })
+    .then((success: AxiosResponse<UserProxy>) => ({ success: success.data, error: void 0 }))
+    .catch((error: AxiosError<{ message: string[] | string }>) => ({ error: error.response?.data, success: void 0  }));
+
+  if (error)
+    return Array.isArray(error.message) ? error.message[0] : error.message;
+
+  const result = success as UserProxy;
+
+  localStorage.setItem(KeysEnum.USER_PROXY, JSON.stringify(result));
+
+  return result;
+}
+
+/**
  * Método que cria uma ong para o usuário
  *
  * @param ongPayload As informações para a criação da ong

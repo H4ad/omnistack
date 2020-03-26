@@ -1,0 +1,33 @@
+.ong-item {
+  padding: 2rem;
+  background: #FFFFFF;
+  border-radius: 8px;
+  position: relative;
+}
+
+.ong-item--trash {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  cursor: pointer;
+}
+
+.ong-item--see {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  cursor: pointer;
+}
+
+.ong-item strong {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 1.5rem 0;
+}
+
+.ong-item p {
+  margin: 1rem 0;
+  font-size: .9rem;
+  text-align: justify;
+  color: #737380;
+}

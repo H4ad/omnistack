@@ -25,17 +25,17 @@
   flex-wrap: wrap;
 }
 
-.list--body--grid .incident-item {
+.list--body--grid .ong-item {
   width: calc(50% - 1rem);
   margin-bottom: 2rem;
 }
 
-.list--body--grid .incident-item:nth-child(odd) {
+.list--body--grid .ong-item:nth-child(odd) {
   margin-right: 2rem;
 }
 
 @media only screen and (max-width: 768px) {
-  .list--body--grid .incident-item {
+  .list--body--grid .ong-item {
     width: 100%;
   }
 }

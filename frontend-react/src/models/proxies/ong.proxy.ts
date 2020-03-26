@@ -38,7 +38,7 @@ export interface OngProxy extends BaseCrudProxy {
   /**
    * As informações sobre o usuário
    */
-  user: UserProxy;
+  user?: UserProxy;
 
 
 }
