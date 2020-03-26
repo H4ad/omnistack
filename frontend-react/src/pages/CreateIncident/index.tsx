@@ -1,12 +1,16 @@
 //#region Imports
 
-import React from 'react';
+import React, { useState } from 'react';
 
 import { FiArrowLeft } from 'react-icons/fi';
+import { useHistory } from 'react-router-dom';
 
 import beTheHero from '../../assets/logo.svg';
 
 import './styles.css';
+
+import { CreateIncidentPayload } from '../../models/payloads/create-incident.payload';
+import { createIncident } from '../../services/api';
 
 //#endregion
 
@@ -15,7 +19,46 @@ import './styles.css';
  *
  * @constructor
  */
-export default function CreateIncident() {
+export default function CreateIncident(props: any) {
+  const ongId = props.match.params.id;
+
+  //#region States
+
+  const history = useHistory();
+  const [error, setError] = useState('');
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [value, setValue] = useState(0);
+
+  //#endregion
+
+  //#region Methods
+
+  /**
+   * Método chamado quando o formulário é enviado
+   *
+   * @param event As informações do evento de envio de formulário
+   */
+  async function onSubmit(event: React.FormEvent): Promise<void> {
+    event.preventDefault();
+
+    const incidentPayload: CreateIncidentPayload = {
+      title,
+      description,
+      value: Number(value),
+      ongId: Number(ongId),
+    };
+
+    const incidentResponse = await createIncident(incidentPayload);
+
+    if (typeof incidentResponse === 'string')
+      return void setError(incidentResponse);
+
+    history.push(`/ongs/${ ongId }/incidents`);
+  }
+
+  //#endregion
+
   return (
     <section className="create-incident--container">
       <div className="create-incident--card">
@@ -32,10 +75,11 @@ export default function CreateIncident() {
             </a>
           </div>
         </div>
-        <form className="create-incident--form">
-          <input placeholder="Titulo do caso"/>
-          <textarea placeholder="Descrição"/>
-          <input placeholder="Valor em reais" type="number"/>
+        <form noValidate={true} onSubmit={onSubmit} className="create-incident--form">
+          <h3 className="form--error">{ error }</h3>
+          <input placeholder="Titulo do caso" value={title} onChange={e => setTitle(e.target.value)}/>
+          <textarea placeholder="Descrição" value={description} onChange={e => setDescription(e.target.value)}/>
+          <input placeholder="Valor em reais" type="number" value={value} onChange={e => setValue(+e.target.value)}/>
           <button>Cadastrar</button>
           <div className="create-incident--back">
             <a href="/incidents">

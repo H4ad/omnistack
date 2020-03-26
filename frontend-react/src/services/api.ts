@@ -3,6 +3,7 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
 import { KeysEnum } from '../models/enums/keys.enum';
+import { CreateIncidentPayload } from '../models/payloads/create-incident.payload';
 import { CreateOngPayload } from '../models/payloads/create-ong.payload';
 import { CreateUserPayload } from '../models/payloads/create-user.payload';
 import { LoginPayload } from '../models/payloads/login.payload';
@@ -138,4 +139,23 @@ export async function getOngs(): Promise<OngProxy[] | string> {
     return Array.isArray(error.message) ? error.message[0] : error.message;
 
   return success as OngProxy[];
+}
+
+/**
+ * Método que cria um caso para uma ong
+ *
+ * @param incidentPayload As informações para a criação de um caso
+ */
+export async function createIncident(incidentPayload: CreateIncidentPayload): Promise<IncidentProxy | string> {
+  const token = localStorage.getItem(KeysEnum.TOKEN_PROXY);
+  const headers = { Authorization: token };
+
+  const { success, error } = await api.post<IncidentProxy>('/incidents', incidentPayload, { headers })
+    .then((success: AxiosResponse<IncidentProxy>) => ({ success: success.data, error: void 0 }))
+    .catch((error: AxiosError<{ message: string[] | string }>) => ({ error: error.response?.data, success: void 0  }));
+
+  if (error)
+    return Array.isArray(error.message) ? error.message[0] : error.message;
+
+  return success as IncidentProxy;
 }

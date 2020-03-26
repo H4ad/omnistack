@@ -5,6 +5,7 @@ import React from 'react';
 import { FiTrash2 } from 'react-icons/fi';
 
 import './styles.css';
+import { IncidentProxy } from '../../models/proxies/incident.proxy';
 
 //#endregion
 
@@ -13,20 +14,20 @@ import './styles.css';
  *
  * @constructor
  */
-export default function IncidentItem({ name, description, price }: any) {
+export default function IncidentItem({ title, description, value }: IncidentProxy) {
   return (
     <div className="incident-item">
       <div className="incident-item--trash">
         <FiTrash2 size={ 18 } color="#A8A8B3"/>
       </div>
       <strong>Caso:</strong>
-      <p>{ name }</p>
+      <p>{ title }</p>
 
       <strong>Descrição:</strong>
       <p>{ description }</p>
 
       <strong>Valor:</strong>
-      <p>R$ { price } reais</p>
+      <p>R$ { value.toFixed(2) } reais</p>
     </div>
   );
 }
