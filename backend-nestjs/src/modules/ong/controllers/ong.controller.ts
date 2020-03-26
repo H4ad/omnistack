@@ -1,14 +1,13 @@
 //#region Imports
 
-import { Body, ClassSerializerInterceptor, Controller, Get, Param, ParseIntPipe, Post, Put, Query, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, Param, Post, Put, Query, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-
-import { PaginationOptions } from '../../../common/pagination.options';
 import { ProtectTo } from '../../../decorators/protect/protect.decorator';
 import { User } from '../../../decorators/user/user.decorator';
 import { UserEntity } from '../../../typeorm/entities/user.entity';
 import { CrudProxy, mapCrud } from '../../../utils/crud';
 import { CreateOngPayload } from '../models/create-ong.payload';
+import { OngManyPaginationOptions } from '../models/ong-many.pagination.options';
 import { OngProxy } from '../models/ong.proxy';
 import { UpdateOngPayload } from '../models/update-ong.payload';
 import { OngService } from '../services/ong.service';
@@ -45,7 +44,7 @@ export class OngController {
   @Get('/')
   @ApiOperation({ summary: 'Busca todas as ongs' })
   @ApiOkResponse({ type: OngProxy, isArray: true })
-  public async getMany(@Query(new ValidationPipe({ whitelist: true, transform: true })) options?: PaginationOptions): Promise<CrudProxy<OngProxy>> {
+  public async getMany(@Query(new ValidationPipe({ whitelist: true, transform: true })) options?: OngManyPaginationOptions): Promise<CrudProxy<OngProxy>> {
     return await this.service.getMany(options)
       .then(response => mapCrud(OngProxy, response));
   }

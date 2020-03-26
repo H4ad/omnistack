@@ -42,8 +42,4 @@ export class PaginationOptions {
   @IsString({ each: true, message: 'É necessário enviar um texto válido para a relação.' })
   relations?: string[];
 
-  /**
-   * As opções a mais que o usuário queira usar
-   */
-  [key: string]: any;
 }
