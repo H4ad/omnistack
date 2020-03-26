@@ -24,3 +24,7 @@
   text-align: justify;
   color: #737380;
 }
+
+.form--error {
+  padding: 0 2rem;
+}

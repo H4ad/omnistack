@@ -47,7 +47,7 @@ export default function ListOngs() {
         <div className="list--body--grid">
           { listOngs.map(ong => {
             return (
-              <OngItem {...ong}/>
+              <OngItem key={ong.id} {...ong}/>
             );
           }) }
         </div>

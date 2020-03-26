@@ -159,3 +159,20 @@ export async function createIncident(incidentPayload: CreateIncidentPayload): Pr
 
   return success as IncidentProxy;
 }
+
+/**
+ * Método que cria um caso para deletar um incidente
+ */
+export async function deleteIncident(incidentId: number): Promise<void | string> {
+  const token = localStorage.getItem(KeysEnum.TOKEN_PROXY);
+  const headers = { Authorization: token };
+
+  const { error } = await api.delete<void>(`/incidents/${ incidentId }`, { headers })
+    .then((success: AxiosResponse<void>) => ({ success: success.data, error: void 0 }))
+    .catch((error: AxiosError<{ message: string[] | string }>) => ({ error: error.response?.data, success: void 0  }));
+
+  if (error)
+    return Array.isArray(error.message) ? error.message[0] : error.message;
+
+  return void 0;
+}

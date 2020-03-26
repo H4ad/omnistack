@@ -2,12 +2,12 @@
 
 import React from 'react';
 
-import { FiTrash2, FiEye } from 'react-icons/fi';
-
-import './styles.css';
+import { FiEye } from 'react-icons/fi';
 import { useHistory } from 'react-router-dom';
 
 import { OngProxy } from '../../models/proxies/ong.proxy';
+
+import './styles.css';
 
 //#endregion
 
@@ -37,9 +37,6 @@ export default function OngItem({ name, whatsapp, city, uf, id }: OngProxy) {
 
   return (
     <div className="ong-item">
-      <div className="ong-item--trash">
-        <FiTrash2 size={ 18 } color="#A8A8B3"/>
-      </div>
       <div onClick={onClickToSee} className="ong-item--see">
         <FiEye size={ 18 } color="#A8A8B3"/>
       </div>

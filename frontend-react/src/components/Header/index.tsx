@@ -52,6 +52,8 @@ export default function Header({ actionButtonText, actionRoute }: HeaderProps) {
   function onClickLogoff(event: React.MouseEvent<HTMLAnchorElement>) {
     event.preventDefault();
 
+    localStorage.clear();
+
     history.push('/');
   }
 

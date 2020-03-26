@@ -36,7 +36,22 @@ export default function ListIncidents(history: any) {
 
       setListIncidents(incidents);
     });
-  }, []);
+  }, [ongId]);
+
+  //#endregion
+
+  //#region Methods
+
+  /**
+   * Método que é executado quando o usuário deleta um incidente
+   *
+   * @param incidentId A identificação do incidente
+   */
+  function onClickDeleteIncident(incidentId: number): void {
+    const list = listIncidents.filter(incident => incident.id !== incidentId);
+
+    setListIncidents(list);
+  }
 
   //#endregion
 
@@ -53,9 +68,9 @@ export default function ListIncidents(history: any) {
         <h1>Casos cadastrados</h1>
         <h3 className="form--error">{ error }</h3>
         <div className="list--body--grid">
-          { listIncidents.map(incident => {
+          { listIncidents && listIncidents.map(incident => {
             return (
-              <IncidentItem { ...incident }/>
+              <IncidentItem key={incident.id} { ...incident } onClickDelete={onClickDeleteIncident}/>
             );
           }) }
         </div>

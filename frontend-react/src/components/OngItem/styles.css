@@ -5,13 +5,6 @@
   position: relative;
 }
 
-.ong-item--trash {
-  position: absolute;
-  bottom: 2rem;
-  right: 2rem;
-  cursor: pointer;
-}
-
 .ong-item--see {
   position: absolute;
   top: 2rem;
