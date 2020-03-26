@@ -1,0 +1,56 @@
+.header,
+.header--texts,
+.header--buttons {
+  display: flex;
+}
+
+.header {
+  justify-content: space-between;
+  padding: 1rem 0;
+}
+
+.header--texts {
+  align-items: center;
+}
+
+.header--logo img {
+  height: 4rem;
+}
+
+.header--texts h2 {
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 500;
+  margin-left: 2rem;
+}
+
+.header--buttons {
+  align-items: center;
+}
+
+.header--buttons a {
+  border-radius: 8px;
+  background-color: #FFF;
+  border: 1.5px solid #DCDCE6;
+  height: 3rem;
+  width: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 1rem;
+  transition: filter 0.2s;
+}
+
+.header--buttons a:hover {
+  filter: brightness(80%);
+}
+
+@media only screen and (max-width: 628px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .header--buttons {
+    margin-top: 2rem;
+  }
+}
