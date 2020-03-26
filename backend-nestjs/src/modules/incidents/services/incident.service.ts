@@ -42,7 +42,7 @@ export class IncidentService {
    * @param options As opções de paginação
    */
   public async getMany(options?: PaginationOptions): Promise<IncidentEntity[]> {
-    const { limit = 15, page = 1, relations =  [] } = options;
+    const { limit = 15, page = 1, relations = [], ongId } = options;
 
     const normalizedLimit = Math.min(100, Math.max(1, limit));
     const normalizedPage = Math.max(1, page);
@@ -54,6 +54,9 @@ export class IncidentService {
 
     if (relations.some(relation => relation === 'ong'))
       query = query.leftJoinAndSelect('incident.ong', 'ong', 'ong.isActive = :isActive', { isActive: TypeOrmValueTypes.TRUE });
+
+    if (ongId && Number(ongId))
+      query = query.andWhere('incident.ongId = :ongId', { ongId: Number(ongId) });
 
     return query.getMany();
   }
