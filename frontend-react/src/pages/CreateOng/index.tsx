@@ -7,27 +7,27 @@ import { useHistory } from 'react-router-dom';
 
 import beTheHero from '../../assets/logo.svg';
 
-import { CreateUserPayload } from '../../models/payloads/create-user.payload';
-import { LoginPayload } from '../../models/payloads/login.payload';
-import { auth, createUser } from '../../services/api';
-
+import { CreateOngPayload } from '../../models/payloads/create-ong.payload';
+import { createOng } from '../../services/api';
 import './styles.css';
 
 //#endregion
 
 /**
- * A função que representa o componente que lida com o registro de usuários
+ * A função que representa o componente que lida com o registro de ongs
  *
  * @constructor
  */
-export default function Register() {
+export default function CreateOng() {
 
   //#region States
 
   const history = useHistory();
   const [error, setError] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [whatsapp, setWhatsapp] = useState('');
+  const [city, setCity] = useState('');
+  const [uf, setUf] = useState('');
 
   //#endregion
 
@@ -41,28 +41,20 @@ export default function Register() {
   async function onSubmit(event: React.FormEvent): Promise<void> {
     event.preventDefault();
 
-    const userPayload: CreateUserPayload = {
-      email,
-      password,
+    const ongPayload: CreateOngPayload = {
+      city,
+      name,
+      uf: uf.toLocaleUpperCase(),
+      whatsapp,
     };
 
-    if(!userPayload.password || !userPayload.email)
-      return void setError('É necessário digitar um e-mail e uma senha válida.');
+    if (!ongPayload.name)
+      return void setError('É necessário digitar o nome da ong.');
 
-    const userResponse = await createUser(userPayload);
+    const ongResponse = await createOng(ongPayload);
 
-    if (typeof userResponse === 'string')
-      return void setError(userResponse);
-
-    const loginPayload: LoginPayload = {
-      username: email,
-      password,
-    };
-
-    const authResponse = await auth(loginPayload);
-
-    if (typeof authResponse === 'string')
-      return void setError(authResponse);
+    if (typeof ongResponse === 'string')
+      return void setError(ongResponse);
 
     history.push('/incidents');
   }
@@ -76,8 +68,8 @@ export default function Register() {
           <div className="register--logo">
             <img src={ beTheHero } alt="A logo do Be The Hero."/>
           </div>
-          <h2>Cadastro</h2>
-          <p>Faça seu cadastro, entre na plataforma e ajude pessoas a encontrarem os casos da sua ONG.</p>
+          <h2>Cadastrar uma ong</h2>
+          <p>Crie sua ong, dessa forma, você poderá cadastrar casos para que as pessoas te ajudem.</p>
           <div className="register--back">
             <a href="/">
               <FiArrowLeft size={ 18 } color="#E02041"/>
@@ -87,8 +79,12 @@ export default function Register() {
         </div>
         <form noValidate={true} onSubmit={onSubmit} className="register--form">
           <h3 className="form--error">{ error }</h3>
-          <input placeholder="E-mail" type="email" value={email} onChange={e => setEmail(e.target.value)}/>
-          <input placeholder="Senha" type="password" value={password} onChange={e => setPassword(e.target.value)}/>
+          <input placeholder="Nome" value={name} onChange={e => setName(e.target.value)}/>
+          <input placeholder="Whatsapp" value={whatsapp} onChange={e => setWhatsapp(e.target.value)}/>
+          <div className="register--form--location">
+            <input placeholder="Cidade" value={city} onChange={e => setCity(e.target.value)}/>
+            <input placeholder="UF" maxLength={2} value={uf} onChange={e => setUf(e.target.value)}/>
+          </div>
           <button>Cadastrar</button>
           <div className="register--back">
             <a href="/">

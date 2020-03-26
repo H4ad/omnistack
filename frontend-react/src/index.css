@@ -97,3 +97,12 @@ button {
 button:hover {
   filter: brightness(80%);
 }
+
+.form--error {
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  color: #E02041;
+  text-align: center;
+}
