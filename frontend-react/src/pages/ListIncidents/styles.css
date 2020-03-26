@@ -1,0 +1,99 @@
+.list--container,
+.list--header,
+.list--header--texts,
+.list--header--buttons,
+.list--body {
+  display: flex;
+}
+
+.list--container {
+  flex-direction: column;
+  padding: 0 3rem;
+}
+
+.list--header {
+  justify-content: space-between;
+  padding: 1rem 0;
+}
+
+.list--header--texts {
+  align-items: center;
+}
+
+.list--header--logo img {
+  height: 4rem;
+}
+
+.list--header--texts h2 {
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 500;
+  margin-left: 2rem;
+}
+
+.list--header--buttons {
+  align-items: center;
+}
+
+.list--header--buttons a {
+  border-radius: 8px;
+  background-color: #FFF;
+  border: 1.5px solid #DCDCE6;
+  height: 3rem;
+  width: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 1rem;
+  transition: filter 0.2s;
+}
+
+.list--header--buttons a:hover {
+  filter: brightness(80%);
+}
+
+.list--body {
+  margin-top: 3rem;
+  flex-direction: column;
+}
+
+.list--body h1 {
+  font-size: 2rem;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.list--body--grid {
+  padding-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.list--body--grid .incident-item {
+  width: calc(50% - 1rem);
+  margin-bottom: 2rem;
+}
+
+.list--body--grid .incident-item:nth-child(odd) {
+  margin-right: 2rem;
+}
+
+@media only screen and (max-width: 768px) {
+  .list--body--grid .incident-item {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 628px) {
+  .list--container {
+    padding: 0 1rem;
+  }
+
+  .list--header {
+    flex-direction: column;
+  }
+
+  .list--header--buttons {
+    margin-top: 2rem;
+  }
+}
