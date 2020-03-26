@@ -1,7 +1,7 @@
 //#region Imports
 
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDefined, IsEnum, IsNumber, IsString, MaxLength } from 'class-validator';
+import { IsDefined, IsEnum, IsString, MaxLength, MinLength } from 'class-validator';
 
 import { BaseCrudCreatePayload } from '../../../common/base-crud-create.payload';
 import { DefaultValidationMessages } from '../../../common/default-validation-messages';
@@ -19,6 +19,7 @@ export class CreateOngPayload extends BaseCrudCreatePayload {
    */
   @ApiProperty()
   @IsDefined({ message: 'É necessário enviar o nome dessa ong.' })
+  @MinLength(1, { message: 'O nome da ong precisa ter ao menos um caracter.' })
   @MaxLength(255, { message: 'O nome da ong não pode ter mais que 255 caracteres.' })
   @IsString({ message: DefaultValidationMessages.IsString })
   public name: string;
@@ -28,6 +29,7 @@ export class CreateOngPayload extends BaseCrudCreatePayload {
    */
   @ApiProperty()
   @IsDefined({ message: 'É necessário enviar a cidade na qual se localiza essa ong.' })
+  @MinLength(1, { message: 'O nome da cidade precisa ter ao menos um caracter.' })
   @MaxLength(255, { message: 'O nome da cidade não pode ter mais que 255 caracteres.' })
   @IsString({ message: DefaultValidationMessages.IsString })
   public city: string;
@@ -47,6 +49,7 @@ export class CreateOngPayload extends BaseCrudCreatePayload {
    */
   @ApiProperty()
   @IsDefined({ message: 'É necessário enviar o whatsapp de contato dessa ong.' })
+  @MinLength(11, { message: 'É necessário enviar um número de telefone válido com DDD.' })
   @MaxLength(255, { message: 'O número de WhatsApp não pode ter mais que 255 caracteres.' })
   @IsString({ message: DefaultValidationMessages.IsString })
   // TODO: Talvez adicionar uma validação melhorar para o número de WhatsApp
