@@ -64,7 +64,7 @@ export default function Register() {
     if (typeof authResponse === 'string')
       return void setError(authResponse);
 
-    history.push('/incidents');
+    history.push('/ongs');
   }
 
   //#endregion
