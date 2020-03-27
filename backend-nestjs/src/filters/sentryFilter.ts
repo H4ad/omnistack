@@ -1,6 +1,6 @@
 //#region Imports
 
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException, UnauthorizedException } from '@nestjs/common';
 import * as Sentry from '@sentry/minimal';
 
 import { Request, Response } from 'express';
@@ -30,6 +30,9 @@ export class SentryFilter implements ExceptionFilter {
       status = exception.getStatus();
       exceptionResponse = exception.getResponse();
     }
+
+    if (exception instanceof UnauthorizedException && exception.message === 'Unauthorized')
+      exceptionResponse = new UnauthorizedException('Você não tem permissão para realizar essa ação.');
 
     Sentry.setContext('request', { requestUrl: request.url });
 
