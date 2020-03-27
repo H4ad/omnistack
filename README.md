@@ -18,6 +18,7 @@ Apesar das Ongs aparentemente serem um usuário de certa forma, eu ainda irei se
 
 Ongs:
 - Name
+- Email
 - Cidade
 - UF
 - Whatsapp
