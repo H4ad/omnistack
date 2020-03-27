@@ -1,5 +1,8 @@
 //#region Imports
 
+import 'intl';
+import 'intl/locale-data/jsonp/pt-BR';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';

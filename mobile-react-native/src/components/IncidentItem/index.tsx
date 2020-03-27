@@ -51,7 +51,12 @@ export default function IncidentItem(props: IncidentProxy & { hideButton?: boole
       <View style={ styles.row }>
         <View style={ styles.firstColumn }>
           <Text style={ styles.title }>Valor:</Text>
-          <Text style={ styles.description }>R$ { props.value.toFixed(2) } reais</Text>
+          <Text style={ styles.description }>{
+            Intl.NumberFormat('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            }).format(props.value)
+          }</Text>
         </View>
         { props.hideButton && (
           <View style={ styles.secondColumn }>

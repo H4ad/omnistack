@@ -44,7 +44,7 @@ export default function IncidentItem({ id, title, description, value, onClickDel
     <div className="incident-item">
       <h3 className="form--error">{ error }</h3>
 
-      <div onClick={onClickTrash} className="incident-item--trash">
+      <div onClick={ onClickTrash } className="incident-item--trash">
         <FiTrash2 size={ 18 } color="#A8A8B3"/>
       </div>
       <strong>Caso:</strong>
@@ -54,7 +54,10 @@ export default function IncidentItem({ id, title, description, value, onClickDel
       <p>{ description }</p>
 
       <strong>Valor:</strong>
-      <p>R$ { value.toFixed(2) } reais</p>
+      <p>{ Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }).format(value) }</p>
     </div>
   );
 }
