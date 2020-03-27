@@ -40,7 +40,7 @@ export class IncidentService {
    *
    * @param options As opções de paginação
    */
-  public async getMany(options?: IncidentManyPaginationOptions): Promise<IncidentEntity[]> {
+  public async getMany(options?: IncidentManyPaginationOptions): Promise<[IncidentEntity[], number]> {
     const { limit = 15, page = 1, relations = [], ongId } = options;
 
     const normalizedLimit = Math.min(100, Math.max(1, limit));
@@ -57,7 +57,7 @@ export class IncidentService {
     if (ongId && Number(ongId))
       query = query.andWhere('incident.ongId = :ongId', { ongId: Number(ongId) });
 
-    return query.getMany();
+    return query.getManyAndCount();
   }
 
   /**
