@@ -73,9 +73,9 @@ export default function CreateOng() {
           <h2>Cadastrar uma ong</h2>
           <p>Crie sua ong, dessa forma, você poderá cadastrar casos para que as pessoas te ajudem.</p>
           <div className="register--back">
-            <a href="/">
+            <a href="/ongs">
               <FiArrowLeft size={ 18 } color="#E02041"/>
-              <span>Voltar para o logon</span>
+              <span>Voltar para as ongs</span>
             </a>
           </div>
         </div>
