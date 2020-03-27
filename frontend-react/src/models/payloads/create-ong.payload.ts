@@ -9,6 +9,11 @@ export interface CreateOngPayload {
   name: string;
 
   /**
+   * O e-mail da ong
+   */
+  email: string;
+
+  /**
    * A cidade na qual está localizada essa ong
    */
   city: string;

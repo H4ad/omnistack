@@ -25,6 +25,7 @@ export default function CreateOng() {
   const history = useHistory();
   const [error, setError] = useState('');
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [whatsapp, setWhatsapp] = useState('');
   const [city, setCity] = useState('');
   const [uf, setUf] = useState('');
@@ -44,6 +45,7 @@ export default function CreateOng() {
     const ongPayload: CreateOngPayload = {
       city,
       name,
+      email,
       uf: uf.toLocaleUpperCase(),
       whatsapp,
     };
@@ -80,6 +82,7 @@ export default function CreateOng() {
         <form noValidate={true} onSubmit={onSubmit} className="register--form">
           <h3 className="form--error">{ error }</h3>
           <input placeholder="Nome" value={name} onChange={e => setName(e.target.value)}/>
+          <input placeholder="E-mail" type="email" value={email} onChange={e => setEmail(e.target.value)}/>
           <input placeholder="Whatsapp" value={whatsapp} onChange={e => setWhatsapp(e.target.value)}/>
           <div className="register--form--location">
             <input placeholder="Cidade" value={city} onChange={e => setCity(e.target.value)}/>

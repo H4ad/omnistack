@@ -6,7 +6,6 @@ import { Type } from 'class-transformer';
 import { BaseCrudProxy } from '../../../common/base-crud.proxy';
 import { IncidentEntity } from '../../../typeorm/entities/incident.entity';
 import { OngEntity } from '../../../typeorm/entities/ong.entity';
-import { UserEntity } from '../../../typeorm/entities/user.entity';
 import { isValid } from '../../../utils/functions';
 import { UserProxy } from '../../user/models/user.proxy';
 
@@ -28,6 +27,7 @@ export class OngProxy extends BaseCrudProxy {
     super(entity);
 
     this.name = entity.name;
+    this.email = entity.email;
     this.city = entity.city;
     this.uf = entity.uf;
     this.whatsapp = entity.whatsapp;
@@ -45,6 +45,12 @@ export class OngProxy extends BaseCrudProxy {
   @ApiProperty()
   public name: string;
 
+  /**
+   * O e-mail da ong
+   */
+  @ApiProperty()
+  public email: string;
+  
   /**
    * A cidade na qual está localizada essa ong
    */

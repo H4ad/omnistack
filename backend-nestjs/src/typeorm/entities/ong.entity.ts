@@ -38,6 +38,12 @@ export class OngEntity extends BaseEntity {
   public name: string;
 
   /**
+   * O e-mail da ong
+   */
+  @Column({ nullable: false })
+  public email: string;
+
+  /**
    * A cidade na qual está localizada essa ong
    */
   @Column({ nullable: false })
