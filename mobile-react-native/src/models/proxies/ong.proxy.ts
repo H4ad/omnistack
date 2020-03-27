@@ -45,4 +45,5 @@ export interface OngProxy extends BaseCrudProxy {
    */
   user?: UserProxy;
 
+
 }

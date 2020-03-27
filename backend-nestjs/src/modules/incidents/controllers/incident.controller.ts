@@ -1,7 +1,9 @@
 //#region Imports
 
-import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, Post, Query, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, Post, Query, Res, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Response } from 'express';
+
 import { ProtectTo } from '../../../decorators/protect/protect.decorator';
 import { User } from '../../../decorators/user/user.decorator';
 import { UserEntity } from '../../../typeorm/entities/user.entity';
@@ -39,13 +41,16 @@ export class IncidentController {
    * Método que retorna várias informações da entidade
    *
    * @param options As opções de paginação
+   * @param response A referência para a resposta
    */
   @Get('/')
   @ApiOperation({ summary: 'Busca todos os incidentes' })
   @ApiOkResponse({ type: IncidentProxy, isArray: true })
-  public async getMany(@Query(new ValidationPipe({ whitelist: true, transform: true })) options?: IncidentManyPaginationOptions): Promise<CrudProxy<IncidentProxy>> {
-    return await this.service.getMany(options)
-      .then(response => mapCrud(IncidentProxy, response));
+  public async getMany(@Res() response: Response, @Query(new ValidationPipe({ whitelist: true, transform: true })) options?: IncidentManyPaginationOptions): Promise<void> {
+    const [incidents, total] = await this.service.getMany(options);
+
+    response.set('x-total-count', total.toString());
+    response.send(incidents);
   }
 
   /**

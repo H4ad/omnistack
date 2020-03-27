@@ -8,7 +8,6 @@ import { Repository } from 'typeorm';
 import { TypeOrmValueTypes } from '../../../common/type-orm-value.types';
 import { OngEntity } from '../../../typeorm/entities/ong.entity';
 import { isValid } from '../../../utils/functions';
-import { UserService } from '../../user/services/user.service';
 import { CreateOngPayload } from '../models/create-ong.payload';
 import { OngManyPaginationOptions } from '../models/ong-many.pagination.options';
 import { UpdateOngPayload } from '../models/update-ong.payload';
@@ -140,6 +139,7 @@ export class OngService {
     return new OngEntity({
       ...isValid(entityId) && { id: entityId },
       ...isValid(payload.name) && { name: payload.name },
+      ...isValid(payload.email) && { email: payload.email },
       ...isValid(payload.city) && { city: payload.city },
       ...isValid(payload.uf) && { uf: payload.uf },
       ...isValid(payload.whatsapp) && { whatsapp: payload.whatsapp },

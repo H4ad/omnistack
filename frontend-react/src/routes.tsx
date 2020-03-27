@@ -1,5 +1,8 @@
 //#region Imports
 
+import 'intl';
+import 'intl/locale-data/jsonp/pt-BR';
+
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 

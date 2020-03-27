@@ -1,7 +1,7 @@
 //#region Imports
 
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEnum, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsEmail, IsEnum, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
 
 import { BaseCrudUpdatePayload } from '../../../common/base-crud-update.payload';
 import { DefaultValidationMessages } from '../../../common/default-validation-messages';
@@ -23,6 +23,15 @@ export class UpdateOngPayload extends BaseCrudUpdatePayload {
   @MaxLength(255, { message: 'O nome da ong não pode ter mais que 255 caracteres.' })
   @IsString({ message: DefaultValidationMessages.IsString })
   public name?: string;
+
+  /**
+   * O e-mail da ong
+   */
+  @ApiPropertyOptional()
+  @IsOptional()
+  @MaxLength(255, { message: 'É necessário enviar um e-mail contendo menos de 255 caracteres.' })
+  @IsEmail({ }, { message: DefaultValidationMessages.IsEmail })
+  public email?: string;
 
   /**
    * A cidade na qual está localizada essa ong
