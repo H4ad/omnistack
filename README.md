@@ -31,3 +31,50 @@ Incidentes:
 - Valor
 - Ong ( uma relação ManyToOne )
 
+## Imagens
+
+### Frontend
+
+Imagens do Frontend
+
+#### Login
+
+![Página de login](github/assets/login.png)
+
+#### Registrar usuário
+
+![Página de registrar usuário](github/assets/register.png)
+
+#### Suas ongs
+
+![Página para visualizar suas ongs](github/assets/ongs.png)
+
+#### Criar uma ong
+
+![Página para criar uma nova ong](github/assets/create-ong.png)
+
+#### Casos de uma ong
+
+![Página de incidentes](github/assets/incidents.png)
+
+#### Criar um novo caso
+
+![Página de criar um novo incidente](github/assets/create-incident.png)
+
+### Mobile
+
+A seguir, as páginas do aplicativo mobile.
+
+#### Listagem de casos
+
+![Página de listagem de casos](github/assets/list-incidents.jpg)
+
+#### Detalhes um caso
+
+![Página de detalhes de um casos](github/assets/incident-detail.jpg)
+
+### Backend
+
+A seguir, a página do Swagger com todas as rotas da API documentadas.
+
+![Página do Swagger](github/assets/swagger.png)
