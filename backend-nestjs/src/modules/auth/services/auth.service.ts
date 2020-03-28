@@ -101,7 +101,6 @@ export class AuthService {
         shouldLogout: true,
       });
 
-    console.log(jwtPayload);
     const user = await this.userService.getOne(jwtPayload.id, jwtPayload.id);
 
     Sentry.setUser({ id: user.id.toString(), email: user.email });
