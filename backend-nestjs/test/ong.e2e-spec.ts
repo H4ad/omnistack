@@ -181,6 +181,19 @@ describe('Ong (e2e)', () => {
       expect(body).toHaveProperty('isActive', updatePayload.isActive);
     });
 
+    it('should get error 401 when try update without authentication with jwt', async () => {
+      const userToken = await getUserToken(app);
+      const ongByUser = await createValidOng(app, userToken);
+      const updatePayload = getValidUpdateOngPayload();
+      const { body } = await request(app.getHttpServer())
+        .put(`/ongs/${ ongByUser.id }`)
+        .send(updatePayload);
+
+      expect(body).toBeDefined();
+      expect(body).toHaveProperty('statusCode', 401);
+      expect(body).toHaveProperty('message');
+    });
+
     it('should get status 401 when try update ong of another user', async () => {
       const userToken = await getUserToken(app);
       const ongByUser = await createValidOng(app, userToken);
