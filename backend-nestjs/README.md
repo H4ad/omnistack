@@ -1,4 +1,5 @@
 # Backend OmniStack 11
+![Backend NestJS](https://github.com/H4ad/omnistack/workflows/Backend%20NestJS/badge.svg)
 
 Para esse OmniStack, em vez de utilizar Express, eu preferi usar NestJS no lugar por utilizar TypeScript.
 
