@@ -5,6 +5,7 @@ import { IncidentsPage } from './incidents.page';
 
 const routes: Routes = [
   { path: '', component: IncidentsPage },
+  { path: ':id', loadChildren: () => import('../incident-details/incident-details.module').then(m => m.IncidentDetailsPageModule) },
 ];
 
 @NgModule({
