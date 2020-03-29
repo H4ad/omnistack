@@ -36,3 +36,43 @@ export interface IncidentProxy extends BaseCrudProxy {
   ong: OngProxy;
 
 }
+
+/**
+ * Método que retorna as informações de um falso incidente
+ */
+export function getFakeIncident(): IncidentProxy {
+  return {
+    id: Math.floor(Math.random() * 100000),
+    title: 'Cadelinha atropelada',
+    description: 'Uma cadelinha foi atropelada de forma cruel por um cara que fugiu depois.',
+    value: 120,
+    ongId: 1,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    isActive: true,
+    ong: {
+      id: 1,
+      name: 'APAD',
+      userId: 1,
+      whatsapp: '5515988116118',
+      uf: 'SP',
+      city: 'Sorocaba',
+      email: 'contato@apad.com',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isActive: true,
+    },
+  };
+}
+
+/**
+ * Método que retorna as informações de um falso incidente
+ */
+export function getFakeListIncidents(quantity: number): IncidentProxy[] {
+  const listIncidents: IncidentProxy[] = [];
+
+  for (let i = 0; i < quantity; i++)
+    listIncidents.push(getFakeIncident());
+
+  return listIncidents;
+}

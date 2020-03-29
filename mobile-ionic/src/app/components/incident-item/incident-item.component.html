@@ -1,0 +1,21 @@
+<div class="item">
+  <div class="item--details">
+    <div class="item--details--column">
+      <strong>Caso:</strong>
+      <p>{{ content.title }}</p>
+    </div>
+    <div class="item--details--column">
+      <strong>Ong:</strong>
+      <p>{{ content.ong.name }}</p>
+    </div>
+    <div class="item--details--column">
+      <strong>Valor:</strong>
+      <p>{{ content.value | currency: 'BRL' }}</p>
+    </div>
+  </div>
+  <div (click)="onClickDetailEvent.emit(content)" class="item--button ion-activatable ripple-parent">
+    <p>Ver mais detalhes</p>
+    <ion-icon name="arrow-forward-sharp"></ion-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+</div>

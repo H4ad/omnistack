@@ -1,0 +1,19 @@
+<div class="incidents">
+  <div class="incidents--header">
+    <div class="incidents--header--logo">
+      <img src="../../../assets/images/logo.png" alt="O logo do Be The Hero">
+    </div>
+    <span>Total de <b>{{ totalIncidents }}</b> casos.</span>
+  </div>
+  <div class="incidents--text">
+    <h2>Bem-vindo!</h2>
+    <p>Escolha um dos casos abaio e salve o dia.</p>
+  </div>
+  <div class="incidents--list">
+    <virtual-scroller #scroll [items]="listIncidents" (vsEnd)="onReachEnd($event)">
+      <ng-container *ngFor="let incident of scroll.viewPortItems; trackBy: trackByIncidentKey">
+        <bth-incident-item [content]="incident"></bth-incident-item>
+      </ng-container>
+    </virtual-scroller>
+  </div>
+</div>
