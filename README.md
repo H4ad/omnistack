@@ -1,4 +1,6 @@
 # Omnistack 11
+![Backend NestJS](https://github.com/H4ad/omnistack/workflows/Backend%20NestJS/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/H4ad/omnistack/badge.svg?branch=master)](https://coveralls.io/github/H4ad/omnistack?branch=master)
 
 Esse é o repositório que contém todos os projetos da semana OmniStack 11.
 

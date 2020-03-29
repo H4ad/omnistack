@@ -1,6 +1,4 @@
 # Backend OmniStack 11
-![Backend NestJS](https://github.com/H4ad/omnistack/workflows/Backend%20NestJS/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/H4ad/omnistack/badge.svg?branch=master)](https://coveralls.io/github/H4ad/omnistack?branch=master)
 
 Para esse OmniStack, em vez de utilizar Express, eu preferi usar NestJS no lugar por utilizar TypeScript.
 
