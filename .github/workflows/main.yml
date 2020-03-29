@@ -16,11 +16,11 @@ jobs:
         with:
           node-version: '12.x'
       
-      - name: npm install, make test-coverage
+      - name: npm install, run test
         working-directory: ./backend-nestjs
         run: |
          npm install
-         make test-coverage
+         npm test
 
       - name: Coveralls
         uses: coverallsapp/github-action@master
