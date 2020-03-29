@@ -3,9 +3,11 @@ name: Backend NestJS
 on:
   push:
     paths:
+      - '.github/workflows/main.yml'
       - 'backend-nestjs/**'
-  pull-request:
+  pull_request:
     paths:
+      - '.github/workflows/main.yml'
       - 'backend-nestjs/**'
 jobs:
   tests:
