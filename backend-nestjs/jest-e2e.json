@@ -15,7 +15,12 @@
   "collectCoverage": true,
   "coveragePathIgnorePatterns":  [
     "/node_modules/",
-    "/src/typeorm/"
+    "/src/typeorm/",
+    "/src/filters/sentryFilter.ts",
+    "/src/modules/typeorm",
+    "/src/modules/env",
+    "/src/modules/test",
+    "test"
   ],
   "coverageDirectory": "./coverage",
   "globals": {
