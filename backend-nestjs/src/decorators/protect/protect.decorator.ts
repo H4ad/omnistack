@@ -15,9 +15,3 @@ export function ProtectTo(...roles: string[]): NestCustomDecorator {
   );
 }
 
-export function UnprotectedRoute(): NestCustomDecorator {
-  return applyDecorators(
-    Roles('anonymous'),
-    UseGuards(AuthGuard('anonymous'), RolesGuard),
-  );
-}

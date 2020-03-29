@@ -1,7 +1,7 @@
 //#region Imports
 
-import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, Post, Put, UseInterceptors } from '@nestjs/common';
-import { ApiBearerAuth, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, ClassSerializerInterceptor, Controller, Get, Param, Post, Put, UseInterceptors } from '@nestjs/common';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ProtectTo } from '../../../decorators/protect/protect.decorator';
 import { User } from '../../../decorators/user/user.decorator';
 import { UserEntity } from '../../../typeorm/entities/user.entity';
@@ -53,7 +53,7 @@ export class UserController {
    *
    * @param requestUser As informações do usuário que está fazendo a requisição
    */
-  @ProtectTo('user')
+  @ProtectTo('user', 'admin')
   @Get('/me')
   @ApiOperation({ summary: 'Retorna as informações do próprio usuário' })
   @ApiOkResponse({ type: UserProxy })
@@ -70,7 +70,7 @@ export class UserController {
    * @param requestUser As informações do usuário que está fazendo a requisição
    * @param id A identificação do usuário
    */
-  @ProtectTo('user')
+  @ProtectTo('user', 'admin')
   @Get('/:id')
   @ApiOperation({ summary: 'Busca um usuário pelo ID' })
   @ApiOkResponse({ type: UserProxy })
@@ -99,7 +99,7 @@ export class UserController {
    * @param id A identificação do usuário
    * @param payload As informações para a atualização da entidade
    */
-  @ProtectTo('user')
+  @ProtectTo('user', 'admin')
   @Put(':id')
   @ApiOperation({ summary: 'Atualiza um usuário' })
   @ApiOkResponse({ type: UserProxy })

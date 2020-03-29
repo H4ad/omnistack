@@ -113,18 +113,6 @@ export class OngService {
     return await this.repository.save(ong);
   }
 
-  /**
-   * Método que verifica se existe uma certa entidade
-   *
-   * @param entityId A identificação da entidade
-   */
-  public async exists(entityId: number): Promise<boolean> {
-    return await this.repository.createQueryBuilder('entity')
-      .where('entity.id = :entityId', { entityId })
-      .getCount()
-      .then(count => count > 0);
-  }
-
   //#endregion
 
   //#region Private Methods

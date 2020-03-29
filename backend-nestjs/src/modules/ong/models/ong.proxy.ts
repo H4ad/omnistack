@@ -7,6 +7,7 @@ import { BaseCrudProxy } from '../../../common/base-crud.proxy';
 import { IncidentEntity } from '../../../typeorm/entities/incident.entity';
 import { OngEntity } from '../../../typeorm/entities/ong.entity';
 import { isValid } from '../../../utils/functions';
+import { IncidentProxy } from '../../incidents/models/incidents.proxy';
 import { UserProxy } from '../../user/models/user.proxy';
 
 //#endregion
@@ -33,8 +34,7 @@ export class OngProxy extends BaseCrudProxy {
     this.whatsapp = entity.whatsapp;
     this.userId = entity.userId;
     this.user = isValid(entity.user) && new UserProxy(entity.user) || void 0;
-    // TODO: Alternar para um proxy
-    this.cases = entity.cases || [];
+    this.cases = Array.isArray(entity.cases) && entity.cases.map(incident => new IncidentProxy(incident)) || [];
   }
 
   //#endregion
@@ -50,7 +50,7 @@ export class OngProxy extends BaseCrudProxy {
    */
   @ApiProperty()
   public email: string;
-  
+
   /**
    * A cidade na qual está localizada essa ong
    */
@@ -85,8 +85,8 @@ export class OngProxy extends BaseCrudProxy {
   /**
    * Os casos que pertencem a essa ong
    */
-  @ApiProperty({ type: () => IncidentEntity, isArray: true })
-  @Type(() => IncidentEntity)
-  public cases: IncidentEntity[];
+  @ApiProperty({ type: () => IncidentProxy, isArray: true })
+  @Type(() => IncidentProxy)
+  public cases: IncidentProxy[];
 
 }

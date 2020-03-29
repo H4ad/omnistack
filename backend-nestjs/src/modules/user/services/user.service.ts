@@ -51,9 +51,6 @@ export class UserService {
    * @param userId A identificação do usuário
    */
   public async getOne(requestUserId: number, userId: number): Promise<UserEntity> {
-    if (requestUserId !== userId)
-      throw new UnauthorizedException('Você não tem permissão para visualizar as informações de outro usuário.');
-
     const user = await this.repository.findOne({
       where: {
         id: userId,
@@ -63,6 +60,9 @@ export class UserService {
 
     if (!user)
       throw new NotFoundException('O usuário que você procura não existe ou foi desativado.');
+
+    if (requestUserId !== userId)
+      throw new UnauthorizedException('Você não tem permissão para visualizar as informações de outro usuário.');
 
     return user;
   }
@@ -93,16 +93,21 @@ export class UserService {
    * @param payload As informações para a criação do usuário
    */
   public async updateOne(requestUserId: number, userId: number, payload: UpdateUserPayload): Promise<UserEntity> {
+    const isUserExists = await this.exists(userId);
+
+    if (!isUserExists)
+      throw new NotFoundException('O usuário que você procura não foi encontrado.');
+
     const user = this.getEntityFromPayload(payload, userId);
 
     if (requestUserId !== userId)
       throw new UnauthorizedException('Você não tem permissão para atualizar as informações de outro usuário.');
 
     if (isValid(user.email)) {
-      const alreadyHasUser = await this.alreadyHasUserWith(user.email);
+      const alreadyHasUser = await this.alreadyHasUserWith(user.email, user.id);
 
       if (alreadyHasUser)
-        throw new BadRequestException('Já existe um usuário cadastrado com esse e-mail.');
+        throw new BadRequestException('Já existe um outro usuário cadastrado com esse e-mail.');
     }
 
     if (isValid(user.password))
@@ -150,10 +155,11 @@ export class UserService {
    * Método que verifica se já existe um usuário com um determinado e-mail
    *
    * @param email O e-mail a ser verificado
+   * @param ignoreUserId A identificação do usuário que deve ignorar
    */
-  private async alreadyHasUserWith(email: string): Promise<boolean> {
+  private async alreadyHasUserWith(email: string, ignoreUserId: number = 0): Promise<boolean> {
     return await this.repository.createQueryBuilder('user')
-      .where('user.email = :email', { email })
+      .where('user.email = :email AND user.id != :ignoreUserId', { email, ignoreUserId })
       .getCount()
       .then(count => count > 0);
   }
