@@ -1,6 +1,7 @@
 //#region Imports
 
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { IPageInfo } from 'ngx-virtual-scroller';
 
 import { IncidentProxy } from '../../models/proxies/incident.proxy';
@@ -25,6 +26,7 @@ export class IncidentsPage implements OnInit {
    */
   constructor(
     private readonly incidentService: IncidentService,
+    private readonly router: Router,
   ) { }
 
   //#endregion
@@ -106,8 +108,6 @@ export class IncidentsPage implements OnInit {
     this.isLoadingIncidents = false;
   }
 
-  //#endregion
-
   /**
    * Método executado ao chegar no final da lista
    *
@@ -119,4 +119,16 @@ export class IncidentsPage implements OnInit {
 
     this.loadIncidents(this.defaultLimit, this.currentPage + 1);
   }
+
+  /**
+   * Método que é executado quando o usuário quer saber mais sobre um incidente
+   *
+   * @param incident As informações do incidente
+   */
+  public async onClickDetails(incident: IncidentProxy): Promise<void> {
+    return void await this.router.navigateByUrl(`/incidents/${ incident.id }`, { state: { incident } });
+  }
+
+  //#endregion
+
 }

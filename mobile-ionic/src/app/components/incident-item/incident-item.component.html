@@ -12,8 +12,12 @@
       <strong>Valor:</strong>
       <p>{{ content.value | currency: 'BRL' }}</p>
     </div>
+    <div *ngIf="hideDetailsButton" class="item--details--column">
+      <strong>Detalhes:</strong>
+      <p>{{ content.description }}</p>
+    </div>
   </div>
-  <div (click)="onClickDetailEvent.emit(content)" class="item--button ion-activatable ripple-parent">
+  <div *ngIf="!hideDetailsButton" (click)="onClickDetailEvent.emit(content)" class="item--button ion-activatable ripple-parent">
     <p>Ver mais detalhes</p>
     <ion-icon name="arrow-forward-sharp"></ion-icon>
     <ion-ripple-effect></ion-ripple-effect>

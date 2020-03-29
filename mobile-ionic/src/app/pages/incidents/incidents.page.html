@@ -12,7 +12,7 @@
   <div class="incidents--list">
     <virtual-scroller #scroll [items]="listIncidents" (vsEnd)="onReachEnd($event)">
       <ng-container *ngFor="let incident of scroll.viewPortItems; trackBy: trackByIncidentKey">
-        <bth-incident-item [content]="incident"></bth-incident-item>
+        <bth-incident-item [content]="incident" (onClickDetailEvent)="onClickDetails($event)"></bth-incident-item>
       </ng-container>
     </virtual-scroller>
   </div>

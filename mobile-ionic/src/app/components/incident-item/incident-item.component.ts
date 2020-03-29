@@ -34,6 +34,12 @@ export class IncidentItemComponent {
   @Input()
   public content: IncidentProxy;
 
+  /**
+   * Diz se deve esconder o botão de ver os detalhes
+   */
+  @Input()
+  public hideDetailsButton: boolean = false;
+
   //#endregion
 
   //#region Outputs
