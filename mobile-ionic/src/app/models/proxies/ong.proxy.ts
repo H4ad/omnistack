@@ -1,7 +1,6 @@
 //#region Imports
 
 import { BaseCrudProxy } from './base.proxy';
-import { UserProxy } from './user.proxy';
 
 //#endregion
 
@@ -39,11 +38,5 @@ export interface OngProxy extends BaseCrudProxy {
    * A identificação do usuário que controla essa ong
    */
   userId: number;
-
-  /**
-   * As informações sobre o usuário
-   */
-  user?: UserProxy;
-
 
 }
