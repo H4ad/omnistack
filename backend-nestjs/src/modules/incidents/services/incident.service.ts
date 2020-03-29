@@ -119,11 +119,9 @@ export class IncidentService {
    * Método que retorna as informações de uma entidade a partir das informações do payload
    *
    * @param payload As informações do payload
-   * @param entityId A identificação da entidade
    */
-  private getEntityFromPayload(payload: CreateIncidentPayload, entityId?: number): IncidentEntity {
+  private getEntityFromPayload(payload: CreateIncidentPayload): IncidentEntity {
     return new IncidentEntity({
-      ...isValid(entityId) && { id: entityId },
       ...isValid(payload.title) && { title: payload.title },
       ...isValid(payload.description) && { description: payload.description },
       ...isValid(payload.value) && { value: payload.value },

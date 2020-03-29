@@ -1,6 +1,6 @@
 //#region Imports
 
-import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, Post, Query, Res, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Delete, Get, HttpCode, Param, Post, Query, Res, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 
@@ -50,7 +50,7 @@ export class IncidentController {
     const [incidents, total] = await this.service.getMany(options);
 
     response.set('x-total-count', total.toString());
-    response.send(incidents);
+    response.send(mapCrud(IncidentProxy, incidents));
   }
 
   /**
@@ -91,6 +91,7 @@ export class IncidentController {
   @Delete('/:id')
   @ApiOperation({ summary: 'Deleta um incidente' })
   @ApiCreatedResponse({ type: void 0 })
+  @HttpCode(204)
   public deleteOne(@User() requestUser: UserEntity, @Param('id') id: number): Promise<void> {
     return this.service.deleteOne(requestUser.id, id);
   }
