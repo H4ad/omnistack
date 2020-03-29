@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - 'backend-nestjs/**'
-  pull-request:
+  pull_request:
     paths:
       - 'backend-nestjs/**'
 jobs:
