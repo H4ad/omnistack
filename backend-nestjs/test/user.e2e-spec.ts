@@ -60,13 +60,15 @@ describe('User (e2e)', () => {
     });
 
     it('should get status 401 when get users with user that it is not admin', async () => {
+      const userToken = await getUserToken(app);
       const { body } = await request(app.getHttpServer())
         .get('/users')
+        .auth(userToken, { type: 'bearer' })
         .send()
         .expect(401);
 
       expect(body).toBeDefined();
-      expect(body).toHaveProperty('message', 'Unauthorized');
+      expect(body).toHaveProperty('error', 'Unauthorized');
       expect(body).toHaveProperty('statusCode');
     });
 
