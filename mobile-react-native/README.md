@@ -1,4 +1,16 @@
-# Mobile
+<h1 align="center">
+    <img alt="Be The Hero" src="./../github/assets/logo.svg" width="400px" />
+</h1>
+
+<h4 align="center">
+  🚀 Semana OmniStack 11.0
+</h4>
+
+<p align="center">
+  <a href="#book-introducao">Introdução</a>
+</p>
+
+# :book: Introdução
 
 Essa é a implementação da versão `mobile` feita em React Native.
 

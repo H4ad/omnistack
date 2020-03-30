@@ -1,8 +1,23 @@
-# Backend OmniStack 11
+<h1 align="center">
+    <img alt="Be The Hero" src="./../github/assets/logo.svg" width="400px" />
+</h1>
+
+<h4 align="center">
+  🚀 Semana OmniStack 11.0
+</h4>
+
+<p align="center">
+  <a href="#book-introducao">Introdução</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#memo-estrutura">Estrutura</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#notebook-typeorm">Typeorm</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#file-folder-entidades">Entidades</a>
+</p>
+
+## :book: Introdução
 
 Para esse OmniStack, em vez de utilizar Express, eu preferi usar NestJS no lugar por utilizar TypeScript.
 
-## Estrutura
+## :memo: Estrutura
 
 As pastas seguem uma estrutura bem simples:
 - src
@@ -13,7 +28,7 @@ As pastas seguem uma estrutura bem simples:
     - typeorm: Contém todos os arquivos relacionados ao `typeorm`.
     - utils: Contém todos os arquivos que contém funções úteis usadas em toda a aplicação.
 
-## TypeOrm
+## :notebook: TypeOrm
 
 Esse é o nome biblioteca que lida com o banco de dados, a estrutura desse cara é a seguinte:
 
@@ -67,3 +82,30 @@ Caso queira realizar alguma operação mais complexa com o Typeorm, use o comand
 ```shell
 npm run typeorm:cli COMANDO
 ```
+
+## :file_folder: Entidades
+
+A seguir, as entidades do banco de dados extraida a partir da primeira aula, eu irei modificar um pouco mas no geral é isso:
+
+Usuário:
+- Email
+- Password ( não havia também, mas eu irei trabalhar com sistema de autenticação por senha )
+- Roles ( não visto mas irei incluir por padrão )
+- Ongs[] ( uma relação OneToMany )
+
+Apesar das Ongs aparentemente serem um usuário de certa forma, eu ainda irei separar em uma entidade por sí só.
+
+Ongs:
+- Name
+- Email
+- Cidade
+- UF
+- Whatsapp
+- Usuário ( uma relação ManyToOne )
+- Casos[] ( uma relação OneToMany )
+
+Incidentes:
+- Título
+- Descrição
+- Valor
+- Ong ( uma relação ManyToOne )
