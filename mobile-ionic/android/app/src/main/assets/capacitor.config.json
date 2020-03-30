@@ -1,0 +1,9 @@
+{
+  "appId": "com.h4ad.bethehero",
+  "appName": "mobile-ionic",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "linuxAndroidStudioPath": "studio",
+  "cordova": {}
+}

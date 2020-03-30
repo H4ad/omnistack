@@ -29,6 +29,7 @@ export default function CreateIncident(props: any) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [value, setValue] = useState(0);
+  const [backUrl, setBackUrl] = useState(`/ongs/${ ongId }/incidents`);
 
   //#endregion
 
@@ -69,7 +70,7 @@ export default function CreateIncident(props: any) {
           <h2>Cadastrar novo caso</h2>
           <p>Descreva o caso detalhadamente para encontrar um herói para resolver isso.</p>
           <div className="create-incident--back">
-            <a href="/incidents">
+            <a href={ backUrl }>
               <FiArrowLeft size={ 18 } color="#E02041"/>
               <span>Voltar para home</span>
             </a>

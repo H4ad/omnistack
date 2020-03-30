@@ -1,0 +1,22 @@
+<div class="details">
+  <div class="details--header">
+    <div class="details--header--logo">
+      <img src="../../../assets/images/logo.png" alt="O logo do Be The Hero">
+    </div>
+    <div (click)="onClickArrowBack()" class="details--header--back ion-activatable">
+      <ion-icon name="arrow-back-sharp"></ion-icon>
+      <ion-ripple-effect></ion-ripple-effect>
+    </div>
+  </div>
+  <bth-incident-item [content]="incident" [hideDetailsButton]="true"></bth-incident-item>
+  <div class="details--card">
+    <h2>Salve o dia!</h2>
+    <h2>Seja o herói desse caso.</h2>
+    <p>Entre em contato</p>
+
+    <div class="details--card--button">
+      <a [href]="whatsappDeepLink" target="_blank" rel="noopener noreferrer">Whatsapp</a>
+      <a [href]="emailDeepLink" target="_blank" rel="noopener noreferrer">E-mail</a>
+    </div>
+  </div>
+</div>

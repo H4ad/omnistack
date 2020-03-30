@@ -1,0 +1,58 @@
+.item {
+  display: flex;
+  flex-direction: column;
+  background-color: #FFF;
+  border-radius: 8px;
+  padding: 1rem;
+
+  &--details {
+    display: flex;
+    flex-wrap: wrap;
+
+    &--column {
+      width: calc(50% - .5rem);
+      display: flex;
+      flex-direction: column;
+      padding: .5rem;
+
+      strong {
+        font-size: .9rem;
+      }
+
+      p {
+        margin-top: .5rem;
+        font-size: .8rem
+      }
+
+      &:nth-child(even) {
+        margin-left: .5rem;
+      }
+
+      &:nth-child(odd) {
+        margin-right: .5rem;
+      }
+    }
+  }
+
+  &--button {
+    margin-top: .5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .5rem;
+    position: relative;
+    overflow: hidden;
+
+    p, ion-icon {
+      color: var(--bth-primary-color);
+    }
+
+    p {
+      font-size: .8rem;
+    }
+
+    ion-icon {
+      height: .8rem;
+    }
+  }
+}
