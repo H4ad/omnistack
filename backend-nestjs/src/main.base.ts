@@ -76,7 +76,9 @@ function haltOnTimeout(req, res, next) {
 function setupMiddleware(app: INestApplication, env: EnvService): void {
   app.use(helmet());
 
-  app.enableCors();
+  app.enableCors({
+    exposedHeaders: '*',
+  });
 
   app.use(bodyParser.json());
 
