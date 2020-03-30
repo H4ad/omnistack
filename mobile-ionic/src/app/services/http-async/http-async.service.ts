@@ -1,6 +1,6 @@
 //#region Imports
 
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { Subject } from 'rxjs';
@@ -98,9 +98,21 @@ export class HttpAsyncService {
    * @param result O resultado obtido
    */
   private success<T>(result: T): AsyncResult<T> {
-    return <AsyncResult<T>>{
+    return {
       success: result
-    };
+    } as AsyncResult<T>;
+  }
+
+  /**
+   * Converte um resultado para AsyncResult para quando der certo
+   *
+   * @param result O resultado obtido
+   */
+  private successWithHeaders<T>(result: HttpResponse<T>): AsyncResultWithHeaders<T> {
+    return {
+      success: result.body,
+      headers: result.headers,
+    } as AsyncResultWithHeaders<T>;
   }
 
   /**
@@ -108,12 +120,12 @@ export class HttpAsyncService {
    *
    * @param error O erro enviado pelo servidor
    */
-  private error<T>(error: HttpErrorResponse): AsyncResult<T> {
+  private error<T>(error: HttpErrorResponse): AsyncResult<T> | AsyncResultWithHeaders<T> {
     this.onAsyncResultError.next(error);
 
-    return <AsyncResult<T>> {
-      error: error
-    };
+    return {
+      error,
+    } as AsyncResultWithHeaders<T>;
   }
 
   /**
@@ -160,6 +172,33 @@ export class HttpAsyncService {
         return this.error<T>(error);
       })
       .then<AsyncResult<T>>((result: AsyncResult<T>) => {
+        return result;
+      });
+  }
+
+  /**
+   * Envia uma requisição com o método GET de forma assincrona
+   *
+   * @param url Url para a requisição. Obs: Ele já é automaticamente combinado com a url base
+   */
+  public async getWithHeaders<T>(
+    url: string,
+  ): Promise<AsyncResultWithHeaders<T>> {
+    if (this.beforeValidations) {
+      const validationResult = await this.beforeValidations();
+
+      if (validationResult.error !== undefined)
+        return this.error<T>(validationResult.error);
+    }
+
+    return await this.http.get<T>(this.baseUrl + url, { observe: 'response', headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'json' }).toPromise()
+      .then((data: HttpResponse<T>) => {
+        return this.successWithHeaders(data);
+      })
+      .catch((error: HttpErrorResponse) => {
+        return this.error<T>(error);
+      })
+      .then<AsyncResultWithHeaders<T>>((result: AsyncResultWithHeaders<T>) => {
         return result;
       });
   }
@@ -306,6 +345,28 @@ export interface AsyncResult<T> {
    * O resultado quando dá algum problema
    */
   error?: HttpErrorResponse;
+
+}
+
+/**
+ * A interface que representa um resultado obtido de forma assincrona incluindo os headers da requisição
+ */
+export interface AsyncResultWithHeaders<T> {
+
+  /**
+   * O resultado quando ocorre tudo certo
+   */
+  success?: T;
+
+  /**
+   * O resultado quando dá algum problema
+   */
+  error?: HttpErrorResponse;
+
+  /**
+   * Os headers da requisição
+   */
+  headers?: HttpHeaders;
 
 }
 

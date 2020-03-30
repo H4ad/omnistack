@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 
 import { environment } from '../../../environments/environment';
 import { getFakeListIncidents, IncidentProxy } from '../../models/proxies/incident.proxy';
+import { HttpAsyncService } from '../../services/http-async/http-async.service';
 
 //#endregion
 
@@ -20,7 +21,9 @@ export class IncidentInteractor {
   /**
    * Construtor padrão
    */
-  constructor() { }
+  constructor(
+    private readonly http: HttpAsyncService,
+  ) { }
 
   //#endregion
 
@@ -36,7 +39,15 @@ export class IncidentInteractor {
     if (environment.isMockupEnabled)
       return [10, getFakeListIncidents(limit)];
 
-    throw new Error('Não implementado ainda.');
+    const url = `/incidents?limit=${ limit }&page=${ page }&relations=ong`;
+    const { success, error, headers } = await this.http.getWithHeaders<IncidentProxy[]>(url);
+
+    if (error)
+      return [0, []];
+
+    const totalCount = headers.get('x-total-count');
+
+    return [Number(totalCount), success];
   }
 
   //#endregion

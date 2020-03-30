@@ -114,7 +114,10 @@ export class IncidentsPage implements OnInit {
    * @param event O evento lançado sobre o scroll virtual
    */
   public onReachEnd(event: IPageInfo): void {
-    if (event.endIndexWithBuffer !== (this.listIncidents.length - 1))
+    if (event.endIndexWithBuffer < (this.listIncidents.length - 4))
+      return;
+
+    if (this.totalIncidents === this.listIncidents.length)
       return;
 
     this.loadIncidents(this.defaultLimit, this.currentPage + 1);
