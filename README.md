@@ -16,7 +16,7 @@
 ![Backend NestJS](https://github.com/H4ad/omnistack/workflows/Backend%20NestJS/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/H4ad/omnistack/badge.svg?branch=master)](https://coveralls.io/github/H4ad/omnistack?branch=master)
 
-## :book:💻 Projeto
+## :book: Projeto
 
 Be The Hero, seja o herói para quem precisa da sua ajuda!
 
