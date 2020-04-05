@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap');
+@import 'variables.scss';
 
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
@@ -58,13 +59,13 @@ table {
  * Global CSS
  */
 html {
-  background-color: #F0F0F5;
+  background-color: var(--bth-background-color);
 }
 
 input, textarea {
   border-radius: 8px;
-  background-color: #FFF;
-  border: 1.5px solid #DCDCE6;
+  background-color: var(--bth-input-background-color);
+  border: 1.5px solid var(--bth-border-color);
   padding: .5rem .5rem .5rem 1.5rem;
   font-size: 1rem;
   height: 3rem;
@@ -74,11 +75,11 @@ input, textarea {
 
 input::placeholder, textarea::placeholder {
   opacity: .8;
-  color: #A8A8B3;
+  color: var(--bth-placeholder-contrast-color);
 }
 
 button {
-  background: #E02041;
+  background: var(--bth-primary-color);
   border-radius: 8px;
   height: 3rem;
   color: white;
@@ -103,6 +104,16 @@ button:hover {
   font-style: normal;
   font-weight: 500;
   margin-bottom: 1rem;
-  color: #E02041;
+  color: var(--bth-primary-color);
   text-align: center;
+  min-height: 1rem;
+
+  &--disabled {
+    visibility: hidden;
+  }
+}
+
+div {
+  display: flex;
+  flex-direction: column;
 }
