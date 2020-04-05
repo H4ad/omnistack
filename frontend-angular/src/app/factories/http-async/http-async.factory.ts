@@ -3,6 +3,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
 import { environment } from '../../../environments/environment';
+import { KeysEnum } from '../../models/enums/keys.enum';
 import { AsyncResult, HttpAsyncService } from '../../services/http-async/http-async.service';
 
 //#endregion
@@ -24,7 +25,12 @@ export function httpAsyncFactory(
   });
 
   httpAsync.setLoadHeaders(async () => {
-    return new HttpHeaders();
+    const token = localStorage.getItem(KeysEnum.TOKEN_PROXY);
+
+    if (!token)
+      return new HttpHeaders();
+
+    return new HttpHeaders({ Authorization: token });
   });
 
   httpAsync.getOnAsyncResultError().subscribe((error: HttpErrorResponse) => {
