@@ -93,6 +93,18 @@ button {
   font-weight: 700;
   transition: filter 0.2s;
   cursor: pointer;
+
+  &:focus {
+    border: 2px solid var(--bth-contrast-color);
+    filter: brightness(0.9);
+  }
+}
+
+a:focus {
+  outline: var(--bth-primary-color);
+  outline-width: 1px;
+  outline-style: solid;
+  outline-offset: 4px;
 }
 
 button:hover {
