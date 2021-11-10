@@ -32,7 +32,3 @@ jobs:
       - name: Run Test
         working-directory: ./backend-nestjs
         run: npm test
-
-      - name: Run Coveralls
-        working-directory: ./backend-nestjs
-        run: npm run coveralls
