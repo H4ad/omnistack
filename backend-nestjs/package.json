@@ -7,16 +7,18 @@
   "license": "MIT",
   "scripts": {
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
-    "start:debug": "cross-env TZ=UTC nest start --debug --watch --preserveWatchOutput",
+    "start:main:debug": "cross-env TZ=UTC nest start --debug --watch --preserveWatchOutput",
+    "start:audit:debug": "cross-env TZ=UTC nest start audit --debug --watch --preserveWatchOutput",
+    "start:analytics:debug": "cross-env TZ=UTC nest start analytics --debug --watch --preserveWatchOutput",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "npm run test:e2e",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "NODE_ENV=test node node_modules/jest/bin/jest.js --config ./jest-e2e.json",
+    "test:e2e": "NODE_ENV=apps/h4ad-omnistack-api/test node node_modules/jest/bin/jest.js --config ./jest-e2e.json",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "typeorm:cli": "ts-node ./node_modules/typeorm/cli -f ormconfig.js",
     "migration": "npm run typeorm:cli -- migration:run",
@@ -92,12 +94,15 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": ".",
     "testRegex": ".spec.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node",
+    "roots": [
+      "<rootDir>/apps/"
+    ]
   }
 }
