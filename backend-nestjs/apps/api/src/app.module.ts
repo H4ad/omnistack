@@ -1,6 +1,7 @@
 import { Module, Type } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EnvModule } from './infra/core/env/env.module';
+import { defaultConfig } from './infra/config/default.config';
 import { TypeOrmConfigModule } from './infra/core/typeorm/typeorm.config.module';
 import { TypeormConfigService } from './infra/core/typeorm/typeorm.config.service';
 import { AuthTokenModule } from './modules/auth/auth-token.module';
@@ -25,15 +26,17 @@ if (process.env.NODE_ENV === 'test')
       },
     }),
     AuthTokenModule,
-    EnvModule,
+    ConfigModule.forRoot({
+      cache: true,
+      load: [
+        defaultConfig,
+      ],
+    }),
     AuthRoutingModule,
     UserRoutingModule,
     OngRoutingModule,
     IncidentRoutingModule,
     ...testModules,
-  ],
-  providers: [
-    EnvModule,
   ],
 })
 export class AppModule {}

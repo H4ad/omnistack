@@ -1,10 +1,10 @@
 //#region Imports
 
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { UserEntity } from '../../user/entities/user.entity';
-import { EnvService } from '../../../infra/core/env/services/env.service';
 import { IJwtPayload } from '../models/jwt.payload';
 import { AuthService } from '../services/auth.service';
 
@@ -22,15 +22,15 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    * Construtor padrão
    */
   constructor(
-    private auth: AuthService,
-    private env: EnvService,
+    protected readonly auth: AuthService,
+    protected readonly config: ConfigService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: env.JWT_SECRET_KEY,
+      secretOrKey: config.getOrThrow<string>('JWT_SECRET_KEY'),
       jsonWebTokenOptions: {
-        expiresIn: env.JWT_EXPIRES_IN,
+        expiresIn: config.getOrThrow<string>('JWT_EXPIRES_IN'),
       },
     });
   }

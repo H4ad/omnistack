@@ -1,82 +1,73 @@
 //#region Imports
 
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
-import { EnvService } from '../env/services/env.service';
 import { TypeormEntities } from './entities';
 import { TypeormMigrations } from './migrations';
 
 //#endregion
 
-/**
- * A classe que representa o serviço que constroi as configurações do Typeorm
- */
 @Injectable()
 export class TypeormConfigService implements TypeOrmOptionsFactory {
 
   //#region Constructor
 
-  /**
-   * Construtor padrão
-   *
-   * @param env O serviço que contém as configurações de ambiente
-   */
   constructor(
-    private readonly env: EnvService,
-  ) {
-  }
+    private readonly config: ConfigService,
+  ) { }
 
   //#endregion
 
   //#region Public Methods
 
-  /**
-   * Método que obtém as configurações para o Typeorm
-   */
   public createTypeOrmOptions(): TypeOrmModuleOptions {
     let options: TypeOrmModuleOptions = {
       name: 'service',
-      database: this.env.DB_DATABASE,
-      synchronize: this.env.DB_SYNCHRONIZE,
-      migrationsRun: this.env.DB_MIGRATIONS_RUN,
-      logging: this.env.DB_LOGGING,
-      acquireTimeout: this.env.DB_TIMEOUT,
+      database: this.config.getOrThrow<string>('DB_DATABASE'),
+      synchronize: this.config.getOrThrow<boolean>('DB_SYNCHRONIZE'),
+      migrationsRun: this.config.getOrThrow<boolean>('DB_MIGRATIONS_RUN'),
+      logging: this.config.getOrThrow<boolean>('DB_LOGGING'),
+      acquireTimeout: this.config.getOrThrow<number>('DB_TIMEOUT'),
       logger: 'advanced-console',
       entities: TypeormEntities,
       migrations: TypeormMigrations,
     };
 
-    if (this.env.DB_TYPE === 'mysql') {
+    const type = this.config.getOrThrow<string>('DB_TYPE');
+    const isDBLocal = this.config.get<boolean>('DB_IS_LOCAL');
+
+    if (type === 'mysql') {
       options = Object.assign(options, {
         type: 'mysql',
         charset: 'utf8mb4',
         collation: 'utf8mb4_unicode_ci',
-        url: this.env.DATABASE_URL,
+        url: this.config.get<string>('DATABASE_URL'),
         // https://stackoverflow.com/questions/35553432/error-handshake-inactivity-timeout-in-node-js-mysql-module
         keepConnectionAlive: true,
-        host: this.env.DB_HOST,
-        port: this.env.DB_PORT,
-        username: this.env.DB_USER,
-        password: this.env.DB_PASSWORD,
-        acquireTimeout: this.env.DB_TIMEOUT,
+        host: this.config.get<string>('DB_HOST'),
+        port: this.config.get<string>('DB_PORT'),
+        username: this.config.get<string>('DB_USER'),
+        password: this.config.get<string>('DB_PASSWORD'),
+        acquireTimeout: this.config.get<number>('DB_TIMEOUT'),
       });
-    } else if (this.env.DB_TYPE === 'postgres') {
+    } else if (type === 'postgres') {
       options = Object.assign(options, {
         type: 'postgres',
         charset: 'utf8mb4',
         collation: 'utf8mb4_unicode_ci',
         // https://stackoverflow.com/questions/35553432/error-handshake-inactivity-timeout-in-node-js-mysql-module
         keepConnectionAlive: true,
-        url: this.env.DATABASE_URL,
-        host: this.env.DB_HOST,
-        port: this.env.DB_PORT,
-        username: this.env.DB_USER,
-        password: this.env.DB_PASSWORD,
-        acquireTimeout: this.env.DB_TIMEOUT,
-        ...this.env.DB_IS_LOCAL && {
+        url: this.config.get<string>('DATABASE_URL'),
+        host: this.config.get<string>('DB_HOST'),
+        port: this.config.get<string>('DB_PORT'),
+        username: this.config.get<string>('DB_USER'),
+        password: this.config.get<string>('DB_PASSWORD'),
+        acquireTimeout: this.config.get<number>('DB_TIMEOUT'),
+        ...isDBLocal && {
           rejectUnauthorized: false,
         },
-        ...!this.env.DB_IS_LOCAL && {
+        ...!isDBLocal && {
           rejectUnauthorized: true,
           extra: {
             ssl: {
@@ -88,7 +79,7 @@ export class TypeormConfigService implements TypeOrmOptionsFactory {
           },
         },
       });
-    } else if (this.env.DB_TYPE === 'sqlite') {
+    } else if (type === 'sqlite') {
       options = Object.assign(options, {
         type: 'sqlite',
       });

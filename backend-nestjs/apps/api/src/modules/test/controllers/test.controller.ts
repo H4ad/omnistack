@@ -1,10 +1,10 @@
 //#region Imports
 
 import { BadRequestException, Controller, HttpCode, Post } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { ApiBadRequestResponse, ApiCreatedResponse, ApiNoContentResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Connection } from 'typeorm';
 import { UserEntity } from '../../user/entities/user.entity';
-import { EnvService } from '../../../infra/core/env/services/env.service';
 import { UserService } from '../../user/services/user.service';
 
 //#endregion
@@ -23,9 +23,10 @@ export class TestController {
    */
   constructor(
     private readonly connection: Connection,
-    private readonly env: EnvService,
+    private readonly config: ConfigService,
     private readonly user: UserService,
-  ) { }
+  ) {
+  }
 
   //#endregion
 
@@ -40,7 +41,7 @@ export class TestController {
   @ApiBadRequestResponse({ description: 'Só é permitido executar essa operação enquanto está no ambiente de teste.' })
   @HttpCode(204)
   public async clearDatabase(): Promise<void> {
-    if (!this.env.isTest)
+    if (this.config.get<string>('NODE_ENV') !== 'test')
       throw new BadRequestException('Não é permitido limpar o banco de dados caso não esteja no ambiente de teste.');
 
     await this.connection.synchronize(true);
@@ -55,7 +56,7 @@ export class TestController {
   @ApiBadRequestResponse({ description: 'Só é permitido executar essa operação enquanto está no ambiente de teste.' })
   @HttpCode(204)
   public async seedUsers(): Promise<void> {
-    if (!this.env.isTest)
+    if (this.config.get<string>('NODE_ENV') !== 'test')
       throw new BadRequestException('Não é permitido limpar o banco de dados caso não esteja no ambiente de teste.');
 
     const userRepository = this.connection.getRepository(UserEntity);

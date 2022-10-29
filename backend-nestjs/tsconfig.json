@@ -33,7 +33,7 @@
     "paths": {}
   },
   "include": [
-    "src/**/*",
+    "apps/**/*",
     "./test/**/*.ts"
   ],
   "exclude": [

@@ -1,23 +1,23 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { EnvModule } from '../../infra/core/env/env.module';
-import { EnvService } from '../../infra/core/env/services/env.service';
+import { jwtConfig, passportConfig } from './auth.config';
 
 @Module({
   imports: [
     PassportModule.registerAsync({
-      inject: [EnvService],
-      imports: [EnvModule],
-      useFactory: async (config: EnvService) => ({
-        defaultStrategy: config.API_DEFAULT_STRATEGY,
+      inject: [ConfigService],
+      imports: [ConfigModule.forFeature(passportConfig)],
+      useFactory: (config: ConfigService) => ({
+        defaultStrategy: config.getOrThrow<string>('API_DEFAULT_STRATEGY'),
       }),
     }),
     JwtModule.registerAsync({
-      inject: [EnvService],
-      imports: [EnvModule],
-      useFactory: async (configService: EnvService) => ({
-        privateKey: configService.JWT_SECRET_KEY,
+      inject: [ConfigService],
+      imports: [ConfigModule.forFeature(jwtConfig)],
+      useFactory: (config: ConfigService) => ({
+        privateKey: config.getOrThrow<string>('JWT_SECRET_KEY'),
       }),
     }),
   ],
@@ -26,4 +26,4 @@ import { EnvService } from '../../infra/core/env/services/env.service';
     JwtModule,
   ],
 })
-export class AuthTokenModule { }
+export class AuthTokenModule {}

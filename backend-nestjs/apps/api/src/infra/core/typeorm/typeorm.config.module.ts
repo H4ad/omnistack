@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
-import { EnvModule } from '../env/env.module';
+import { ConfigModule } from '@nestjs/config';
+import { typeormConfig } from './typeorm.config';
 import { TypeormConfigService } from './typeorm.config.service';
 
 @Module({
   imports: [
-    EnvModule,
+    ConfigModule.forFeature(typeormConfig),
   ],
   exports: [
     TypeormConfigService,

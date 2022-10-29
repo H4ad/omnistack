@@ -1,6 +1,7 @@
 //#region Imports
 
 import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as Sentry from '@sentry/node';
@@ -9,41 +10,29 @@ import rateLimit from 'express-rate-limit';
 import { dnsPrefetchControl, expectCt, frameguard, hidePoweredBy, hsts, ieNoOpen, noSniff } from 'helmet';
 import { AppModule } from './app.module';
 import { CatchAllFilter } from './filters/catch-all/catch-all.filter';
-import { EnvService } from './infra/core/env/services/env.service';
 
 //#endregion
 
 //#region Setup Methods
 
-/**
- * Método que configura o Swagger para a aplicação
- *
- * @param app A instância da aplicação
- * @param env As configurações da aplicação
- */
-function setupSwagger(app: INestApplication, env: EnvService): void {
-  if (!env.SWAGGER_ENABLED)
+function setupSwagger(app: INestApplication, config: ConfigService): void {
+  if (!config.get<boolean>('SWAGGER_ENABLED'))
     return;
 
   const swaggerOptions = new DocumentBuilder()
-    .setTitle(env.SWAGGER_TITLE || 'API Base')
-    .setDescription(env.SWAGGER_DESCRIPTION || '')
-    .setVersion(env.SWAGGER_VERSION || '1.0')
-    .addTag(env.SWAGGER_TAG || 'v1')
+    .setTitle(config.get<string>('SWAGGER_TITLE') || 'API Base')
+    .setDescription(config.get<string>('SWAGGER_DESCRIPTION') || '')
+    .setVersion(config.get<string>('SWAGGER_VERSION') || '1.0')
+    .addTag(config.get<string>('SWAGGER_TAG') || 'v1')
     .addBearerAuth({ type: 'http', name: 'Authorization' })
     .addServer('/', 'Dev')
     .build();
 
   const document = SwaggerModule.createDocument(app, swaggerOptions);
 
-  SwaggerModule.setup(`${ env.API_BASE_PATH }/swagger`, app, document);
+  SwaggerModule.setup(`${ config.get<string>('API_BASE_PATH') }/swagger`, app, document);
 }
 
-/**
- * Método que configura os pipes globais
- *
- * @param app A instância da aplicação
- */
 function setupPipes(app: INestApplication): void {
   app.useGlobalPipes(
     new ValidationPipe({
@@ -54,13 +43,7 @@ function setupPipes(app: INestApplication): void {
   );
 }
 
-/**
- * Método que configura os middleware da aplicação
- *
- * @param app A instância da aplicação
- * @param env As configurações da aplicação
- */
-function setupMiddleware(app: INestApplication, env: EnvService): void {
+function setupMiddleware(app: INestApplication, config: ConfigService): void {
   app.use(dnsPrefetchControl());
   app.use(expectCt());
   app.use(frameguard());
@@ -75,7 +58,7 @@ function setupMiddleware(app: INestApplication, env: EnvService): void {
 
   app.use(json());
 
-  if (env.isTest)
+  if (config.get('NODE_ENV') === 'test')
     return;
 
   app.use(
@@ -86,38 +69,29 @@ function setupMiddleware(app: INestApplication, env: EnvService): void {
   );
 }
 
-/**
- * Método que configura os filtros da aplicação
- *
- * @param app A instância da aplicação
- * @param config As configurações da aplicação
- */
-function setupFilters(app: INestApplication, config: EnvService) {
+function setupFilters(app: INestApplication, config: ConfigService) {
   app.useGlobalFilters(new CatchAllFilter());
 
-  if (!config.SENTRY_DNS || config.isTest)
+  if (!config.get<string>('SENTRY_DNS') || config.get<string>('NODE_ENV') === 'test')
     return;
 
-  Sentry.init({ dsn: config.SENTRY_DNS });
+  Sentry.init({ dsn: config.get<string>('SENTRY_DNS') });
 }
 
 //#endregion
 
-/**
- * Método usado para inicializar a aplicação
- *
- * @param app A referência da aplicação
- */
 export function setup(app: INestApplication): INestApplication {
-  const env = app.get(EnvService);
+  const config = app.get(ConfigService);
 
-  setupSwagger(app, env);
+  setupSwagger(app, config);
   setupPipes(app);
-  setupMiddleware(app, env);
-  setupFilters(app, env);
+  setupMiddleware(app, config);
+  setupFilters(app, config);
 
-  if (env.API_BASE_PATH)
-    app.setGlobalPrefix(env.API_BASE_PATH);
+  const basePath = config.get<string>('API_BASE_PATH');
+
+  if (basePath)
+    app.setGlobalPrefix(basePath);
 
   return app;
 }

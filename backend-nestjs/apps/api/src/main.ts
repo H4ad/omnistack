@@ -1,11 +1,11 @@
+import { ConfigService } from '@nestjs/config';
 import { createApp } from './main.base';
-import { EnvService } from './infra/core/env/services/env.service';
 
 async function bootstrap() {
   const app = await createApp();
-  const config = app.get(EnvService);
+  const config = app.get(ConfigService);
 
-  await app.listen(config.PORT || 3000);
+  await app.listen(config.get('API_PORT') || 3000);
 }
 
 bootstrap();
