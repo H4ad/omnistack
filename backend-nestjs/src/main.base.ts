@@ -49,6 +49,7 @@ function setupPipes(app: INestApplication): void {
     new ValidationPipe({
       transform: true,
       whitelist: true,
+      stopAtFirstError: true,
     }),
   );
 }
