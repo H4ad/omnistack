@@ -1,8 +1,7 @@
 //#region Imports
 
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, UnauthorizedException } from '@nestjs/common';
-import * as Sentry from '@sentry/minimal';
-
+import * as Sentry from '@sentry/node';
 import { Request, Response } from 'express';
 
 //#endregion
@@ -11,7 +10,7 @@ import { Request, Response } from 'express';
  * A classe que representa o interceptor que captura erros e envia para a sentry.io
  */
 @Catch()
-export class SentryFilter implements ExceptionFilter {
+export class CatchAllFilter implements ExceptionFilter {
 
   /**
    * Método que lida com as exceções lançadas
@@ -21,8 +20,10 @@ export class SentryFilter implements ExceptionFilter {
    */
   public async catch(exception: unknown, host: ArgumentsHost): Promise<void> {
     const ctx = host.switchToHttp();
+
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
+
     let status = 500;
     let exceptionResponse;
 
@@ -36,8 +37,11 @@ export class SentryFilter implements ExceptionFilter {
 
     Sentry.setContext('request', { requestUrl: request.url });
 
-    if (status >= 500)
+    if (status >= 500) {
       Sentry.captureException(exception);
+
+      await Sentry.flush();
+    }
 
     response
       .status(status)

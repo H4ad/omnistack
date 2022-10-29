@@ -2,6 +2,7 @@
 
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { RolesDecoratorMetadataToken } from '../../decorators/roles/tokens';
 
 //#endregion
 
@@ -18,8 +19,8 @@ export class RolesGuard implements CanActivate {
    *
    * @param context O contexto atual
    */
-  public async canActivate(context: ExecutionContext): Promise<boolean> {
-    const roles = new Reflector().get<string[]>('roles', context.getHandler());
+  public canActivate(context: ExecutionContext): boolean {
+    const roles = new Reflector().get<string[]>(RolesDecoratorMetadataToken, context.getHandler());
 
     if (!roles)
       return true;

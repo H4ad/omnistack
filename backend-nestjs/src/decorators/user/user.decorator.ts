@@ -1,6 +1,6 @@
 //#region Imports
 
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { ExecutionContext, createParamDecorator } from '@nestjs/common';
 
 //#endregion
 
