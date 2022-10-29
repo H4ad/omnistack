@@ -2,7 +2,7 @@
 
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { BaseCrudProxy } from '../../../common/base-crud.proxy';
-import { IncidentEntity } from '../../../typeorm/entities/incident.entity';
+import { IncidentEntity } from '../entities/incident.entity';
 import { isValid } from '../../../utils/functions';
 import { OngProxy } from '../../ong/models/ong.proxy';
 

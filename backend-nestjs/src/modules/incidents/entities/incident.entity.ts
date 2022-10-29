@@ -1,8 +1,8 @@
 //#region Imports
 
 import { Column, Entity, ManyToOne } from 'typeorm';
-import { BaseEntity } from '../../common/base-entity';
-import { OngEntity } from './ong.entity';
+import { BaseEntity } from '../../../common/base-entity';
+import { OngEntity } from '../../ong/entities/ong.entity';
 
 //#endregion
 

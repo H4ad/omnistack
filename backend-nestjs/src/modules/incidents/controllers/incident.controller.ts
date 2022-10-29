@@ -3,10 +3,9 @@
 import { Body, ClassSerializerInterceptor, Controller, Delete, Get, HttpCode, Param, Post, Query, Res, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
-
 import { ProtectTo } from '../../../decorators/protect/protect.decorator';
 import { User } from '../../../decorators/user/user.decorator';
-import { UserEntity } from '../../../typeorm/entities/user.entity';
+import { UserEntity } from '../../user/entities/user.entity';
 import { CrudProxy, mapCrud } from '../../../utils/crud';
 import { CreateIncidentPayload } from '../models/create-incident.payload';
 import { IncidentManyPaginationOptions } from '../models/incident-many.pagination.options';

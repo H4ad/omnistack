@@ -9,7 +9,7 @@ import rateLimit from 'express-rate-limit';
 import { dnsPrefetchControl, expectCt, frameguard, hidePoweredBy, hsts, ieNoOpen, noSniff } from 'helmet';
 import { AppModule } from './app.module';
 import { SentryFilter } from './filters/sentryFilter';
-import { EnvService } from './modules/env/services/env.service';
+import { EnvService } from './infra/core/env/services/env.service';
 
 //#endregion
 

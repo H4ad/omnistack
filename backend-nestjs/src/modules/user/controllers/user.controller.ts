@@ -4,8 +4,7 @@ import { Body, ClassSerializerInterceptor, Controller, Get, Param, Post, Put, Us
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ProtectTo } from '../../../decorators/protect/protect.decorator';
 import { User } from '../../../decorators/user/user.decorator';
-import { UserEntity } from '../../../typeorm/entities/user.entity';
-
+import { UserEntity } from '../entities/user.entity';
 import { CrudProxy, mapCrud } from '../../../utils/crud';
 import { CreateUserPayload } from '../models/create-user.payload';
 import { UpdateUserPayload } from '../models/update-user.payload';

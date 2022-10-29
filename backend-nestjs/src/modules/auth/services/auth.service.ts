@@ -3,16 +3,13 @@
 import { HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as Sentry from '@sentry/node';
-
 import * as bcryptjs from 'bcryptjs';
-
-import { UserEntity } from '../../../typeorm/entities/user.entity';
+import { UserEntity } from '../../user/entities/user.entity';
 import { UserService } from '../../user/services/user.service';
 import { LoginPayload } from '../models/login.payload';
-import { EnvService } from '../../env/services/env.service';
+import { EnvService } from '../../../infra/core/env/services/env.service';
 import { IJwtPayload } from '../models/jwt.payload';
 import { TokenProxy } from '../models/token.proxy';
-
 const ms = require('ms');
 
 //#endregion
@@ -95,11 +92,11 @@ export class AuthService {
     const jwtExpiresIn = jwtPayload.exp;
 
     if (now > jwtExpiresIn)
-      throw new UnauthorizedException({
+      {throw new UnauthorizedException({
         error: HttpStatus.UNAUTHORIZED,
         message: 'O token de autenticação está expirado.',
         shouldLogout: true,
-      });
+      });}
 
     const user = await this.userService.getOne(jwtPayload.id, jwtPayload.id);
 

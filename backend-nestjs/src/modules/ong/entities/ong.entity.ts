@@ -1,9 +1,9 @@
 //#region Imports
 
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
-import { BaseEntity } from '../../common/base-entity';
-import { IncidentEntity } from './incident.entity';
-import { UserEntity } from './user.entity';
+import { BaseEntity } from '../../../common/base-entity';
+import { IncidentEntity } from '../../incidents/entities/incident.entity';
+import { UserEntity } from '../../user/entities/user.entity';
 
 //#endregion
 

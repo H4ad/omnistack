@@ -3,9 +3,8 @@
 import { BadRequestException, Controller, HttpCode, Post } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiCreatedResponse, ApiNoContentResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Connection } from 'typeorm';
-
-import { UserEntity } from '../../../typeorm/entities/user.entity';
-import { EnvService } from '../../env/services/env.service';
+import { UserEntity } from '../../user/entities/user.entity';
+import { EnvService } from '../../../infra/core/env/services/env.service';
 import { UserService } from '../../user/services/user.service';
 
 //#endregion

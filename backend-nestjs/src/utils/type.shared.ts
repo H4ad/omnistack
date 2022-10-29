@@ -1,4 +1,4 @@
-import { UserEntity } from '../typeorm/entities/user.entity';
+import { UserEntity } from '../modules/user/entities/user.entity';
 
 export interface NestJSRequest {
   _readableState: ReadableState;

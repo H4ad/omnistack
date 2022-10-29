@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { IncidentEntity } from '../../typeorm/entities/incident.entity';
 import { OngModule } from '../ong/ong.module';
+import { IncidentEntity } from './entities/incident.entity';
 import { IncidentService } from './services/incident.service';
 
 @Module({

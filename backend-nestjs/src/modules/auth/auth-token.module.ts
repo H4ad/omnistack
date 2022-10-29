@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { EnvModule } from '../env/env.module';
-import { EnvService } from '../env/services/env.service';
+import { EnvModule } from '../../infra/core/env/env.module';
+import { EnvService } from '../../infra/core/env/services/env.service';
 
 @Module({
   imports: [

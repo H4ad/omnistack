@@ -2,10 +2,9 @@
 
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
-import { IncidentEntity } from '../../../typeorm/entities/incident.entity';
-import { OngEntity } from '../../../typeorm/entities/ong.entity';
-import { UserEntity } from '../../../typeorm/entities/user.entity';
-import { EnvService } from '../../env/services/env.service';
+import { EnvService } from '../env/services/env.service';
+import { TypeormEntities } from './entities';
+import { TypeormMigrations } from './migrations';
 
 //#endregion
 
@@ -13,7 +12,7 @@ import { EnvService } from '../../env/services/env.service';
  * A classe que representa o serviço que constroi as configurações do Typeorm
  */
 @Injectable()
-export class TypeOrmService implements TypeOrmOptionsFactory {
+export class TypeormConfigService implements TypeOrmOptionsFactory {
 
   //#region Constructor
 
@@ -24,7 +23,8 @@ export class TypeOrmService implements TypeOrmOptionsFactory {
    */
   constructor(
     private readonly env: EnvService,
-  ) { }
+  ) {
+  }
 
   //#endregion
 
@@ -35,18 +35,15 @@ export class TypeOrmService implements TypeOrmOptionsFactory {
    */
   public createTypeOrmOptions(): TypeOrmModuleOptions {
     let options: TypeOrmModuleOptions = {
+      name: 'service',
       database: this.env.DB_DATABASE,
       synchronize: this.env.DB_SYNCHRONIZE,
       migrationsRun: this.env.DB_MIGRATIONS_RUN,
-      logging: this.env.isDevelopment,
-      entities: [
-        UserEntity,
-        OngEntity,
-        IncidentEntity,
-      ],
-      migrations: [
-        __dirname + '/../../../typeorm/migrations/**/*{.ts,.js}',
-      ],
+      logging: this.env.DB_LOGGING,
+      acquireTimeout: this.env.DB_TIMEOUT,
+      logger: 'advanced-console',
+      entities: TypeormEntities,
+      migrations: TypeormMigrations,
     };
 
     if (this.env.DB_TYPE === 'mysql') {
@@ -54,6 +51,7 @@ export class TypeOrmService implements TypeOrmOptionsFactory {
         type: 'mysql',
         charset: 'utf8mb4',
         collation: 'utf8mb4_unicode_ci',
+        url: this.env.DATABASE_URL,
         // https://stackoverflow.com/questions/35553432/error-handshake-inactivity-timeout-in-node-js-mysql-module
         keepConnectionAlive: true,
         host: this.env.DB_HOST,
@@ -69,6 +67,7 @@ export class TypeOrmService implements TypeOrmOptionsFactory {
         collation: 'utf8mb4_unicode_ci',
         // https://stackoverflow.com/questions/35553432/error-handshake-inactivity-timeout-in-node-js-mysql-module
         keepConnectionAlive: true,
+        url: this.env.DATABASE_URL,
         host: this.env.DB_HOST,
         port: this.env.DB_PORT,
         username: this.env.DB_USER,
@@ -93,9 +92,8 @@ export class TypeOrmService implements TypeOrmOptionsFactory {
       options = Object.assign(options, {
         type: 'sqlite',
       });
-    } else 
+    } else
       throw new InternalServerErrorException('Não há um outro tipo de banco de dados suportado, por favor, altere para MySQL o valor de DB_TYPE.');
-    
 
     return options;
   }

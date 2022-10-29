@@ -20,6 +20,11 @@ export interface IDotEnv {
   DB_TYPE: string;
 
   /**
+   * O URL de conexão com o banco de dados
+   */
+  DATABASE_URL?: string;
+
+  /**
    * O host para se conectar ao banco de dados
    */
   DB_HOST: string;
@@ -60,6 +65,11 @@ export interface IDotEnv {
    * O tempo de timeout em milisegundos para uma conexão com o banco de dados.
    */
   DB_TIMEOUT: number;
+
+  /**
+   * Diz se deve ativar o logging do DB
+   */
+  DB_LOGGING: boolean;
 
   /**
    * Quando o banco de dados está local e rodando por Docker Compose, é necessário ativar essa flag

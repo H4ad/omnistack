@@ -1,5 +1,5 @@
 import { createApp } from './main.base';
-import { EnvService } from './modules/env/services/env.service';
+import { EnvService } from './infra/core/env/services/env.service';
 
 async function bootstrap() {
   const app = await createApp();
