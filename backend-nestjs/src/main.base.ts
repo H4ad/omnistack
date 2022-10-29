@@ -1,20 +1,15 @@
 //#region Imports
 
-import { BadRequestException, INestApplication, ValidationPipe } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as Sentry from '@sentry/node';
-import * as timeout from 'connect-timeout';
-
-import * as rateLimit from 'express-rate-limit';
-import * as helmet from 'helmet';
-
+import { json } from 'body-parser';
+import rateLimit from 'express-rate-limit';
+import { dnsPrefetchControl, expectCt, frameguard, hidePoweredBy, hsts, ieNoOpen, noSniff } from 'helmet';
 import { AppModule } from './app.module';
 import { SentryFilter } from './filters/sentryFilter';
 import { EnvService } from './modules/env/services/env.service';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const bodyParser = require('body-parser');
 
 //#endregion
 
@@ -31,11 +26,12 @@ function setupSwagger(app: INestApplication, env: EnvService): void {
     return;
 
   const swaggerOptions = new DocumentBuilder()
-    .setTitle(env.SWAGGER_TITLE)
-    .setDescription(env.SWAGGER_DESCRIPTION)
-    .setVersion(env.SWAGGER_VERSION)
-    .addTag(env.SWAGGER_TAG)
+    .setTitle(env.SWAGGER_TITLE || 'API Base')
+    .setDescription(env.SWAGGER_DESCRIPTION || '')
+    .setVersion(env.SWAGGER_VERSION || '1.0')
+    .addTag(env.SWAGGER_TAG || 'v1')
     .addBearerAuth({ type: 'http', name: 'Authorization' })
+    .addServer('/', 'Dev')
     .build();
 
   const document = SwaggerModule.createDocument(app, swaggerOptions);
@@ -58,33 +54,25 @@ function setupPipes(app: INestApplication): void {
 }
 
 /**
- * Mata a aplicação caso de timeout
- */
-function haltOnTimeout(req, res, next) {
-  if (req.timedout)
-    throw new BadRequestException('A requisição durou tempo demais.');
-
-  next();
-}
-
-/**
  * Método que configura os middleware da aplicação
  *
  * @param app A instância da aplicação
  * @param env As configurações da aplicação
  */
 function setupMiddleware(app: INestApplication, env: EnvService): void {
-  app.use(helmet());
+  app.use(dnsPrefetchControl());
+  app.use(expectCt());
+  app.use(frameguard());
+  app.use(hidePoweredBy());
+  app.use(hsts());
+  app.use(ieNoOpen());
+  app.use(noSniff());
 
   app.enableCors({
     exposedHeaders: '*',
   });
 
-  app.use(bodyParser.json());
-
-  app.use(timeout('30s'));
-
-  app.use(haltOnTimeout);
+  app.use(json());
 
   if (env.isTest)
     return;
@@ -119,15 +107,16 @@ function setupFilters(app: INestApplication, config: EnvService) {
  *
  * @param app A referência da aplicação
  */
-export async function setup(app: INestApplication): Promise<INestApplication> {
-  const env = await app.get(EnvService);
+export function setup(app: INestApplication): INestApplication {
+  const env = app.get(EnvService);
 
   setupSwagger(app, env);
   setupPipes(app);
   setupMiddleware(app, env);
   setupFilters(app, env);
 
-  app.setGlobalPrefix(env.API_BASE_PATH);
+  if (env.API_BASE_PATH)
+    app.setGlobalPrefix(env.API_BASE_PATH);
 
   return app;
 }
@@ -135,15 +124,7 @@ export async function setup(app: INestApplication): Promise<INestApplication> {
 export async function createApp(): Promise<INestApplication> {
   const app = await NestFactory.create(AppModule);
 
-  await setup(app);
-
-  return app;
-}
-
-export async function createAppInit(): Promise<INestApplication> {
-  const app = await createApp();
-
-  await app.init();
+  setup(app);
 
   return app;
 }

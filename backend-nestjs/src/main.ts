@@ -3,11 +3,9 @@ import { EnvService } from './modules/env/services/env.service';
 
 async function bootstrap() {
   const app = await createApp();
-  const config = await app.get(EnvService);
+  const config = app.get(EnvService);
 
-  app.enableCors();
-
-  await app.listen(config.PORT);
+  await app.listen(config.PORT || 3000);
 }
 
 bootstrap();

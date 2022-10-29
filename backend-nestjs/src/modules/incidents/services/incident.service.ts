@@ -2,7 +2,6 @@
 
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-
 import { Repository } from 'typeorm';
 import { TypeOrmValueTypes } from '../../../common/type-orm-value.types';
 import { IncidentEntity } from '../../../typeorm/entities/incident.entity';
@@ -29,7 +28,8 @@ export class IncidentService {
     @InjectRepository(IncidentEntity)
     private readonly repository: Repository<IncidentEntity>,
     private readonly ongService: OngService,
-  ) { }
+  ) {
+  }
 
   //#endregion
 
@@ -41,7 +41,7 @@ export class IncidentService {
    * @param options As opções de paginação
    */
   public async getMany(options?: IncidentManyPaginationOptions): Promise<[IncidentEntity[], number]> {
-    const { limit = 15, page = 1, relations = [], ongId } = options;
+    const { limit = 15, page = 1, relations = [], ongId } = options || {};
 
     const normalizedLimit = Math.min(100, Math.max(1, limit));
     const normalizedPage = Math.max(1, page);

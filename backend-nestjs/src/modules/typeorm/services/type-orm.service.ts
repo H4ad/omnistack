@@ -4,7 +4,6 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { IncidentEntity } from '../../../typeorm/entities/incident.entity';
 import { OngEntity } from '../../../typeorm/entities/ong.entity';
-
 import { UserEntity } from '../../../typeorm/entities/user.entity';
 import { EnvService } from '../../env/services/env.service';
 
@@ -75,17 +74,28 @@ export class TypeOrmService implements TypeOrmOptionsFactory {
         username: this.env.DB_USER,
         password: this.env.DB_PASSWORD,
         acquireTimeout: this.env.DB_TIMEOUT,
-        extra: {
-          ssl: true,
+        ...this.env.DB_IS_LOCAL && {
+          rejectUnauthorized: false,
+        },
+        ...!this.env.DB_IS_LOCAL && {
+          rejectUnauthorized: true,
+          extra: {
+            ssl: {
+              rejectUnauthorized: false,
+            },
+          },
+          ssl: {
+            rejectUnauthorized: false,
+          },
         },
       });
     } else if (this.env.DB_TYPE === 'sqlite') {
       options = Object.assign(options, {
         type: 'sqlite',
       });
-    } else {
+    } else 
       throw new InternalServerErrorException('Não há um outro tipo de banco de dados suportado, por favor, altere para MySQL o valor de DB_TYPE.');
-    }
+    
 
     return options;
   }

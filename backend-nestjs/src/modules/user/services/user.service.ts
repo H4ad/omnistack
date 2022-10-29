@@ -2,11 +2,8 @@
 
 import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-
 import * as bcryptjs from 'bcryptjs';
-
 import { Repository } from 'typeorm';
-
 import { TypeOrmValueTypes } from '../../../common/type-orm-value.types';
 import { UserEntity } from '../../../typeorm/entities/user.entity';
 import { isValid } from '../../../utils/functions';

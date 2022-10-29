@@ -1,10 +1,7 @@
 //#region Imports
 
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-
 import { BaseCrudProxy } from '../../../common/base-crud.proxy';
-import { IncidentEntity } from '../../../typeorm/entities/incident.entity';
 import { OngEntity } from '../../../typeorm/entities/ong.entity';
 import { isValid } from '../../../utils/functions';
 import { IncidentProxy } from '../../incidents/models/incidents.proxy';
@@ -43,50 +40,48 @@ export class OngProxy extends BaseCrudProxy {
    * O nome dessa ong
    */
   @ApiProperty()
-  public name: string;
+  public name!: string;
 
   /**
    * O e-mail da ong
    */
   @ApiProperty()
-  public email: string;
+  public email!: string;
 
   /**
    * A cidade na qual está localizada essa ong
    */
   @ApiProperty()
-  public city: string;
+  public city!: string;
 
   /**
    * O estado na qual está localizada essa ong
    */
   @ApiProperty()
-  public uf: string;
+  public uf!: string;
 
   /**
    * O número de WhatsApp para entrar em contato com essa ong
    */
   @ApiProperty()
-  public whatsapp: string;
+  public whatsapp!: string;
 
   /**
    * A identificação do usuário que controla essa ong
    */
   @ApiProperty()
-  public userId: number;
+  public userId!: number;
 
   /**
    * As informações sobre o usuário
    */
   @ApiPropertyOptional({ type: () => UserProxy })
-  @Type(() => UserProxy)
-  public user: UserProxy;
+  public user?: UserProxy;
 
   /**
    * Os casos que pertencem a essa ong
    */
   @ApiProperty({ type: () => IncidentProxy, isArray: true })
-  @Type(() => IncidentProxy)
-  public cases: IncidentProxy[];
+  public cases?: IncidentProxy[];
 
 }

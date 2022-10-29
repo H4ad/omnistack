@@ -38,7 +38,7 @@ export class PaginationOptions {
   @ApiPropertyOptional({ type: String, isArray: true })
   @Type(() => String)
   @IsOptional()
-  @Transform(value => Array.isArray(value) && value || value.split(','))
+  @Transform(value => Array.isArray(value) && value || typeof value.value === 'string' && value.value.split(',') || [])
   @IsString({ each: true, message: 'É necessário enviar um texto válido para a relação.' })
   relations?: string[];
 

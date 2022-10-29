@@ -61,6 +61,11 @@ export interface IDotEnv {
    */
   DB_TIMEOUT: number;
 
+  /**
+   * Quando o banco de dados está local e rodando por Docker Compose, é necessário ativar essa flag
+   */
+  DB_IS_LOCAL: boolean;
+
   //#endregion
 
   //#region API

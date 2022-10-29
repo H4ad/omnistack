@@ -13,24 +13,24 @@ export class BaseEntity {
    * A identificação do post
    */
   @PrimaryGeneratedColumn()
-  id: number;
+  public id!: number;
 
   /**
    * Diz quando foi criado essa postagem
    */
   @CreateDateColumn()
-  createdAt: Date;
+  public createdAt!: Date;
 
   /**
    * Diz quando foi atualizado essa postagem
    */
   @UpdateDateColumn()
-  updatedAt: Date;
+  public updatedAt!: Date;
 
   /**
    * Diz se está ativo
    */
   @Column({ default: true })
-  isActive: boolean;
+  public isActive!: boolean;
 
 }

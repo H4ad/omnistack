@@ -14,8 +14,9 @@ export class TokenProxy {
   /**
    * Construtor padrão
    */
-  constructor(token: Partial<TokenProxy>) {
-    Object.assign(this, token);
+  constructor(token: TokenProxy) {
+    this.token = token.token;
+    this.expiresAt = token.expiresAt;
   }
 
   //#endregion
@@ -26,13 +27,13 @@ export class TokenProxy {
    * O Bearer Token gerado pelo JWT
    */
   @ApiProperty()
-  token: string;
+  public token: string;
 
   /**
    * A data de quando irá expirar
    */
   @ApiProperty()
-  expiresAt: Date;
+  public expiresAt: Date;
 
   //#endregion
 

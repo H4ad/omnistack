@@ -1,7 +1,6 @@
 //#region Imports
 
 import { ApiPropertyOptional } from '@nestjs/swagger';
-
 import { BaseEntity } from './base-entity';
 
 //#endregion
@@ -18,7 +17,7 @@ export class BaseCrudProxy {
    *
    * @param base As informações da entidade
    */
-  constructor(base: Partial<BaseEntity> | BaseEntity) {
+  constructor(base: BaseEntity) {
     this.id = base.id;
     this.createdAt = base.createdAt;
     this.updatedAt = base.updatedAt;
@@ -33,25 +32,25 @@ export class BaseCrudProxy {
    * A identificação do post
    */
   @ApiPropertyOptional()
-  id: number;
+  public id: number;
 
   /**
    * Diz quando foi criado essa postagem
    */
   @ApiPropertyOptional()
-  createdAt: Date;
+  public createdAt: Date;
 
   /**
    * Diz quando foi atualizado essa postagem
    */
   @ApiPropertyOptional()
-  updatedAt: Date;
+  public updatedAt: Date;
 
   /**
    * Diz se está ativo
    */
   @ApiPropertyOptional({ default: true })
-  isActive: boolean;
+  public isActive: boolean;
 
   //#endregion
 

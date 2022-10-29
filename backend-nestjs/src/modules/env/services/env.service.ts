@@ -2,9 +2,7 @@
 
 import { InternalServerErrorException } from '@nestjs/common';
 import { CleanEnv, ValidatorSpec } from 'envalid';
-
 import * as envalid from 'envalid';
-
 import { IDotEnv } from '../models/dotenv';
 import { implementOptionalInterface } from '../../../utils/interface';
 
@@ -67,6 +65,7 @@ export class EnvService extends implementOptionalInterface<Partial<Readonly<IDot
       DB_SYNCHRONIZE: envalid.bool({ default: false, devDefault: true }),
       DB_MIGRATIONS_RUN: envalid.bool({ default: true }),
       DB_TIMEOUT: envalid.num({ default: 20_000 }),
+      DB_IS_LOCAL: envalid.bool({ default: true }),
       JWT_EXPIRES_IN: envalid.str({ default: '7d' }),
       JWT_SECRET_KEY: envalid.str({ devDefault: 'CHANGE_THIS_SECRET' }),
       SWAGGER_DESCRIPTION: envalid.str({ default: 'Base API' }),

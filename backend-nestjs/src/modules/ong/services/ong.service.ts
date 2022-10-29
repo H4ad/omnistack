@@ -2,9 +2,7 @@
 
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-
 import { Repository } from 'typeorm';
-
 import { TypeOrmValueTypes } from '../../../common/type-orm-value.types';
 import { OngEntity } from '../../../typeorm/entities/ong.entity';
 import { isValid } from '../../../utils/functions';
@@ -28,7 +26,8 @@ export class OngService {
   constructor(
     @InjectRepository(OngEntity)
     private readonly repository: Repository<OngEntity>,
-  ) { }
+  ) {
+  }
 
   //#endregion
 
@@ -40,7 +39,7 @@ export class OngService {
    * @param options As opções ao buscar várias ongs
    */
   public async getMany(options?: OngManyPaginationOptions): Promise<OngEntity[]> {
-    const { limit = 15, page = 1, relations = [], userId } = options;
+    const { limit = 15, page = 1, relations = [], userId } = options || {};
 
     const normalizedLimit = Math.min(100, Math.max(1, limit));
     const normalizedPage = Math.max(1, page);

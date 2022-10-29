@@ -1,7 +1,6 @@
 //#region Imports
 
 import { Column, Entity, ManyToOne } from 'typeorm';
-
 import { BaseEntity } from '../../common/base-entity';
 import { OngEntity } from './ong.entity';
 
@@ -34,31 +33,31 @@ export class IncidentEntity extends BaseEntity {
    * O titulo desse incidente
    */
   @Column({ nullable: false })
-  public title: string;
+  public title!: string;
 
   /**
    * A descrição desse caso
    */
   @Column({ nullable: false, type: 'text' })
-  public description: string;
+  public description!: string;
 
   /**
    * O valor para ajudar esse caso
    */
   @Column({ nullable: false, type: 'float' })
-  public value: number;
+  public value!: number;
 
   /**
    * A identificação da ong na qual esse caso pertence
    */
   @Column({ nullable: false })
-  public ongId: number;
+  public ongId!: number;
 
   /**
    * As informações da ong na qual esse caso pertence
    */
   @ManyToOne(() => OngEntity, ong => ong.cases)
-  public ong: OngEntity;
+  public ong!: OngEntity;
 
   //#endregion
 

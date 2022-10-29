@@ -1,8 +1,6 @@
 //#region Imports
 
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-
 import { BaseCrudProxy } from '../../../common/base-crud.proxy';
 import { IncidentEntity } from '../../../typeorm/entities/incident.entity';
 import { isValid } from '../../../utils/functions';
@@ -64,8 +62,7 @@ export class IncidentProxy extends BaseCrudProxy {
    * As informações da ong na qual esse caso pertence
    */
   @ApiPropertyOptional({ type: () => OngProxy })
-  @Type(() => OngProxy)
-  public ong: OngProxy;
+  public ong?: OngProxy;
 
   //#endregion
 

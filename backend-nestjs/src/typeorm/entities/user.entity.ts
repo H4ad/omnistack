@@ -1,7 +1,6 @@
 //#region Imports
 
 import { Column, Entity, OneToMany } from 'typeorm';
-
 import { BaseEntity } from '../../common/base-entity';
 import { OngProxy } from '../../modules/ong/models/ong.proxy';
 import { OngEntity } from './ong.entity';
@@ -33,25 +32,25 @@ export class UserEntity extends BaseEntity {
    * O e-mail do usuário
    */
   @Column({ nullable: false, unique: true })
-  public email: string;
+  public email!: string;
 
   /**
    * A senha do usuário
    */
   @Column({ nullable: false })
-  public password: string;
+  public password!: string;
 
   /**
    * As permissões desse usuário
    */
   @Column({ nullable: false })
-  public roles: string;
+  public roles!: string;
 
   /**
    * A lista com as ongs na qual esse usuário tem controle
    */
   @OneToMany(() => OngEntity, ong => ong.user)
-  public ongs: OngEntity[];
+  public ongs!: OngEntity[];
 
   //#endregion
 
