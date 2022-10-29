@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import { TypeOrmValueTypes } from '../../../common/type-orm-value.types';
 import { IncidentEntity } from '../entities/incident.entity';
 import { OngEntity } from '../../ong/entities/ong.entity';
-import { isValid } from '../../../utils/functions';
+import { isValid } from '../../../infra/utils/functions';
 import { OngService } from '../../ong/services/ong.service';
 import { CreateIncidentPayload } from '../models/create-incident.payload';
 import { IncidentManyPaginationOptions } from '../models/incident-many.pagination.options';

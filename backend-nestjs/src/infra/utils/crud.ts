@@ -1,7 +1,7 @@
 //#region Imports
 
-import { BaseCrudProxy } from '../common/base-crud.proxy';
-import { BaseEntity } from '../common/base-entity';
+import { BaseCrudProxy } from '../../common/base-crud.proxy';
+import { BaseEntity } from '../../common/base-entity';
 
 //#endregion
 

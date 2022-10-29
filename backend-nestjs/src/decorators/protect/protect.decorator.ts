@@ -1,12 +1,10 @@
-import { applyDecorators, UseGuards } from '@nestjs/common';
+import { UseGuards, applyDecorators } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiUnauthorizedResponse } from '@nestjs/swagger';
-
 import { RolesGuard } from '../../guards/roles/roles.guard';
-import { NestCustomDecorator } from '../../utils/decorators';
 import { Roles } from '../roles/roles.decorator';
 
-export function ProtectTo(...roles: string[]): NestCustomDecorator {
+export function ProtectTo(...roles: string[]): MethodDecorator {
   return applyDecorators(
     Roles(...roles),
     UseGuards(AuthGuard('jwt'), RolesGuard),

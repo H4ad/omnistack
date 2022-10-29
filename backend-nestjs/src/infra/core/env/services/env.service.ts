@@ -2,7 +2,7 @@
 
 import { Injectable } from '@nestjs/common';
 import { CleanEnv } from 'envalid';
-import { implementOptionalInterface } from '../../../../utils/interface';
+import { implementOptionalInterface } from '../../../utils/interface';
 import { IDotEnv } from '../../dotenv/models/dotenv';
 import { DotenvService } from '../../dotenv/services/dotenv.service';
 

@@ -6,7 +6,7 @@ import { Response } from 'express';
 import { ProtectTo } from '../../../decorators/protect/protect.decorator';
 import { User } from '../../../decorators/user/user.decorator';
 import { UserEntity } from '../../user/entities/user.entity';
-import { CrudProxy, mapCrud } from '../../../utils/crud';
+import { CrudProxy, mapCrud } from '../../../infra/utils/crud';
 import { CreateIncidentPayload } from '../models/create-incident.payload';
 import { IncidentManyPaginationOptions } from '../models/incident-many.pagination.options';
 import { IncidentProxy } from '../models/incidents.proxy';

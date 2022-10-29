@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TypeOrmValueTypes } from '../../../common/type-orm-value.types';
 import { OngEntity } from '../entities/ong.entity';
-import { isValid } from '../../../utils/functions';
+import { isValid } from '../../../infra/utils/functions';
 import { CreateOngPayload } from '../models/create-ong.payload';
 import { OngManyPaginationOptions } from '../models/ong-many.pagination.options';
 import { UpdateOngPayload } from '../models/update-ong.payload';

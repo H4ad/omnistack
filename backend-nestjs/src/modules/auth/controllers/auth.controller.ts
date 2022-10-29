@@ -1,12 +1,11 @@
 //#region Imports
 
-import { Body, ClassSerializerInterceptor, Controller, Post, Request, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, InternalServerErrorException, Post, Req, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiNotFoundResponse, ApiOkResponse, ApiUnauthorizedResponse, ApiTags, ApiOperation } from '@nestjs/swagger';
-
-import { TokenProxy } from '../models/token.proxy';
-import { NestJSRequest } from '../../../utils/type.shared';
+import { ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { LoginPayload } from '../models/login.payload';
+import { TokenProxy } from '../models/token.proxy';
 import { AuthService } from '../services/auth.service';
 
 //#endregion
@@ -26,7 +25,8 @@ export class AuthController {
    */
   constructor(
     private readonly authService: AuthService,
-  ) { }
+  ) {
+  }
 
   //#endregion
 
@@ -44,7 +44,10 @@ export class AuthController {
   @ApiNotFoundResponse({ description: 'Não foi encontrado um usuário com esse e-mail.' })
   @UseGuards(AuthGuard('local'))
   @Post('/local')
-  public async login(@Request() req: NestJSRequest, @Body() payload: LoginPayload): Promise<TokenProxy> {
+  public async login(@Req() req: Request, @Body() payload: LoginPayload): Promise<TokenProxy> {
+    if (!req.user)
+      throw new InternalServerErrorException();
+
     return await this.authService.signIn(req.user);
   }
 

@@ -6,7 +6,7 @@ import * as bcryptjs from 'bcryptjs';
 import { Repository } from 'typeorm';
 import { TypeOrmValueTypes } from '../../../common/type-orm-value.types';
 import { UserEntity } from '../entities/user.entity';
-import { isValid } from '../../../utils/functions';
+import { isValid } from '../../../infra/utils/functions';
 import { CreateUserPayload } from '../models/create-user.payload';
 import { UpdateUserPayload } from '../models/update-user.payload';
 

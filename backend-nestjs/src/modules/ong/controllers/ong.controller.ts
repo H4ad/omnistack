@@ -5,7 +5,7 @@ import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags
 import { ProtectTo } from '../../../decorators/protect/protect.decorator';
 import { User } from '../../../decorators/user/user.decorator';
 import { UserEntity } from '../../user/entities/user.entity';
-import { CrudProxy, mapCrud } from '../../../utils/crud';
+import { CrudProxy, mapCrud } from '../../../infra/utils/crud';
 import { CreateOngPayload } from '../models/create-ong.payload';
 import { OngManyPaginationOptions } from '../models/ong-many.pagination.options';
 import { OngProxy } from '../models/ong.proxy';
