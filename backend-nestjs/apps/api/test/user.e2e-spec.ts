@@ -1,18 +1,18 @@
-import * as request from 'supertest';
-
+import request from 'supertest';
 import { LoginPayload } from '../src/modules/auth/models/login.payload';
 import { CreateUserPayload } from '../src/modules/user/models/create-user.payload';
 import { UpdateUserPayload } from '../src/modules/user/models/update-user.payload';
+import { UserRoutingModule } from '../src/modules/user/user.routing.module';
 import { TestUsersId } from './models/test-users-id.enum';
 import { getAdminToken, getUserToken, getUserTwoToken } from './utils/auth';
 import { cleanDatabaseAndSeedUsers } from './utils/db';
-import { getInstanceOfApplication } from './utils/nestjs';
+import { getInstanceOfApplicationFor } from './utils/nestjs';
 
 describe('User (e2e)', () => {
   let app;
 
   beforeAll(async () => {
-    app = await getInstanceOfApplication();
+    app = await getInstanceOfApplicationFor([UserRoutingModule]);
   });
 
   beforeEach(async () => {
@@ -42,8 +42,7 @@ describe('User (e2e)', () => {
         .expect(401);
 
       expect(body).toBeDefined();
-      expect(body).toHaveProperty('message', 'Unauthorized');
-      expect(body).toHaveProperty('statusCode');
+      expect(body).toHaveProperty('statusCode', 401);
     });
   });
 
@@ -55,8 +54,7 @@ describe('User (e2e)', () => {
         .expect(401);
 
       expect(body).toBeDefined();
-      expect(body).toHaveProperty('message', 'Unauthorized');
-      expect(body).toHaveProperty('statusCode');
+      expect(body).toHaveProperty('statusCode', 401);
     });
 
     it('should get status 401 when get users with user that it is not admin', async () => {
@@ -68,8 +66,7 @@ describe('User (e2e)', () => {
         .expect(401);
 
       expect(body).toBeDefined();
-      expect(body).toHaveProperty('error', 'Unauthorized');
-      expect(body).toHaveProperty('statusCode');
+      expect(body).toHaveProperty('statusCode', 401);
     });
 
     it('should get users when logged with admin', async () => {
@@ -107,20 +104,18 @@ describe('User (e2e)', () => {
         .expect(401);
 
       expect(body).toBeDefined();
-      expect(body).toHaveProperty('error', 'Unauthorized');
       expect(body).toHaveProperty('message');
-      expect(body).toHaveProperty('statusCode');
+      expect(body).toHaveProperty('statusCode', 401);
     });
 
     it('should get status 404 when try get user by id that not exists as admin', async () => {
       const adminToken = await getAdminToken(app);
       const { body } = await request(app.getHttpServer())
-        .get(`/users/999`)
+        .get('/users/999')
         .auth(adminToken, { type: 'bearer' })
         .send();
 
       expect(body).toBeDefined();
-      expect(body).toHaveProperty('error', 'Not Found');
       expect(body).toHaveProperty('message');
       expect(body).toHaveProperty('statusCode', 404);
     });
@@ -135,7 +130,7 @@ describe('User (e2e)', () => {
       };
 
       const { body } = await request(app.getHttpServer())
-        .post(`/users`)
+        .post('/users')
         .send(createPayload);
 
       expect(body).toBeDefined();
@@ -151,14 +146,13 @@ describe('User (e2e)', () => {
       };
 
       await request(app.getHttpServer())
-        .post(`/users`)
+        .post('/users')
         .send(createPayload);
       const { body } = await request(app.getHttpServer())
-        .post(`/users`)
+        .post('/users')
         .send(createPayload);
 
       expect(body).toBeDefined();
-      expect(body).toHaveProperty('error');
       expect(body).toHaveProperty('statusCode', 400);
       expect(body).toHaveProperty('message');
     });
@@ -171,11 +165,10 @@ describe('User (e2e)', () => {
       };
 
       const { body } = await request(app.getHttpServer())
-        .post(`/users`)
+        .post('/users')
         .send(createPayload);
 
       expect(body).toBeDefined();
-      expect(body).toHaveProperty('error');
       expect(body).toHaveProperty('statusCode', 400);
       expect(body).toHaveProperty('message');
     });
@@ -214,11 +207,11 @@ describe('User (e2e)', () => {
       expect(body).not.toHaveProperty('password');
 
       const authPayload: LoginPayload = {
-        username: updatePayload.email,
-        password: updatePayload.password,
+        username: updatePayload.email!,
+        password: updatePayload.password!,
       };
       const { body: authResponse } = await request(app.getHttpServer())
-        .post(`/auth/local`)
+        .post('/auth/local')
         .send(authPayload);
 
       expect(authResponse).toBeDefined();
@@ -237,9 +230,8 @@ describe('User (e2e)', () => {
         .expect(401);
 
       expect(body).toBeDefined();
-      expect(body).toHaveProperty('error', 'Unauthorized');
       expect(body).toHaveProperty('message');
-      expect(body).toHaveProperty('statusCode');
+      expect(body).toHaveProperty('statusCode', 401);
     });
 
     it('should get status 404 when try update user by id that not exists', async () => {
@@ -248,15 +240,14 @@ describe('User (e2e)', () => {
         email: 'joga10@email.com',
       };
       const { body } = await request(app.getHttpServer())
-        .put(`/users/999`)
+        .put('/users/999')
         .auth(adminToken, { type: 'bearer' })
         .send(updatePayload)
         .expect(404);
 
       expect(body).toBeDefined();
-      expect(body).toHaveProperty('error', 'Not Found');
       expect(body).toHaveProperty('message');
-      expect(body).toHaveProperty('statusCode');
+      expect(body).toHaveProperty('statusCode', 404);
     });
 
     it('should get status 400 when try update for one that already used for other user', async () => {
@@ -279,7 +270,6 @@ describe('User (e2e)', () => {
         .send(updatePayload);
 
       expect(body).toBeDefined();
-      expect(body).toHaveProperty('error', 'Bad Request');
       expect(body).toHaveProperty('message');
       expect(body).toHaveProperty('statusCode', 400);
     });

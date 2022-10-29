@@ -7,16 +7,14 @@
 </h4>
 
 <p align="center">
-  <a href="#book-introducao">Introduction</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#memo-estrutura">Estrutura</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#notebook-typeorm">Typeorm</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#file-folder-entidades">Entidades</a>
+  <a href="#book-introduction">Introduction</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#memo-structure">Estrutura</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#rocket-getting-started">Typeorm</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
 </p>
 
 ## :book: Introduction
 
 For this OmniStack, instead of using Express, I preferred to use NestJS with Express Adater instead because it uses TypeScript.
-
 
 ## :memo: Structure
 
@@ -24,7 +22,6 @@ For this project, we have three main applications:
 
 - api: Deals with basic crud operations in the system.
 - analytics: Aggregates all data from operations in crud.
-- audit: Aggregates all data from operations in crud to audit before.
 
 ## :rocket: Getting Started
 
@@ -47,38 +44,9 @@ docker compose up -d
 
 This will spinning up the databases used and all the services needed.
 
-Then, you just need to start the API and other services:
+Then, you just need to start the default API and the analytics microservice:
 
 ```bash
-npm run start:
+npm run start:api:debug
+npm run start:analytics:debug
 ```
-
-## :file_folder: Entities
-
-A seguir, as entidades do banco de dados extraida a partir da primeira aula, eu irei modificar um pouco mas no geral é isso:
-
-Usuário:
-
-- Email
-- Password ( não havia também, mas eu irei trabalhar com sistema de autenticação por senha )
-- Roles ( não visto mas irei incluir por padrão )
-- Ongs[] ( uma relação OneToMany )
-
-Apesar das Ongs aparentemente serem um usuário de certa forma, eu ainda irei separar em uma entidade por sí só.
-
-Ongs:
-
-- Name
-- Email
-- Cidade
-- UF
-- Whatsapp
-- Usuário ( uma relação ManyToOne )
-- Casos[] ( uma relação OneToMany )
-
-Incidentes:
-
-- Título
-- Descrição
-- Valor
-- Ong ( uma relação ManyToOne )

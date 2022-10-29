@@ -30,10 +30,36 @@
     "strictPropertyInitialization": true,
     "noImplicitThis": false,
     "alwaysStrict": true,
-    "paths": {}
+    "paths": {
+      "@app/http-setup": [
+        "libs/http-setup/src"
+      ],
+      "@app/http-setup/*": [
+        "libs/http-setup/src/*"
+      ],
+      "@app/redis": [
+        "libs/redis/src"
+      ],
+      "@app/redis/*": [
+        "libs/redis/src/*"
+      ],
+      "@app/analytics-mqtt-client": [
+        "libs/analytics-mqtt-client/src"
+      ],
+      "@app/analytics-mqtt-client/*": [
+        "libs/analytics-mqtt-client/src/*"
+      ],
+      "@app/analytics-mqtt-events": [
+        "libs/analytics-mqtt-events/src"
+      ],
+      "@app/analytics-mqtt-events/*": [
+        "libs/analytics-mqtt-events/src/*"
+      ]
+    }
   },
   "include": [
     "apps/**/*",
+    "libs/**/*",
     "./test/**/*.ts"
   ],
   "exclude": [

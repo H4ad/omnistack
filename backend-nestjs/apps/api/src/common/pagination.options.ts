@@ -17,7 +17,7 @@ export class PaginationOptions {
   @ApiPropertyOptional()
   @IsOptional()
   @IsNumber({ allowNaN: false, allowInfinity: false }, { message: 'É necessário enviar um número válido para o limite.' })
-  @Transform(value => Number(value))
+  @Transform(value => Number(value.value))
   @Min(0, { message: 'Não é permitido enviar limites menores que 1 para a páginação.' })
   @Max(100, { message: 'Não é permitido enviar limites maiores que 100 para a páginação.' })
   limit?: number;
@@ -28,7 +28,7 @@ export class PaginationOptions {
   @ApiPropertyOptional()
   @IsOptional()
   @IsNumber({ allowNaN: false, allowInfinity: false }, { message: 'É necessário enviar um número válido para a página.' })
-  @Transform(value => Number(value))
+  @Transform(value => Number(value.value))
   @Min(0, { message: 'Não é permitido enviar uma página menor que 1 para a páginação.' })
   page?: number;
 
@@ -38,7 +38,7 @@ export class PaginationOptions {
   @ApiPropertyOptional({ type: String, isArray: true })
   @Type(() => String)
   @IsOptional()
-  @Transform(value => Array.isArray(value) && value || typeof value.value === 'string' && value.value.split(',') || [])
+  @Transform(value => Array.isArray(value.value) && value.value || typeof value.value === 'string' && value.value.split(',') || [])
   @IsString({ each: true, message: 'É necessário enviar um texto válido para a relação.' })
   relations?: string[];
 

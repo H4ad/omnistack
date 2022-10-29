@@ -1,13 +1,13 @@
-import * as request from 'supertest';
-
+import request from 'supertest';
+import { AuthRoutingModule } from '../src/modules/auth/auth.routing.module';
 import { cleanDatabaseAndSeedUsers } from './utils/db';
-import { getInstanceOfApplication } from './utils/nestjs';
+import { getInstanceOfApplicationFor } from './utils/nestjs';
 
 describe('Auth (e2e)', () => {
   let app;
 
   beforeAll(async () => {
-    app = await getInstanceOfApplication();
+    app = await getInstanceOfApplicationFor([AuthRoutingModule]);
   });
 
   beforeEach(async () => {

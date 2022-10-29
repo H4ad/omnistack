@@ -27,13 +27,40 @@
         "tsConfigPath": "apps/analytics/tsconfig.app.json"
       }
     },
-    "audit": {
-      "type": "application",
-      "root": "apps/audit",
-      "entryFile": "main",
-      "sourceRoot": "apps/audit/src",
+    "http-setup": {
+      "type": "library",
+      "root": "libs/http-setup",
+      "entryFile": "index",
+      "sourceRoot": "libs/http-setup/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/audit/tsconfig.app.json"
+        "tsConfigPath": "libs/http-setup/tsconfig.lib.json"
+      }
+    },
+    "redis": {
+      "type": "library",
+      "root": "libs/redis",
+      "entryFile": "index",
+      "sourceRoot": "libs/redis/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/redis/tsconfig.lib.json"
+      }
+    },
+    "analytics-mqtt-client": {
+      "type": "library",
+      "root": "libs/analytics-mqtt-client",
+      "entryFile": "index",
+      "sourceRoot": "libs/analytics-mqtt-client/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/analytics-mqtt-client/tsconfig.lib.json"
+      }
+    },
+    "analytics-mqtt-events": {
+      "type": "library",
+      "root": "libs/analytics-mqtt-events",
+      "entryFile": "index",
+      "sourceRoot": "libs/analytics-mqtt-events/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/analytics-mqtt-events/tsconfig.lib.json"
       }
     }
   }

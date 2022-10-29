@@ -1,9 +1,11 @@
-import * as request from 'supertest';
+import request from 'supertest';
+import { IncidentRoutingModule } from '../src/modules/incidents/incident.routing.module';
 import { OngProxy } from '../src/modules/ong/models/ong.proxy';
+import { OngRoutingModule } from '../src/modules/ong/ong.routing.module';
 import { getUserToken, getUserTwoToken } from './utils/auth';
 import { cleanDatabaseAndSeedUsers } from './utils/db';
-import { getValidCreateIncidentPayload, createValidIncident } from './utils/incident';
-import { getInstanceOfApplication } from './utils/nestjs';
+import { createValidIncident, getValidCreateIncidentPayload } from './utils/incident';
+import { getInstanceOfApplicationFor } from './utils/nestjs';
 import { createValidOng } from './utils/ong';
 
 describe('Incident (e2e)', () => {
@@ -12,7 +14,7 @@ describe('Incident (e2e)', () => {
   let userToken: string;
 
   beforeAll(async () => {
-    app = await getInstanceOfApplication();
+    app = await getInstanceOfApplicationFor([OngRoutingModule, IncidentRoutingModule]);
   });
 
   beforeEach(async () => {
@@ -23,7 +25,7 @@ describe('Incident (e2e)', () => {
 
   describe('CREATE ONE', () => {
     it('should can create a incident', async () => {
-      const createPayload = await getValidCreateIncidentPayload(ong.id);
+      const createPayload = getValidCreateIncidentPayload(ong.id);
 
       const { body } = await request(app.getHttpServer())
         .post('/incidents')
@@ -40,7 +42,7 @@ describe('Incident (e2e)', () => {
     });
 
     it('should get status 404 when send non-exist ong id', async () => {
-      const createPayload = await getValidCreateIncidentPayload(999);
+      const createPayload = getValidCreateIncidentPayload(999);
 
       const { body } = await request(app.getHttpServer())
         .post('/incidents')
@@ -54,7 +56,7 @@ describe('Incident (e2e)', () => {
     });
 
     it('should get status 401 when try create incident to other ong that i not owner', async () => {
-      const createPayload = await getValidCreateIncidentPayload(ong.id);
+      const createPayload = getValidCreateIncidentPayload(ong.id);
       const userTwoToken = await getUserTwoToken(app);
 
       const { body } = await request(app.getHttpServer())
@@ -64,12 +66,11 @@ describe('Incident (e2e)', () => {
 
       expect(body).toBeDefined();
       expect(body).toHaveProperty('statusCode', 401);
-      expect(body).toHaveProperty('error', 'Unauthorized');
       expect(body).toHaveProperty('message');
     });
 
     it('should get status 401 when try create without jwt', async () => {
-      const createPayload = await getValidCreateIncidentPayload(ong.id);
+      const createPayload = getValidCreateIncidentPayload(ong.id);
 
       const { body } = await request(app.getHttpServer())
         .post('/incidents')
@@ -99,12 +100,11 @@ describe('Incident (e2e)', () => {
 
     it('should get status 404 when send non-exist incident', async () => {
       const { body } = await request(app.getHttpServer())
-        .get(`/incidents/999`)
+        .get('/incidents/999')
         .send();
 
       expect(body).toBeDefined();
       expect(body).toHaveProperty('statusCode', 404);
-      expect(body).toHaveProperty('error', 'Not Found');
       expect(body).toHaveProperty('message');
     });
   });
@@ -122,13 +122,12 @@ describe('Incident (e2e)', () => {
 
     it('should get status 404 when send non-exist ong id', async () => {
       const { body } = await request(app.getHttpServer())
-        .delete(`/incidents/999`)
+        .delete('/incidents/999')
         .auth(userToken, { type: 'bearer' })
         .send();
 
       expect(body).toBeDefined();
       expect(body).toHaveProperty('statusCode', 404);
-      expect(body).toHaveProperty('error', 'Not Found');
       expect(body).toHaveProperty('message');
     });
 
@@ -143,7 +142,6 @@ describe('Incident (e2e)', () => {
 
       expect(body).toBeDefined();
       expect(body).toHaveProperty('statusCode', 401);
-      expect(body).toHaveProperty('error', 'Unauthorized');
       expect(body).toHaveProperty('message');
     });
 
@@ -169,7 +167,7 @@ describe('Incident (e2e)', () => {
       delete incidentTwo.ong;
 
       const { body } = await request(app.getHttpServer())
-        .get(`/incidents`)
+        .get('/incidents')
         .send();
 
       expect(body).toBeDefined();
@@ -186,7 +184,7 @@ describe('Incident (e2e)', () => {
       delete incidentTwo.ong;
 
       const { body } = await request(app.getHttpServer())
-        .get(`/incidents?limit=1&page=2`)
+        .get('/incidents?limit=1&page=2')
         .send();
 
       expect(body).toBeDefined();
@@ -217,7 +215,7 @@ describe('Incident (e2e)', () => {
       delete incidentOne.ong;
 
       const { body } = await request(app.getHttpServer())
-        .get(`/incidents?relations=ong`)
+        .get('/incidents?relations=ong')
         .send();
 
       expect(body).toBeDefined();

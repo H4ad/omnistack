@@ -2,11 +2,11 @@
 
 import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import * as bcryptjs from 'bcryptjs';
 import { Repository } from 'typeorm';
 import { TypeOrmValueTypes } from '../../../common/type-orm-value.types';
-import { UserEntity } from '../entities/user.entity';
+import { encryptPassword } from '../../../infra/core/bcrypt/password';
 import { isValid } from '../../../infra/utils/functions';
+import { UserEntity } from '../entities/user.entity';
 import { CreateUserPayload } from '../models/create-user.payload';
 import { UpdateUserPayload } from '../models/update-user.payload';
 
@@ -76,7 +76,7 @@ export class UserService {
     if (alreadyHasUser)
       throw new BadRequestException('Já existe um usuário cadastrado com esse e-mail.');
 
-    user.password = await this.getEncryptedPassword(user.password);
+    user.password = await encryptPassword(user.password);
     user.roles = 'user';
 
     return await this.repository.save(user);
@@ -108,7 +108,7 @@ export class UserService {
     }
 
     if (isValid(user.password))
-      user.password = await this.getEncryptedPassword(user.password);
+      user.password = await encryptPassword(user.password);
 
     return await this.repository.save(user);
   }
@@ -159,17 +159,6 @@ export class UserService {
       .where('user.email = :email AND user.id != :ignoreUserId', { email, ignoreUserId })
       .getCount()
       .then(count => count > 0);
-  }
-
-  /**
-   * Método que encripta a senha do usuário
-   *
-   * @param plainPassword A senha em texto puro
-   */
-  private async getEncryptedPassword(plainPassword: string): Promise<string> {
-    const salt = await bcryptjs.genSalt();
-
-    return await bcryptjs.hash(plainPassword, salt);
   }
 
   /**

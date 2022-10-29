@@ -1,8 +1,7 @@
 //#region Imports
 
 import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
-
+import request from 'supertest';
 import { CreateOngPayload } from '../../src/modules/ong/models/create-ong.payload';
 import { OngProxy } from '../../src/modules/ong/models/ong.proxy';
 import { UpdateOngPayload } from '../../src/modules/ong/models/update-ong.payload';

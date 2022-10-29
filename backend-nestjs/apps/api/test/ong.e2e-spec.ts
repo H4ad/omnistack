@@ -1,17 +1,18 @@
-import * as request from 'supertest';
-
+import request from 'supertest';
+import { IncidentRoutingModule } from '../src/modules/incidents/incident.routing.module';
 import { CreateIncidentPayload } from '../src/modules/incidents/models/create-incident.payload';
 import { CreateOngPayload } from '../src/modules/ong/models/create-ong.payload';
+import { OngRoutingModule } from '../src/modules/ong/ong.routing.module';
 import { getUserToken, getUserTwoToken } from './utils/auth';
 import { cleanDatabaseAndSeedUsers } from './utils/db';
-import { getInstanceOfApplication } from './utils/nestjs';
+import { getInstanceOfApplicationFor } from './utils/nestjs';
 import { createValidOng, getValidCreateOngPayload, getValidUpdateOngPayload } from './utils/ong';
 
 describe('Ong (e2e)', () => {
   let app;
 
   beforeAll(async () => {
-    app = await getInstanceOfApplication();
+    app = await getInstanceOfApplicationFor([OngRoutingModule, IncidentRoutingModule]);
   });
 
   beforeEach(async () => {
@@ -107,14 +108,14 @@ describe('Ong (e2e)', () => {
       const userToken = await getUserToken(app);
       const { cases: oldCases, ...ongByUser } = await createValidOng(app, userToken);
       const { body: oldIncident } = await request(app.getHttpServer())
-        .post(`/incidents`)
+        .post('/incidents')
         .auth(userToken, { type: 'bearer' })
         .send({ title: 'Teste', description: 'a', value: 10, ongId: ongByUser.id } as CreateIncidentPayload)
         .expect(201);
       const { ong: oldIncidentOng, ...incident } = oldIncident;
 
       const { body } = await request(app.getHttpServer())
-        .get(`/ongs?relations=user,cases`)
+        .get('/ongs?relations=user,cases')
         .send()
         .expect(200);
 
@@ -151,12 +152,11 @@ describe('Ong (e2e)', () => {
 
     it('should can get status 404 when send non-exists ong id', async () => {
       const { body } = await request(app.getHttpServer())
-        .get(`/ongs/999`)
+        .get('/ongs/999')
         .send();
 
       expect(body).toBeDefined();
       expect(body).toHaveProperty('statusCode', 404);
-      expect(body).toHaveProperty('error', 'Not Found');
       expect(body).toHaveProperty('message');
     });
   });
@@ -208,7 +208,6 @@ describe('Ong (e2e)', () => {
 
       expect(body).toBeDefined();
       expect(body).toHaveProperty('statusCode', 401);
-      expect(body).toHaveProperty('error');
       expect(body).toHaveProperty('message');
     });
   });

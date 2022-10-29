@@ -1,14 +1,11 @@
-import * as envalid from 'envalid';
-import { cleanEnv } from 'envalid';
-
-export const passportConfig = () => cleanEnv(process.env, {
-  API_DEFAULT_STRATEGY: envalid.str({ default: 'jwt' }),
+export const passportConfig = () => ({
+  API_DEFAULT_STRATEGY: process.env.API_DEFAULT_STRATEGY,
 });
 
-export const jwtConfig = () => cleanEnv(process.env, {
-  JWT_SECRET_KEY: envalid.str({ devDefault: 'CHANGE_THIS_SECRET' }),
+export const jwtConfig = () => ({
+  JWT_SECRET_KEY: process.env.API_DEFAULT_STRATEGY,
 });
 
-export const authConfig = () => cleanEnv(process.env, {
-  JWT_EXPIRES_IN: envalid.str({ default: '7d' }),
+export const authConfig = () => ({
+  JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN,
 });

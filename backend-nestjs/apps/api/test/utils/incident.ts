@@ -1,10 +1,9 @@
 //#region Imports
 
 import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
+import request from 'supertest';
 import { CreateIncidentPayload } from '../../src/modules/incidents/models/create-incident.payload';
 import { IncidentProxy } from '../../src/modules/incidents/models/incidents.proxy';
-import { getUserToken } from './auth';
 
 //#endregion
 
