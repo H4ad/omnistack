@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { IncidentEntity } from '../../typeorm/entities/incident.entity';
 import { OngModule } from '../ong/ong.module';
-import { IncidentController } from './controllers/incident.controller';
 import { IncidentService } from './services/incident.service';
 
 @Module({
@@ -17,9 +16,6 @@ import { IncidentService } from './services/incident.service';
   ],
   exports: [
     IncidentService,
-  ],
-  controllers: [
-    IncidentController,
   ],
 })
 export class IncidentModule {}

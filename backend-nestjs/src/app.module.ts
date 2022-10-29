@@ -1,13 +1,13 @@
 import { Module, Type } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from './modules/auth/auth.module';
 import { AuthTokenModule } from './modules/auth/auth-token.module';
+import { AuthRoutingModule } from './modules/auth/auth.routing.module';
 import { EnvModule } from './modules/env/env.module';
-import { IncidentModule } from './modules/incidents/incident.module';
-import { OngModule } from './modules/ong/ong.module';
+import { IncidentRoutingModule } from './modules/incidents/incident.routing.module';
+import { OngRoutingModule } from './modules/ong/ong.routing.module';
 import { TestModule } from './modules/test/test.module';
 import { TypeOrmService } from './modules/typeorm/services/type-orm.service';
-import { UserModule } from './modules/user/user.module';
+import { UserRoutingModule } from './modules/user/user.routing.module';
 
 const testModules: Type[] = [];
 
@@ -19,12 +19,12 @@ if (process.env.NODE_ENV === 'test')
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmService,
     }),
-    AuthModule,
     AuthTokenModule,
     EnvModule,
-    UserModule,
-    OngModule,
-    IncidentModule,
+    AuthRoutingModule,
+    UserRoutingModule,
+    OngRoutingModule,
+    IncidentRoutingModule,
     ...testModules,
   ],
   providers: [
