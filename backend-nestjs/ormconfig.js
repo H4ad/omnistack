@@ -15,7 +15,7 @@ const rule = {
   DB_IS_LOCAL: envalid.bool({ default: true }),
   SQLITE_DATABASE_HOST_PATH: envalid.str({ default: '' }),
   DB_TIMEOUT: envalid.num({ default: 20000 }),
-  JWT_EXPIRES_IN: envalid.str({ default: '7d' }),
+  API_JWT_EXPIRES_IN: envalid.str({ default: '7d' }),
   JWT_SECRET_KEY: envalid.str({ devDefault: 'CHANGE_THIS_SECRET' }),
   SWAGGER_DESCRIPTION: envalid.str({ default: 'Base API' }),
   SWAGGER_TAG: envalid.str({ default: 'Base' }),

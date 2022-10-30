@@ -10,6 +10,7 @@
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:api:debug": "cross-env TZ=UTC nest start --debug --watch --preserveWatchOutput",
+    "start:heartbeat:debug": "cross-env TZ=UTC nest start heartbeat --debug 9226 --watch --preserveWatchOutput",
     "start:analytics:debug": "cross-env TZ=UTC nest start analytics --debug 9225 --watch --preserveWatchOutput",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -28,6 +29,7 @@
     "node": "16.x"
   },
   "dependencies": {
+    "@golevelup/ts-jest": "0.3.3",
     "@nestjs/axios": "0.0.8",
     "@nestjs/common": "8.4.7",
     "@nestjs/config": "2.2.0",
@@ -63,6 +65,7 @@
     "passport-jwt": "4.0.0",
     "passport-local": "1.0.0",
     "pg": "8.8.0",
+    "redis": "3.1.2",
     "redis-rank": "2.2.0",
     "reflect-metadata": "0.1.13",
     "rxjs": "7.5.7",
@@ -123,7 +126,10 @@
       "^@app/http-setup(|/.*)$": "<rootDir>/libs/http-setup/src/$1",
       "^@app/redis(|/.*)$": "<rootDir>/libs/redis/src/$1",
       "^@app/analytics-mqtt-client(|/.*)$": "<rootDir>/libs/analytics-mqtt-client/src/$1",
-      "^@app/analytics-mqtt-events(|/.*)$": "<rootDir>/libs/analytics-mqtt-events/src/$1"
+      "^@app/analytics-mqtt-events(|/.*)$": "<rootDir>/libs/analytics-mqtt-events/src/$1",
+      "^@app/heartbeat-redis-events(|/.*)$": "<rootDir>/libs/heartbeat-redis-events/src/$1",
+      "^@app/typed-events(|/.*)$": "<rootDir>/libs/typed-events/src/$1",
+      "^@app/heartbeat-redis-client(|/.*)$": "<rootDir>/libs/heartbeat-redis-client/src/$1"
     },
     "testTimeout": 12000
   }

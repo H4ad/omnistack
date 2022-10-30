@@ -3,9 +3,9 @@ export const passportConfig = () => ({
 });
 
 export const jwtConfig = () => ({
-  JWT_SECRET_KEY: process.env.API_DEFAULT_STRATEGY,
+  API_JWT_SECRET_KEY: process.env.API_DEFAULT_STRATEGY,
 });
 
 export const authConfig = () => ({
-  JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN,
+  API_JWT_EXPIRES_IN: process.env.API_JWT_EXPIRES_IN,
 });

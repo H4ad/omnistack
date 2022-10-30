@@ -1,3 +1,6 @@
+import { createMock } from '@golevelup/ts-jest';
+import { ClientProxy } from '@nestjs/microservices';
+import { of } from 'rxjs';
 import { REQUEST_EVENT } from './request.event';
 
 describe('REQUEST_EVENT', () => {
@@ -55,6 +58,25 @@ describe('REQUEST_EVENT', () => {
       expect(() => REQUEST_EVENT.validate({ service: 233, method: 'POST', path: '/test' })).toThrow();
       expect(() => REQUEST_EVENT.validate({ service: 'test', method: 23, path: 'sdas' })).toThrow();
       expect(() => REQUEST_EVENT.validate({ service: 'test', method: 'GET', path: 22 })).toThrow();
+    });
+  });
+
+  describe('sendEvent', () => {
+    it('should emit event correctly', async () => {
+      const client = createMock<ClientProxy>({
+        emit: () => of(void 0),
+      });
+
+      const eventData = {
+        service: 'test',
+        method: 'POST',
+        path: '/potato',
+      };
+
+      await REQUEST_EVENT.sendEvent(client, eventData);
+
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      expect(client.emit).toHaveBeenCalledWith(REQUEST_EVENT.name, eventData);
     });
   });
 });

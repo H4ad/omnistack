@@ -23,6 +23,7 @@ For this project, we have three main applications:
 
 - api: Deals with basic crud operations in the system.
 - analytics: Aggregates all data of requests in API service.
+- heartbeat: Just a simple microservice to show the integration between two microservices (heartbeat and analytics).
 
 ## :rocket: Getting Started
 

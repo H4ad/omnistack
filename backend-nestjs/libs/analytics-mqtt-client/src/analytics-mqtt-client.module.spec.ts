@@ -1,7 +1,7 @@
 import { Type } from '@nestjs/common';
 import { AnalyticsMqttClientModule, MQTTClientOptionsAsync } from './analytics-mqtt-client.module';
 import { AnalyticsMqttClientService } from './analytics-mqtt-client.service';
-import { AnalyticsServiceNameToken } from './tokens';
+import { AnalyticsClientToken, AnalyticsServiceNameToken } from './tokens';
 
 describe(AnalyticsMqttClientModule.name, () => {
   it('should correctly create the module', () => {
@@ -22,12 +22,12 @@ describe(AnalyticsMqttClientModule.name, () => {
     expect(defaultNameProvided).not.toBeUndefined();
     expect(defaultNameProvided).toHaveProperty('useValue', service);
 
-    const defaultServiceProvided = dynamicModule.providers?.find(provider => provider['provide'] === AnalyticsMqttClientService);
+    const defaultServiceProvided = dynamicModule.providers?.find(provider => provider['provide'] === AnalyticsClientToken);
 
     expect(defaultServiceProvided).not.toBeUndefined();
     expect(defaultServiceProvided).toHaveProperty('useClass', AnalyticsMqttClientService);
 
-    const defaultServiceExported = dynamicModule.exports?.find(provider => provider === AnalyticsMqttClientService);
+    const defaultServiceExported = dynamicModule.exports?.find(provider => provider === AnalyticsClientToken);
 
     expect(defaultServiceExported).not.toBeUndefined();
   });

@@ -17,7 +17,7 @@ import { jwtConfig, passportConfig } from './auth.config';
       inject: [ConfigService],
       imports: [ConfigModule.forFeature(jwtConfig)],
       useFactory: (config: ConfigService) => ({
-        privateKey: config.getOrThrow<string>('JWT_SECRET_KEY'),
+        privateKey: config.getOrThrow<string>('API_JWT_SECRET_KEY'),
       }),
     }),
   ],

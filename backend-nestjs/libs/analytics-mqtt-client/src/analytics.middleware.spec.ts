@@ -1,14 +1,16 @@
+import { createMock } from '@golevelup/ts-jest';
 import { Request } from 'express';
+import { AnalyticsMqttClientInterface } from './analytics-mqtt-client.interface';
 import { AnalyticsMqttClientService } from './analytics-mqtt-client.service';
-import { AnalyticsMiddleware } from './analytics.middleware';
+import { createAnalyticsMiddleware } from './analytics.middleware';
 
-describe(AnalyticsMiddleware.name, () => {
-  let middleware: AnalyticsMiddleware;
+describe(createAnalyticsMiddleware.name, () => {
+  let middleware: (...args: Parameters<ReturnType<typeof createAnalyticsMiddleware>>) => Promise<void>;
 
-  const mockedAnalyticsClientService: AnalyticsMqttClientService = { emitRequest: jest.fn() } as unknown as AnalyticsMqttClientService;
+  const mockedAnalyticsClientService: AnalyticsMqttClientInterface = createMock<AnalyticsMqttClientInterface>({ emitRequest: jest.fn() });
 
   beforeEach(() => {
-    middleware = new AnalyticsMiddleware(mockedAnalyticsClientService);
+    middleware = createAnalyticsMiddleware(mockedAnalyticsClientService);
   });
 
   it('should emit request', async () => {
@@ -17,7 +19,7 @@ describe(AnalyticsMiddleware.name, () => {
 
     let nextWasCalled = false;
 
-    await middleware.use({
+    await middleware({
       method,
       originalUrl: path,
     } as unknown as Request, null as any, () => {
@@ -30,7 +32,7 @@ describe(AnalyticsMiddleware.name, () => {
   });
 
   it('should call next even if emit throw error', async () => {
-    const middleware = new AnalyticsMiddleware({
+    const middleware = createAnalyticsMiddleware({
       emitRequest: () => {
         throw new Error('test');
       },
@@ -38,7 +40,7 @@ describe(AnalyticsMiddleware.name, () => {
 
     let nextWasCalled = false;
 
-    await middleware.use({
+    await middleware({
       method: 'POST',
       originalUrl: '/test',
     } as unknown as Request, null as any, () => {

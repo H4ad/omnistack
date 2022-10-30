@@ -1,9 +1,11 @@
 //#region Imports
 
+import { createMock } from '@golevelup/ts-jest';
 import { Type } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AnalyticsClientToken, AnalyticsMqttClientInterface } from '../../../../libs/analytics-mqtt-client/src';
 import { defaultConfig } from '../../src/infra/config/default.config';
 import { TypeormEntities } from '../../src/infra/core/typeorm/entities';
 import { TypeormMigrations } from '../../src/infra/core/typeorm/migrations';
@@ -35,6 +37,9 @@ export async function getInstanceOfApplicationFor(modules: Type<any>[]) {
         migrations: TypeormMigrations,
         dropSchema: true,
       }),
+    ],
+    providers: [
+      { provide: AnalyticsClientToken, useValue: createMock<AnalyticsMqttClientInterface>() },
     ],
   }).compile();
 

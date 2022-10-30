@@ -62,6 +62,42 @@
       "compilerOptions": {
         "tsConfigPath": "libs/analytics-mqtt-events/tsconfig.lib.json"
       }
+    },
+    "heartbeat": {
+      "type": "application",
+      "root": "apps/heartbeat",
+      "entryFile": "main",
+      "sourceRoot": "apps/heartbeat/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/heartbeat/tsconfig.app.json"
+      }
+    },
+    "heartbeat-redis-events": {
+      "type": "library",
+      "root": "libs/heartbeat-redis-events",
+      "entryFile": "index",
+      "sourceRoot": "libs/heartbeat-redis-events/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/heartbeat-redis-events/tsconfig.lib.json"
+      }
+    },
+    "typed-events": {
+      "type": "library",
+      "root": "libs/typed-events",
+      "entryFile": "index",
+      "sourceRoot": "libs/typed-events/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/typed-events/tsconfig.lib.json"
+      }
+    },
+    "heartbeat-redis-client": {
+      "type": "library",
+      "root": "libs/heartbeat-redis-client",
+      "entryFile": "index",
+      "sourceRoot": "libs/heartbeat-redis-client/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/heartbeat-redis-client/tsconfig.lib.json"
+      }
     }
   }
 }

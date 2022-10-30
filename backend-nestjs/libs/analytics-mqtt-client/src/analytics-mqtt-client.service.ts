@@ -1,16 +1,20 @@
-import { REQUEST_EVENT } from '@app/analytics-mqtt-events';
+//#region Imports
+
 import { Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { firstValueFrom } from 'rxjs';
-import { InjectAnalyticsServiceName, InjectMqttClient } from './tokens';
+import { InjectAnalyticsMqttClient, InjectAnalyticsServiceName } from './tokens';
+import { REQUEST_EVENT } from '@app/analytics-mqtt-events';
+import { AnalyticsMqttClientInterface } from '@app/analytics-mqtt-client';
+
+//#endregion
 
 @Injectable()
-export class AnalyticsMqttClientService {
+export class AnalyticsMqttClientService implements AnalyticsMqttClientInterface {
 
   //#region Constructor
 
   constructor(
-    @InjectMqttClient()
+    @InjectAnalyticsMqttClient()
     protected readonly client: ClientProxy,
     @InjectAnalyticsServiceName()
     protected readonly service: string,
@@ -21,10 +25,12 @@ export class AnalyticsMqttClientService {
 
   //#region Public Methods
 
-  public async emitRequest(method: string, path: string): Promise<void> {
-    await firstValueFrom(
-      this.client.emit(REQUEST_EVENT.name, REQUEST_EVENT.createEventData(this.service, method, path)),
-    );
+  public async emitRequest(method: string, path: string): ReturnType<typeof REQUEST_EVENT.sendEvent> {
+    await REQUEST_EVENT.sendEvent(this.client, {
+      service: this.service,
+      method,
+      path,
+    });
   }
 
   //#endregion

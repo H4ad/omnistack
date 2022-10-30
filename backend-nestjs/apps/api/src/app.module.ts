@@ -1,5 +1,4 @@
-import { AnalyticsMiddleware, AnalyticsMqttClientModule } from '@app/analytics-mqtt-client';
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { defaultConfig } from './infra/config/default.config';
@@ -11,6 +10,7 @@ import { AuthRoutingModule } from './modules/auth/auth.routing.module';
 import { IncidentRoutingModule } from './modules/incidents/incident.routing.module';
 import { OngRoutingModule } from './modules/ong/ong.routing.module';
 import { UserRoutingModule } from './modules/user/user.routing.module';
+import { AnalyticsMqttClientModule } from '@app/analytics-mqtt-client';
 
 @Module({
   imports: [
@@ -46,9 +46,4 @@ import { UserRoutingModule } from './modules/user/user.routing.module';
     IncidentRoutingModule,
   ],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(AnalyticsMiddleware)
-      .forRoutes('*');
-  }
-}
+export class AppModule {}

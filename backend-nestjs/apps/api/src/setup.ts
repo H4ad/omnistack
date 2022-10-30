@@ -1,8 +1,9 @@
 //#region Imports
 
-import { setupDefaultHTTPConfiguration } from '@app/http-setup';
 import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { AnalyticsClientToken, createAnalyticsMiddleware } from '../../../libs/analytics-mqtt-client/src';
+import { setupDefaultHTTPConfiguration } from '@app/http-setup';
 
 //#endregion
 
@@ -28,6 +29,8 @@ export function setup(app: INestApplication): INestApplication {
       version: '1.0',
     },
   });
+
+  app.use(createAnalyticsMiddleware(app.get(AnalyticsClientToken)));
 
   return app;
 }

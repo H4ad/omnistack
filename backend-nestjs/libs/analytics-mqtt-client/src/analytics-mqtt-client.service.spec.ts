@@ -2,7 +2,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { Test, TestingModule } from '@nestjs/testing';
 import { of } from 'rxjs';
 import { AnalyticsMqttClientService } from './analytics-mqtt-client.service';
-import { AnalyticsServiceNameToken, MqttClientToken } from './tokens';
+import { AnalyticsMqttClientToken, AnalyticsServiceNameToken } from './tokens';
 
 describe(AnalyticsMqttClientService.name, () => {
   let service: AnalyticsMqttClientService;
@@ -14,7 +14,7 @@ describe(AnalyticsMqttClientService.name, () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         { provide: AnalyticsServiceNameToken, useValue: mockedServiceName },
-        { provide: MqttClientToken, useValue: mockedClientProxy },
+        { provide: AnalyticsMqttClientToken, useValue: mockedClientProxy },
         AnalyticsMqttClientService,
       ],
     }).compile();

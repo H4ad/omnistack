@@ -22,9 +22,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: config.getOrThrow<string>('JWT_SECRET_KEY'),
+      secretOrKey: config.getOrThrow<string>('API_JWT_SECRET_KEY'),
       jsonWebTokenOptions: {
-        expiresIn: config.getOrThrow<string>('JWT_EXPIRES_IN'),
+        expiresIn: config.getOrThrow<string>('API_JWT_EXPIRES_IN'),
       },
     });
   }

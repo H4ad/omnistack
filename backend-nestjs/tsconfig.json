@@ -54,6 +54,24 @@
       ],
       "@app/analytics-mqtt-events/*": [
         "libs/analytics-mqtt-events/src/*"
+      ],
+      "@app/heartbeat-redis-events": [
+        "libs/heartbeat-redis-events/src"
+      ],
+      "@app/heartbeat-redis-events/*": [
+        "libs/heartbeat-redis-events/src/*"
+      ],
+      "@app/typed-events": [
+        "libs/typed-events/src"
+      ],
+      "@app/typed-events/*": [
+        "libs/typed-events/src/*"
+      ],
+      "@app/heartbeat-redis-client": [
+        "libs/heartbeat-redis-client/src"
+      ],
+      "@app/heartbeat-redis-client/*": [
+        "libs/heartbeat-redis-client/src/*"
       ]
     }
   },

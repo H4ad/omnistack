@@ -1,9 +1,12 @@
+import { EventTyped } from '@app/typed-events';
 import { BadRequestException } from '@nestjs/common';
-import { EventTyped } from '../types';
+import { EventPattern } from '@nestjs/microservices';
+import { firstValueFrom, timeout } from 'rxjs';
 
 export type RequestEventData = { service: string, method: string, path: string };
 
 export const REQUEST_EVENT: EventTyped<'request', RequestEventData, [service: string, method: string, path: string]> = {
+  listener: () => EventPattern(REQUEST_EVENT.name),
   name: 'request',
   validate: (data: unknown) => {
     if (!data || typeof data !== 'object')
@@ -29,4 +32,8 @@ export const REQUEST_EVENT: EventTyped<'request', RequestEventData, [service: st
       path,
     });
   },
+  sendEvent: async (client, data) => {
+    await firstValueFrom(client.emit(REQUEST_EVENT.name, REQUEST_EVENT.validate(data)).pipe(timeout(5_000)));
+  },
+  handleEvent: fn => fn(),
 };

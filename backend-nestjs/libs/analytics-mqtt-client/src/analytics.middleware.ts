@@ -1,39 +1,25 @@
 //#region Imports
 
-import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
-import { AnalyticsMqttClientService } from './analytics-mqtt-client.service';
+import { AnalyticsMqttClientInterface } from '@app/analytics-mqtt-client';
 
 //#endregion
 
-@Injectable()
-export class AnalyticsMiddleware implements NestMiddleware {
+export function createAnalyticsMiddleware(client: AnalyticsMqttClientInterface): (req: Request, res: Response, next: NextFunction) => Promise<void> {
+  const logger = new Logger('createAnalyticsMiddleware')
 
-  //#region Constructor
-
-  constructor(
-    protected readonly analyticsMqttClientService: AnalyticsMqttClientService,
-  ) {
-  }
-
-  //#endregion
-
-  //#region Protected Properties
-
-  protected readonly logger = new Logger(AnalyticsMiddleware.name);
-
-  //#endregion
-
-  public async use(req: Request, res: Response, next: NextFunction): Promise<void> {
+  return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await this.analyticsMqttClientService.emitRequest(
+      await client.emitRequest(
         req.method,
         req.originalUrl,
       );
     } catch (e) {
-      this.logger.error(e);
+      logger.error(e);
     } finally {
       next();
     }
-  }
+  };
 }
+

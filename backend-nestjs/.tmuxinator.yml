@@ -55,5 +55,7 @@ windows:
         - clear
         - npm run start:analytics:debug
         - clear
+        - npm run start:heartbeat:debug
+        - clear
 #  - api: cd backend && npm run start:debug
 #  - app: cd app && ng serve

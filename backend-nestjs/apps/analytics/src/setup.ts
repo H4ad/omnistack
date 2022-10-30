@@ -1,6 +1,6 @@
-import { setupDefaultHTTPConfiguration } from '@app/http-setup';
 import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { setupDefaultHTTPConfiguration } from '@app/http-setup';
 
 export function setup(app: INestApplication): INestApplication {
   const config = app.get(ConfigService);
@@ -20,7 +20,7 @@ export function setup(app: INestApplication): INestApplication {
       enabled: config.get<boolean>('ANALYTICS_SWAGGER_ENABLED') || false,
       title: 'API',
       tag: '1.0',
-      description: 'The API that deals with basic crud operations',
+      description: 'The API that deals with the analytics aggregation.',
       version: '1.0',
     },
   });

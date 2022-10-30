@@ -1,5 +1,4 @@
 import { ConfigService } from '@nestjs/config';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { createAnalyticsApp } from './main.base';
 
 async function bootstrap() {
