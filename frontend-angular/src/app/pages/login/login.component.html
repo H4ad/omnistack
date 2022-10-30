@@ -1,0 +1,29 @@
+<section class="logon--container">
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" novalidate class="logon--form">
+    <div class="logon--form--logo">
+      <img src="../../../assets/icons/logo.svg" alt="A logo do Be The Hero."/>
+    </div>
+    <div class="logon--form--inputs">
+      <h2>Faça seu logon</h2>
+      <h3 class="form--error" [class.form--error--disabled]="!errorMessage">{{ errorMessage }}</h3>
+
+      <input (keydown.enter)="password.focus()" autocomplete autofocus placeholder="E-mail" formControlName="username" type="email"/>
+      <input #password (keydown.enter)="onSubmit()" autocomplete placeholder="Senha" formControlName="password" type="password"/>
+
+      <button [disabled]="isSubmittingForm || formGroup.status === 'INVALID'" type="submit">
+        <ng-container *ngIf="!isSubmittingForm">Entrar</ng-container>
+        <ng-container *ngIf="isSubmittingForm">Carregando...</ng-container>
+      </button>
+
+      <div class="logon--form--register">
+        <a href="/register">
+          <img src="../../../assets/icons/log-in.svg" alt="O icone que representa o Log-in.">
+          <span>Não tenho cadastro</span>
+        </a>
+      </div>
+    </div>
+  </form>
+  <div class="logon--hero">
+    <img src="../../../assets/images/heroes.png" alt="Uma imagem com várias pessoas se abraçando."/>
+  </div>
+</section>
