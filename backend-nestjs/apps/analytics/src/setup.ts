@@ -18,7 +18,7 @@ export function setup(app: INestApplication): INestApplication {
     },
     swagger: {
       enabled: config.get<boolean>('ANALYTICS_SWAGGER_ENABLED') || false,
-      title: 'API',
+      title: 'Analytics',
       tag: '1.0',
       description: 'The API that deals with the analytics aggregation.',
       version: '1.0',

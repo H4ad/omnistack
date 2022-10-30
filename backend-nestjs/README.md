@@ -11,6 +11,7 @@
   <a href="#memo-structure">Estrutura</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#rocket-getting-started">Typeorm</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#helicopter-about-microservices">About Microservices</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#hammer-testing">Testing</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
 </p>
 
 ## :book: Introduction
@@ -62,3 +63,13 @@ This aggregation works by a middleware called AnalyticsMiddleware, which gets th
 In the analytics microservice, I store the data using Redis and Redis Rank, a library that allows us to create rankings very easily.
 The idea behind it is to be able to see which routes are most consumed by users, with this architecture, it is very easy to extend to add, for example, aggregation by user ip.
 
+# :hammer: Testing
+
+For easy testing, you can download [omnistack-trilon.har](./omnistack-trilon.har) and import into your HTTP client such as Insomnia.
+
+So you can just create a user and login, after these steps you can call any method inside the API.
+
+Also, you can find the swaggers in the following links:
+
+- [Swagger of the API](http://localhost:3000/swagger)
+- [Swagger of the Analytics](http://localhost:3001/swagger)
