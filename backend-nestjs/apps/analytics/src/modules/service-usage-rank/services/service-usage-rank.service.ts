@@ -1,9 +1,11 @@
-import { InjectRedis } from '@app/redis';
+//#region Imports
+
 import { Injectable } from '@nestjs/common';
-import Redis from 'ioredis';
-import { Leaderboard } from 'redis-rank';
 import { PaginationOptions } from '../../../common/pagination.options';
 import { ServiceUsageRankProxy } from '../models/service-usage-rank.proxy';
+import { ServiceUsageRankRepository } from '../repositories/service-usage-rank.repository';
+
+//#endregion
 
 @Injectable()
 export class ServiceUsageRankService {
@@ -11,24 +13,9 @@ export class ServiceUsageRankService {
   //#region Constructor
 
   constructor(
-    @InjectRedis()
-    protected readonly redis: Redis,
+    protected readonly repository: ServiceUsageRankRepository,
   ) {
-    this.leaderboard = new Leaderboard(
-      this.redis,
-      'api-usage',
-      {
-        updatePolicy: 'aggregate',
-        sortPolicy: 'high-to-low',
-      },
-    );
   }
-
-  //#endregion
-
-  //#region Protected Properties
-
-  protected readonly leaderboard: Leaderboard;
 
   //#endregion
 
@@ -43,19 +30,14 @@ export class ServiceUsageRankService {
     const from = (normalizedPage - 1) * normalizedLimit;
     const to = normalizedPage * normalizedLimit;
 
-    const results = await this.leaderboard.list(from, to);
-
-    const proxies = results.map(result => new ServiceUsageRankProxy(result.rank, result.id, result.score));
-    const total = await this.leaderboard.count();
+    const proxies = await this.repository.list(from, to);
+    const total = await this.repository.getCount();
 
     return [proxies, total];
   }
 
   public async incrementUsage(service: string): Promise<void> {
-    await this.leaderboard.update({
-      id: service,
-      value: 1,
-    });
+    await this.repository.incrementByService(service);
   }
 
   //#endregion

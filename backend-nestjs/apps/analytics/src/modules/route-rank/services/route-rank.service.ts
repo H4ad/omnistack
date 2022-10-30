@@ -1,9 +1,11 @@
-import { InjectRedis } from '@app/redis';
+//#region Imports
+
 import { Injectable } from '@nestjs/common';
-import Redis from 'ioredis';
-import { Leaderboard } from 'redis-rank';
 import { PaginationOptions } from '../../../common/pagination.options';
 import { RouteRankProxy } from '../models/route-rank.proxy';
+import { RouteRankRepository } from '../repositories/route-rank.repository';
+
+//#endregion
 
 @Injectable()
 export class RouteRankService {
@@ -11,8 +13,7 @@ export class RouteRankService {
   //#region Constructor
 
   constructor(
-    @InjectRedis()
-    protected readonly redis: Redis,
+    protected readonly repository: RouteRankRepository,
   ) {
   }
 
@@ -21,8 +22,6 @@ export class RouteRankService {
   //#region Public Methods
 
   public async getMany(service: string, options?: PaginationOptions): Promise<[RouteRankProxy[], number]> {
-    const leaderboard = this.getLeaderboardByService(service);
-
     const { page = 1, limit = 15 } = options || {};
 
     const normalizedLimit = Math.min(100, Math.max(1, limit));
@@ -31,40 +30,14 @@ export class RouteRankService {
     const from = (normalizedPage - 1) * normalizedLimit;
     const to = normalizedPage * normalizedLimit;
 
-    const results = await leaderboard.list(from, to);
-
-    const proxies = results.map(result => new RouteRankProxy(result.rank, result.id, result.score));
-    const total = await leaderboard.count();
+    const proxies = await this.repository.listByService(service, from, to);
+    const total = await this.repository.getCountByService(service);
 
     return [proxies, total];
   }
 
   public async incrementRoute(service: string, method: string, path: string): Promise<void> {
-    const leaderboard = this.getLeaderboardByService(service);
-
-    await leaderboard.update({
-      id: this.getRouteKeyByMethodAndPath(method, path),
-      value: 1,
-    });
-  }
-
-  //#endregion
-
-  //#region Protected Methods
-
-  protected getLeaderboardByService(service: string): Leaderboard {
-    return new Leaderboard(
-      this.redis,
-      `${ service }:routes`,
-      {
-        updatePolicy: 'aggregate',
-        sortPolicy: 'high-to-low',
-      },
-    );
-  }
-
-  protected getRouteKeyByMethodAndPath(method: string, path: string): string {
-    return `${ method.toUpperCase() }:${ path }`;
+    await this.repository.incrementByService(service, method, path, 1);
   }
 
   //#endregion

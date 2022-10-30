@@ -6,11 +6,11 @@ export class ServiceUsageRankProxy {
 
   constructor(
     rank: number,
-    route: string,
+    service: string,
     requests: number,
   ) {
     this.rank = rank;
-    this.service = route;
+    this.service = service;
     this.requests = requests;
   }
 

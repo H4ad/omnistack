@@ -40,7 +40,7 @@ export async function getInstanceOfApplicationFor(modules: Type<any>[]) {
 
   const app = moduleFixture.createNestApplication();
 
-  await setup(app);
+  setup(app);
 
   await app.init();
 
