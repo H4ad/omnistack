@@ -7,105 +7,72 @@
 </h4>
 
 <p align="center">
-  <a href="#book-introducao">Introdução</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#memo-estrutura">Estrutura</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#notebook-typeorm">Typeorm</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#file-folder-entidades">Entidades</a>
+  <a href="#book-introduction">Introduction</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#memo-structure">Structure</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#rocket-getting-started">Typeorm</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#helicopter-about-microservices">About Microservices</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#hammer-testing">Testing</a>
 </p>
 
-## :book: Introdução
+## :book: Introduction
 
-Para esse OmniStack, em vez de utilizar Express, eu preferi usar NestJS no lugar por utilizar TypeScript.
+For this OmniStack, instead of using Express, I preferred to use NestJS with Express Adater instead because it uses TypeScript.
 
-## :memo: Estrutura
+## :memo: Structure
 
-As pastas seguem uma estrutura bem simples:
-- src
-    - common: Contém arquivos que são utilizados repetidamente nos `controllers`, `services` e outros arquivos.
-    - decorators: Contém todos os `decorators` da aplicação.
-    - guards: Contém todos os `guards` da aplicação
-    - modules: Contém todos os `modules` da aplicação, em essência, um módulo contém os `controllers`, `services`, etc.
-    - typeorm: Contém todos os arquivos relacionados ao `typeorm`.
-    - utils: Contém todos os arquivos que contém funções úteis usadas em toda a aplicação.
+For this project, we have three main applications:
 
-## :notebook: TypeOrm
+- api: Deals with basic crud operations in the system.
+- analytics: Aggregates all data of requests in API service.
+- heartbeat: Just a simple microservice to show the integration between two microservices (heartbeat and analytics).
 
-Esse é o nome biblioteca que lida com o banco de dados, a estrutura desse cara é a seguinte:
+## :rocket: Getting Started
 
-- `src/typeorm/migrations`: O local onde todas as migrations ficam.
-- `src/typeorm/entities`: O local onde todas as entidades criadas devem ficar, **SEMPRE** devem possuir o final terminando em `.entity.ts`.
-- `src/typeorm/subscribers`: O local onde todas os `subscribers` ficam, **SEMPRE** devem possuir o final terminando em `.subscriber.ts`.
+To be able to run those applications, first you need to have:
 
-### MySQL
+- NodeJS 16.x
+- Docker Compose
 
-Use o seguinte comando para criar o arquivo de configurações a partir do exemplo:
-```shell
-cp .env.mysql.example .env
+After having these requirements, run:
+
+```bash
+cp .env.postgres.example .env
 ```
 
-Depois, defina as configurações do banco de dados de acordo com as suas necessidades.
+This will create the .env file to us to be able to start the application, then:
 
-Pronto! Agora, você pode criar uma `migration` usando `npm run add-migration v1`, e depois executa-la com `npm run migration` para iniciar o banco de dados. 
-
-### SQLite
-
-Se for usar SQLite em vez de MySQL, instale as dependências necessárias com:
-```shell
-sudo apt-get install sqlite3 libsqlite3-dev
+```bash
+docker compose up -d
 ```
 
-E depois inicie uma banco de dados inicial com:
-```shell
-sqlite3 example.db "VACUUM;"
+This will spinning up the databases used and all the services needed.
+
+Then, you just need to start the default API, analytics microservice and heartbeat microservice:
+
+```bash
+npm run start:api:debug
+npm run start:analytics:debug
+npm run start:heartbeat:debug
 ```
 
-Por fim, crie o arquivo contendo as configurações iniciais:
-```shell
-cp .env.sqlite.example .env
-```
+> HINT: If you have tmux and tmuxinator, just run: tmuxinator .
 
-Pronto! Agora, você pode criar uma `migration` usando `npm run add-migration v1`, e depois executa-la com `npm run migration` para iniciar o banco de dados. 
+# :helicopter: About Microservices
 
-### Migrations
+In this API release, I added the analytics microservice that aggregates the count of requests per service (currently only one) and per route path (per service).
 
-Para criar uma `migration`, use o comando:
-```shell
-npm run add-migration NOME_DA_MIGRATION
-```
+This aggregation works by a middleware called AnalyticsMiddleware, which gets the request information and sends it to the analytics microservice via MQTT.
 
-E para executar todas as suas `migrations`, use:
-```shell
-npm run migration
-```
+In the analytics microservice, I store the data using Redis and Redis Rank, a library that allows us to create rankings very easily.
+The idea behind it is to be able to see which routes are most consumed by users, with this architecture, it is very easy to extend to add, for example, aggregation by user ip.
 
-Caso queira realizar alguma operação mais complexa com o Typeorm, use o comando:
-```shell
-npm run typeorm:cli COMANDO
-```
+# :hammer: Testing
 
-## :file_folder: Entidades
+For easy testing, you can download [omnistack-trilon.har](./omnistack-trilon.har) and import into your HTTP client such as Insomnia.
 
-A seguir, as entidades do banco de dados extraida a partir da primeira aula, eu irei modificar um pouco mas no geral é isso:
+So you can just create a user and login, after these steps you can call any method inside the API.
 
-Usuário:
-- Email
-- Password ( não havia também, mas eu irei trabalhar com sistema de autenticação por senha )
-- Roles ( não visto mas irei incluir por padrão )
-- Ongs[] ( uma relação OneToMany )
+Also, you can find the swaggers in the following links:
 
-Apesar das Ongs aparentemente serem um usuário de certa forma, eu ainda irei separar em uma entidade por sí só.
-
-Ongs:
-- Name
-- Email
-- Cidade
-- UF
-- Whatsapp
-- Usuário ( uma relação ManyToOne )
-- Casos[] ( uma relação OneToMany )
-
-Incidentes:
-- Título
-- Descrição
-- Valor
-- Ong ( uma relação ManyToOne )
+- [Swagger of the API](http://localhost:3000/swagger)
+- [Swagger of the Analytics](http://localhost:3001/swagger)

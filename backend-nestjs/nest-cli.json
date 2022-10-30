@@ -1,4 +1,103 @@
 {
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src"
+  "sourceRoot": "apps/api/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/api/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/api",
+  "projects": {
+    "api": {
+      "type": "application",
+      "root": "apps/api",
+      "entryFile": "main",
+      "sourceRoot": "apps/api/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/api/tsconfig.app.json"
+      }
+    },
+    "analytics": {
+      "type": "application",
+      "root": "apps/analytics",
+      "entryFile": "main",
+      "sourceRoot": "apps/analytics/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/analytics/tsconfig.app.json"
+      }
+    },
+    "http-setup": {
+      "type": "library",
+      "root": "libs/http-setup",
+      "entryFile": "index",
+      "sourceRoot": "libs/http-setup/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/http-setup/tsconfig.lib.json"
+      }
+    },
+    "redis": {
+      "type": "library",
+      "root": "libs/redis",
+      "entryFile": "index",
+      "sourceRoot": "libs/redis/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/redis/tsconfig.lib.json"
+      }
+    },
+    "analytics-mqtt-client": {
+      "type": "library",
+      "root": "libs/analytics-mqtt-client",
+      "entryFile": "index",
+      "sourceRoot": "libs/analytics-mqtt-client/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/analytics-mqtt-client/tsconfig.lib.json"
+      }
+    },
+    "analytics-mqtt-events": {
+      "type": "library",
+      "root": "libs/analytics-mqtt-events",
+      "entryFile": "index",
+      "sourceRoot": "libs/analytics-mqtt-events/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/analytics-mqtt-events/tsconfig.lib.json"
+      }
+    },
+    "heartbeat": {
+      "type": "application",
+      "root": "apps/heartbeat",
+      "entryFile": "main",
+      "sourceRoot": "apps/heartbeat/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/heartbeat/tsconfig.app.json"
+      }
+    },
+    "heartbeat-redis-events": {
+      "type": "library",
+      "root": "libs/heartbeat-redis-events",
+      "entryFile": "index",
+      "sourceRoot": "libs/heartbeat-redis-events/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/heartbeat-redis-events/tsconfig.lib.json"
+      }
+    },
+    "typed-events": {
+      "type": "library",
+      "root": "libs/typed-events",
+      "entryFile": "index",
+      "sourceRoot": "libs/typed-events/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/typed-events/tsconfig.lib.json"
+      }
+    },
+    "heartbeat-redis-client": {
+      "type": "library",
+      "root": "libs/heartbeat-redis-client",
+      "entryFile": "index",
+      "sourceRoot": "libs/heartbeat-redis-client/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/heartbeat-redis-client/tsconfig.lib.json"
+      }
+    }
+  }
 }

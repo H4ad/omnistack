@@ -1,0 +1,49 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:12.4
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_DATABASE}
+    ports:
+      - ${DB_PORT}:5432
+
+  mosquitto:
+    image: eclipse-mosquitto:2.0.15
+    volumes:
+      - ./config/:/mosquitto/config/:ro
+      - log:/mosquitto/log/
+      - data:/mosquitto/data/
+    ports:
+      - 1883:1883
+      - 9001:9001
+
+  analytics-redis:
+    hostname: analytics-redis
+    image: bitnami/redis:7.0.5
+    environment:
+      ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "6379:6379"
+
+  heartbeat-redis:
+    hostname: heartbeat-redis
+    image: bitnami/redis:7.0.5
+    environment:
+      ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "6380:6379"
+
+  redis-commander:
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    environment:
+      - REDIS_HOSTS=local:analytics-redis:6379,heartbeat:heartbeat-redis:6379
+    ports:
+      - "8081:8081"
+
+volumes:
+  data:
+  log:

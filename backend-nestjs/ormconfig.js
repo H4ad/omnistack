@@ -12,9 +12,10 @@ const rule = {
   DB_USER: envalid.str({ default: '', devDefault: 'root' }),
   DB_SYNCHRONIZE: envalid.bool({ default: false, devDefault: true }),
   DB_MIGRATIONS_RUN: envalid.bool({ default: true }),
+  DB_IS_LOCAL: envalid.bool({ default: true }),
   SQLITE_DATABASE_HOST_PATH: envalid.str({ default: '' }),
   DB_TIMEOUT: envalid.num({ default: 20000 }),
-  JWT_EXPIRES_IN: envalid.str({ default: '7d' }),
+  API_JWT_EXPIRES_IN: envalid.str({ default: '7d' }),
   JWT_SECRET_KEY: envalid.str({ devDefault: 'CHANGE_THIS_SECRET' }),
   SWAGGER_DESCRIPTION: envalid.str({ default: 'Base API' }),
   SWAGGER_TAG: envalid.str({ default: 'Base' }),
@@ -32,14 +33,13 @@ const config = {
   acquireTimeout: env.DB_TIMEOUT,
   synchronize: env.DB_SYNCHRONIZE,
   entities: [
-    'src/typeorm/entities/**/*{.ts,.js}',
+    'src/**/*.entity{.ts,.js}',
   ],
   migrations: [
-    'src/typeorm/migrations/**/*{.ts,.js}',
+    'src/migrations/**/*{.ts,.js}',
   ],
   cli: {
-    entitiesDir: 'src/typeorm/entities',
-    migrationsDir: 'src/typeorm/migrations',
+    migrationsDir: 'src/migrations',
   },
 };
 
@@ -66,8 +66,19 @@ if (env.DB_TYPE === 'postgres')
     password: env.DB_PASSWORD,
     acquireTimeout: env.DB_TIMEOUT,
     rejectUnauthorized: true,
-    extra: {
-      ssl: true,
+    ...env.DB_IS_LOCAL && {
+      rejectUnauthorized: false,
+    },
+    ...!env.DB_IS_LOCAL && {
+      rejectUnauthorized: true,
+      extra: {
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      },
+      ssl: {
+        rejectUnauthorized: false,
+      },
     },
   });
 

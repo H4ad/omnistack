@@ -1,19 +1,88 @@
 {
   "compilerOptions": {
+    "lib": [
+      "ES2021",
+      "DOM"
+    ],
+    "target": "ES2021",
     "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
+    "declaration": false,
+    "removeComments": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es2017",
-    "sourceMap": true,
-    "outDir": "./dist",
+    "allowSyntheticDefaultImports": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "outDir": "dist",
     "baseUrl": "./",
-    "incremental": true
+    "sourceRoot": "/",
+    "incremental": true,
+    "noEmitHelpers": true,
+    "importHelpers": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "noImplicitAny": false,
+    "strictNullChecks": true,
+    "strictFunctionTypes": false,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": false,
+    "alwaysStrict": true,
+    "paths": {
+      "@app/http-setup": [
+        "libs/http-setup/src"
+      ],
+      "@app/http-setup/*": [
+        "libs/http-setup/src/*"
+      ],
+      "@app/redis": [
+        "libs/redis/src"
+      ],
+      "@app/redis/*": [
+        "libs/redis/src/*"
+      ],
+      "@app/analytics-mqtt-client": [
+        "libs/analytics-mqtt-client/src"
+      ],
+      "@app/analytics-mqtt-client/*": [
+        "libs/analytics-mqtt-client/src/*"
+      ],
+      "@app/analytics-mqtt-events": [
+        "libs/analytics-mqtt-events/src"
+      ],
+      "@app/analytics-mqtt-events/*": [
+        "libs/analytics-mqtt-events/src/*"
+      ],
+      "@app/heartbeat-redis-events": [
+        "libs/heartbeat-redis-events/src"
+      ],
+      "@app/heartbeat-redis-events/*": [
+        "libs/heartbeat-redis-events/src/*"
+      ],
+      "@app/typed-events": [
+        "libs/typed-events/src"
+      ],
+      "@app/typed-events/*": [
+        "libs/typed-events/src/*"
+      ],
+      "@app/heartbeat-redis-client": [
+        "libs/heartbeat-redis-client/src"
+      ],
+      "@app/heartbeat-redis-client/*": [
+        "libs/heartbeat-redis-client/src/*"
+      ]
+    }
   },
   "include": [
-    "./src/**/*.ts",
+    "apps/**/*",
+    "libs/**/*",
     "./test/**/*.ts"
   ],
-  "exclude": ["node_modules", "dist", "example.db"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "deploy/*.ts"
+  ]
 }
