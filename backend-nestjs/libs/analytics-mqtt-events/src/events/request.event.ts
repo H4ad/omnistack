@@ -19,14 +19,14 @@ export const REQUEST_EVENT: EventTyped<'request', RequestEventData, [service: st
     return {
       service,
       method,
-      path,
+      path: path.split('?')[0],
     };
   },
   createEventData: (service: string, method: string, path: string) => {
-    return {
+    return REQUEST_EVENT.validate({
       service,
       method,
       path,
-    };
+    });
   },
 };

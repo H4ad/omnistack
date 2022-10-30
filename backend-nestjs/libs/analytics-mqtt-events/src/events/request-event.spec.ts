@@ -19,6 +19,19 @@ describe('REQUEST_EVENT', () => {
       expect(test).toHaveProperty('method', method);
       expect(test).toHaveProperty('path', path);
     });
+
+    it('should strip query params from path on event data object', () => {
+      const service = 'test';
+      const method = 'POST';
+      const originalPath = '/test2';
+      const path = `${ originalPath }?test=potato`;
+
+      const test = REQUEST_EVENT.createEventData(service, method, path);
+
+      expect(test).toHaveProperty('service', service);
+      expect(test).toHaveProperty('method', method);
+      expect(test).toHaveProperty('path', originalPath);
+    });
   });
 
   describe('validate', () => {
