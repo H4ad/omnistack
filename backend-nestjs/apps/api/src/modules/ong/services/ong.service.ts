@@ -27,7 +27,7 @@ export class OngService {
 
   //#region Public Methods
 
-  public async getMany(options?: OngManyPaginationOptions): Promise<OngEntity[]> {
+  public async getMany(options?: OngManyPaginationOptions): Promise<[OngEntity[], number]> {
     const { limit = 15, page = 1, relations = [], userId } = options || {};
 
     const normalizedLimit = Math.min(100, Math.max(1, limit));
@@ -47,7 +47,7 @@ export class OngService {
     if (userId && Number(userId))
       query = query.andWhere('ong.userId = :userId', { userId: Number(userId) });
 
-    return query.getMany();
+    return Promise.all([query.getMany(), query.getCount()]);
   }
 
   public async getOne(ongId: number): Promise<OngEntity> {
