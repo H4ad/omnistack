@@ -7,23 +7,14 @@ import { DefaultValidationMessages } from '../../../common/default-validation-me
 
 //#endregion
 
-/**
- * A classe que representa o payload enviado para realizar login
- */
 export class LoginPayload {
 
-  /**
-   * O e-mail do usuário
-   */
   @ApiProperty()
   @IsDefined({ message: 'É necessário enviar o e-mail do usuário.' })
   @IsString({ message: DefaultValidationMessages.IsString })
   @IsEmail({}, { message: DefaultValidationMessages.IsEmail })
   public username!: string;
 
-  /**
-   * A senha do usuário
-   */
   @ApiProperty()
   @IsDefined({ message: 'É necessário enviar a senha do usuário.' })
   @IsString({ message: DefaultValidationMessages.IsString })

@@ -13,17 +13,11 @@ import { IncidentManyPaginationOptions } from '../models/incident-many.paginatio
 
 //#endregion
 
-/**
- * A classe que representa o serviço que lida com os incidentes de uma ong
- */
 @Injectable()
 export class IncidentService {
 
   //#region Constructor
 
-  /**
-   * Construtor padrão
-   */
   constructor(
     @InjectRepository(IncidentEntity)
     private readonly repository: Repository<IncidentEntity>,
@@ -35,11 +29,6 @@ export class IncidentService {
 
   //#region Public Methods
 
-  /**
-   * Método que retorna vários incidentes cadastrados no banco de dados
-   *
-   * @param options As opções de paginação
-   */
   public async getMany(options?: IncidentManyPaginationOptions): Promise<[IncidentEntity[], number]> {
     const { limit = 15, page = 1, relations = [], ongId } = options || {};
 
@@ -60,11 +49,6 @@ export class IncidentService {
     return query.getManyAndCount();
   }
 
-  /**
-   * Método que retorna uma entidade pela sua identificação
-   *
-   * @param entityId A identificação da entidade
-   */
   public async getOne(entityId: number): Promise<IncidentEntity> {
     const entity = await this.repository.findOne({
       where: {
@@ -79,12 +63,6 @@ export class IncidentService {
     return entity;
   }
 
-  /**
-   * Método que cria uma nova entidade
-   *
-   * @param requestUserId A identificação do usuário que está fazendo a requisição
-   * @param payload As informações para a criação da entidade
-   */
   public async createOne(requestUserId: number, payload: CreateIncidentPayload): Promise<IncidentEntity> {
     const incident = this.getEntityFromPayload(payload);
     const ong = await this.ongService.getOne(incident.ongId);
@@ -95,12 +73,6 @@ export class IncidentService {
     return await this.repository.save(incident);
   }
 
-  /**
-   * Método que deleta uma entidade
-   *
-   * @param requestUserId A identificação do usuário que está fazendo a requisição
-   * @param incidentId A identificação incidente
-   */
   public async deleteOne(requestUserId: number, incidentId: number): Promise<void> {
     const incident = await this.getOne(incidentId);
     const ong = await this.ongService.getOne(incident.ongId);
@@ -115,11 +87,6 @@ export class IncidentService {
 
   //#region Private Methods
 
-  /**
-   * Método que retorna as informações de uma entidade a partir das informações do payload
-   *
-   * @param payload As informações do payload
-   */
   private getEntityFromPayload(payload: CreateIncidentPayload): IncidentEntity {
     return new IncidentEntity({
       ...isValid(payload.title) && { title: payload.title },

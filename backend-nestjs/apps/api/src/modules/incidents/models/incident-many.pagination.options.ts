@@ -7,14 +7,8 @@ import { PaginationOptions } from '../../../common/pagination.options';
 
 //#endregion
 
-/**
- * A classe que representa as opções de paginação de um incidente
- */
 export class IncidentManyPaginationOptions extends PaginationOptions {
 
-  /**
-   * A identificação do usuário
-   */
   @ApiPropertyOptional()
   @IsOptional()
   @Transform(value => Number(value.value))

@@ -9,16 +9,10 @@ import { UserProxy } from '../../user/models/user.proxy';
 
 //#endregion
 
-/**
- * A classe que representa as informações que são enviadas pela API sobre uma ong
- */
 export class OngProxy extends BaseCrudProxy {
 
   //#region Constructor
 
-  /**
-   * Construtor padrão
-   */
   constructor(
     entity: OngEntity,
   ) {
@@ -36,51 +30,27 @@ export class OngProxy extends BaseCrudProxy {
 
   //#endregion
 
-  /**
-   * O nome dessa ong
-   */
   @ApiProperty()
   public name!: string;
 
-  /**
-   * O e-mail da ong
-   */
   @ApiProperty()
   public email!: string;
 
-  /**
-   * A cidade na qual está localizada essa ong
-   */
   @ApiProperty()
   public city!: string;
 
-  /**
-   * O estado na qual está localizada essa ong
-   */
   @ApiProperty()
   public uf!: string;
 
-  /**
-   * O número de WhatsApp para entrar em contato com essa ong
-   */
   @ApiProperty()
   public whatsapp!: string;
 
-  /**
-   * A identificação do usuário que controla essa ong
-   */
   @ApiProperty()
   public userId!: number;
 
-  /**
-   * As informações sobre o usuário
-   */
   @ApiPropertyOptional({ type: () => UserProxy })
   public user?: UserProxy;
 
-  /**
-   * Os casos que pertencem a essa ong
-   */
   @ApiProperty({ type: () => IncidentProxy, isArray: true })
   public cases?: IncidentProxy[];
 

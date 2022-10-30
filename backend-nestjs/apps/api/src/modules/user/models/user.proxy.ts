@@ -7,16 +7,10 @@ import { OngProxy } from '../../ong/models/ong.proxy';
 
 //#endregion
 
-/**
- * A classe que representa as informações que são enviadas pela API sobre um usuário
- */
 export class UserProxy extends BaseCrudProxy {
 
   //#region Constructor
 
-  /**
-   * Construtor padrão
-   */
   constructor(
     entity: UserEntity,
   ) {
@@ -29,21 +23,12 @@ export class UserProxy extends BaseCrudProxy {
 
   //#endregion
 
-  /**
-   * O e-mail do usuário
-   */
   @ApiProperty()
   public email: string;
 
-  /**
-   * As permissões desse usuário
-   */
   @ApiProperty()
   public roles: string;
 
-  /**
-   * A lista com as ongs na qual esse usuário tem controle
-   */
   @ApiProperty({ type: () => OngProxy, isArray: true })
   public ongs?: OngProxy[];
 

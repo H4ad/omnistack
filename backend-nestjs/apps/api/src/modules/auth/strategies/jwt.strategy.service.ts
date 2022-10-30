@@ -10,17 +10,11 @@ import { AuthService } from '../services/auth.service';
 
 //#endregion
 
-/**
- * A classe que representa a estrategia que lida com o JWT
- */
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
 
   //#region Constructor
 
-  /**
-   * Construtor padrão
-   */
   constructor(
     protected readonly auth: AuthService,
     protected readonly config: ConfigService,
@@ -39,11 +33,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   //#region Public Methods
 
-  /**
-   * Método que retorna as informações que devem ser serializadas
-   *
-   * @param jwtPayload As informações obtidas do token
-   */
   public async validate(jwtPayload: IJwtPayload): Promise<Partial<UserEntity>> {
     return await this.auth.validateUserByPayload(jwtPayload);
   }

@@ -14,9 +14,6 @@ import { IncidentService } from '../services/incident.service';
 
 //#endregion
 
-/**
- * A classe que representa o controller que lida com as rotas dos incidentes
- */
 @ApiBearerAuth()
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiTags('incidents')
@@ -25,9 +22,6 @@ export class IncidentController {
 
   //#region Constructor
 
-  /**
-   * Construtor padrão
-   */
   constructor(
     private readonly service: IncidentService,
   ) { }
@@ -36,12 +30,6 @@ export class IncidentController {
 
   //#region Public Methods
 
-  /**
-   * Método que retorna várias informações da entidade
-   *
-   * @param options As opções de paginação
-   * @param response A referência para a resposta
-   */
   @Get('/')
   @ApiOperation({ summary: 'Busca todos os incidentes' })
   @ApiOkResponse({ type: IncidentProxy, isArray: true })
@@ -52,11 +40,6 @@ export class IncidentController {
     response.send(mapCrud(IncidentProxy, incidents));
   }
 
-  /**
-   * Método que retorna as informações de uma entidade
-   *
-   * @param id A identificação da entidade
-   */
   @Get('/:id')
   @ApiOperation({ summary: 'Busca um incidente pelo seu ID' })
   @ApiOkResponse({ type: IncidentProxy })
@@ -65,12 +48,6 @@ export class IncidentController {
       .then(response => mapCrud(IncidentProxy, response));
   }
 
-  /**
-   * Método que cria uma nova entidade
-   *
-   * @param requestUser As informações do usuário que está fazendo a requisição
-   * @param payload As informações para a criação da entidade
-   */
   @ProtectTo('user')
   @Post('/')
   @ApiOperation({ summary: 'Cria um incidente' })
@@ -80,12 +57,6 @@ export class IncidentController {
       .then(response => mapCrud(IncidentProxy, response));
   }
 
-  /**
-   * Método que deleta uma entidade
-   *
-   * @param requestUser As informações do usuário que está fazendo a requisição
-   * @param id A identificação da entidade
-   */
   @ProtectTo('user')
   @Delete('/:id')
   @ApiOperation({ summary: 'Deleta um incidente' })

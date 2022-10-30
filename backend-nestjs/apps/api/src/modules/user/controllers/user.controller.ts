@@ -13,9 +13,6 @@ import { UserService } from '../services/user.service';
 
 //#endregion
 
-/**
- * A classe que representa o construtor que lida com as rotas de um usuário
- */
 @ApiBearerAuth()
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiTags('users')
@@ -24,9 +21,6 @@ export class UserController {
 
   //#region Constructor
 
-  /**
-   * Construtor padrão
-   */
   constructor(
     private readonly service: UserService,
   ) { }
@@ -35,9 +29,6 @@ export class UserController {
 
   //#region Public Methods
 
-  /**
-   * Método que retorna várias informações da entidade
-   */
   @ProtectTo('admin')
   @Get('/')
   @ApiOperation({ summary: 'Busca todos os usuários' })
@@ -47,11 +38,6 @@ export class UserController {
       .then(response => mapCrud(UserProxy, response));
   }
 
-  /**
-   * Método que retorna as informações do próprio usuário que faz a requisição
-   *
-   * @param requestUser As informações do usuário que está fazendo a requisição
-   */
   @ProtectTo('user', 'admin')
   @Get('/me')
   @ApiOperation({ summary: 'Retorna as informações do próprio usuário' })
@@ -63,12 +49,6 @@ export class UserController {
       .then(response => mapCrud(UserProxy, response));
   }
 
-  /**
-   * Método que retorna as informações de uma entidade
-   *
-   * @param requestUser As informações do usuário que está fazendo a requisição
-   * @param id A identificação do usuário
-   */
   @ProtectTo('user', 'admin')
   @Get('/:id')
   @ApiOperation({ summary: 'Busca um usuário pelo ID' })
@@ -78,11 +58,6 @@ export class UserController {
       .then(response => mapCrud(UserProxy, response));
   }
 
-  /**
-   * Método que cria uma nova entidade
-   *
-   * @param payload As informações para a criação da entidade
-   */
   @Post('/')
   @ApiOperation({ summary: 'Cria um usuário' })
   @ApiCreatedResponse({ type: UserProxy })
@@ -91,13 +66,6 @@ export class UserController {
       .then(response => mapCrud(UserProxy, response));
   }
 
-  /**
-   * Método que atualiza uma entidade
-   *
-   * @param requestUser As informações do usuário que está fazendo a requisição
-   * @param id A identificação do usuário
-   * @param payload As informações para a atualização da entidade
-   */
   @ProtectTo('user', 'admin')
   @Put(':id')
   @ApiOperation({ summary: 'Atualiza um usuário' })

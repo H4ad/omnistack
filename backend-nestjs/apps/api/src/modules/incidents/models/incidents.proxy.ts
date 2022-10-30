@@ -8,16 +8,10 @@ import { OngProxy } from '../../ong/models/ong.proxy';
 
 //#endregion
 
-/**
- * A classe que representa as informações que são enviadas pela API sobre um incidente
- */
 export class IncidentProxy extends BaseCrudProxy {
 
   //#region Constructor
 
-  /**
-   * Construtor padrão
-   */
   constructor(
     entity: IncidentEntity,
   ) {
@@ -34,33 +28,18 @@ export class IncidentProxy extends BaseCrudProxy {
 
   //#region Public Properties
 
-  /**
-   * O titulo desse incidente
-   */
   @ApiProperty()
   public title: string;
 
-  /**
-   * A descrição desse caso
-   */
   @ApiProperty()
   public description: string;
 
-  /**
-   * O valor para ajudar esse caso
-   */
   @ApiProperty()
   public value: number;
 
-  /**
-   * A identificação da ong na qual esse caso pertence
-   */
   @ApiProperty()
   public ongId: number;
 
-  /**
-   * As informações da ong na qual esse caso pertence
-   */
   @ApiPropertyOptional({ type: () => OngProxy })
   public ong?: OngProxy;
 

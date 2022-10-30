@@ -17,9 +17,6 @@ ConfigService.prototype.get = function (
       ? undefined
       : defaultValueOrOptions;
 
-  /**
-   * Comment out this section so it does not read from process.env
-   */
     // const processEnvValue = this.getFromProcessEnv(propertyPath, defaultValue)
     // if (!isUndefined(processEnvValue)) {
     //   return processEnvValue

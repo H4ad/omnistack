@@ -6,14 +6,8 @@ import { DefaultValidationMessages } from './default-validation-messages';
 
 //#endregion
 
-/**
- * A classe que representa as informações básicas para atualizar uma entidade
- */
 export class BaseCrudUpdatePayload {
 
-  /**
-   * Diz se deve ativar a entidade assim que criar
-   */
   @ApiPropertyOptional()
   @IsOptional()
   @IsBoolean({ message: DefaultValidationMessages.IsBoolean })

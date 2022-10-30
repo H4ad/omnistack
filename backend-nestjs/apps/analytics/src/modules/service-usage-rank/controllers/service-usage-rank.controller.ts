@@ -15,9 +15,6 @@ export class ServiceUsageRankController {
 
   //#region Constructor
 
-  /**
-   * Construtor padrão
-   */
   constructor(
     protected readonly service: ServiceUsageRankService,
   ) {

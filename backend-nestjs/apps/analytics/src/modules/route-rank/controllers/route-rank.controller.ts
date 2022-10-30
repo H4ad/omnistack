@@ -15,9 +15,6 @@ export class RouteRankController {
 
   //#region Constructor
 
-  /**
-   * Construtor padrão
-   */
   constructor(
     protected readonly service: RouteRankService,
   ) {

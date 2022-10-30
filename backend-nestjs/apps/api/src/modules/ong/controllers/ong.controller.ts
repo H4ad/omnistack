@@ -14,9 +14,6 @@ import { OngService } from '../services/ong.service';
 
 //#endregion
 
-/**
- * A classe que representa o construtor que lida com as rotas de uma ong
- */
 @ApiBearerAuth()
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiTags('ongs')
@@ -25,9 +22,6 @@ export class OngController {
 
   //#region Constructor
 
-  /**
-   * Construtor padrão
-   */
   constructor(
     private readonly service: OngService,
   ) { }
@@ -36,11 +30,6 @@ export class OngController {
 
   //#region Public Methods
 
-  /**
-   * Método que retorna várias informações da entidade
-   *
-   * @param options As opções de paginação
-   */
   @Get('/')
   @ApiOperation({ summary: 'Busca todas as ongs' })
   @ApiOkResponse({ type: OngProxy, isArray: true })
@@ -49,11 +38,6 @@ export class OngController {
       .then(response => mapCrud(OngProxy, response));
   }
 
-  /**
-   * Método que retorna as informações de uma entidade
-   *
-   * @param id A identificação da entidade
-   */
   @Get('/:id')
   @ApiOperation({ summary: 'Busca uma ong pelo seu ID' })
   @ApiOkResponse({ type: OngProxy })
@@ -62,12 +46,6 @@ export class OngController {
       .then(response => mapCrud(OngProxy, response));
   }
 
-  /**
-   * Método que cria uma nova entidade
-   *
-   * @param requestUser As informações do usuário que está fazendo a requisição
-   * @param payload As informações para a criação da entidade
-   */
   @ProtectTo('user')
   @Post('/')
   @ApiOperation({ summary: 'Cria uma ong' })
@@ -77,13 +55,6 @@ export class OngController {
       .then(response => mapCrud(OngProxy, response));
   }
 
-  /**
-   * Método que atualiza uma entidade
-   *
-   * @param requestUser As informações do usuário que está fazendo a requisição
-   * @param id A identificação da entidade
-   * @param payload As informações para a atualização da entidade
-   */
   @ProtectTo('user')
   @Put(':id')
   @ApiOperation({ summary: 'Atualiza uma ong' })

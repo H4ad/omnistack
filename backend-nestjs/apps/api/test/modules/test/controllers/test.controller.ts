@@ -9,18 +9,12 @@ import { UserService } from '../../../../src/modules/user/services/user.service'
 
 //#endregion
 
-/**
- * A classe que representa o controlador que lida com as rotas de teste dessa aplicação
- */
 @ApiTags('tests')
 @Controller('tests')
 export class TestController {
 
   //#region Constructor
 
-  /**
-   * Construtor padrão
-   */
   constructor(
     private readonly connection: Connection,
     private readonly config: ConfigService,
@@ -32,9 +26,6 @@ export class TestController {
 
   //#region Public Methods
 
-  /**
-   * Método que limpa todo o banco de dados
-   */
   @Post('clear')
   @ApiOperation({ summary: 'Limpa todo o banco de dados' })
   @ApiCreatedResponse({ description: 'O banco de dados foi limpo com sucesso.' })
@@ -47,9 +38,6 @@ export class TestController {
     await this.connection.synchronize(true);
   }
 
-  /**
-   * Método que realiza o seed básico nas tabelas
-   */
   @Post('seed/users')
   @ApiOperation({ summary: 'Preenche o banco de dados com usuários padrões.' })
   @ApiNoContentResponse({ description: 'O banco de dados foi preenchido com sucesso.' })

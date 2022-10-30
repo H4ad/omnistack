@@ -12,17 +12,11 @@ import { UpdateUserPayload } from '../models/update-user.payload';
 
 //#endregion
 
-/**
- * A classe que representa o serviço que lida com os usuários
- */
 @Injectable()
 export class UserService {
 
   //#region Constructor
 
-  /**
-   * Construtor padrão
-   */
   constructor(
     @InjectRepository(UserEntity)
     private repository: Repository<UserEntity>,
@@ -32,21 +26,12 @@ export class UserService {
 
   //#region Public Methods
 
-  /**
-   * Método que retorna vários usuários cadastrados no banco de dados
-   */
   public async getMany(): Promise<UserEntity[]> {
     return await this.repository.createQueryBuilder('user')
       .where('user.isActive = :isActive', { isActive: TypeOrmValueTypes.TRUE })
       .getMany();
   }
 
-  /**
-   * Método que retorna um usuário pela sua identificação
-   *
-   * @param requestUserId A identificação do usuário que está fazendo a requisição
-   * @param userId A identificação do usuário
-   */
   public async getOne(requestUserId: number, userId: number): Promise<UserEntity> {
     const user = await this.repository.findOne({
       where: {
@@ -64,11 +49,6 @@ export class UserService {
     return user;
   }
 
-  /**
-   * Método que cria um novo usuário
-   *
-   * @param payload As informações para a criação do usuário
-   */
   public async createOne(payload: CreateUserPayload): Promise<UserEntity> {
     const user = this.getEntityFromPayload(payload);
     const alreadyHasUser = await this.alreadyHasUserWith(user.email);
@@ -82,13 +62,6 @@ export class UserService {
     return await this.repository.save(user);
   }
 
-  /**
-   * Método que atualiza um usuário
-   *
-   * @param requestUserId A identificação do usuário que está fazendo a requisição
-   * @param userId A identificação do usuário que será atualizado
-   * @param payload As informações para a criação do usuário
-   */
   public async updateOne(requestUserId: number, userId: number, payload: UpdateUserPayload): Promise<UserEntity> {
     const isUserExists = await this.exists(userId);
 
@@ -113,11 +86,6 @@ export class UserService {
     return await this.repository.save(user);
   }
 
-  /**
-   * Método que verifica se existe uma certa entidade
-   *
-   * @param entityId A identificação da entidade
-   */
   public async exists(entityId: number): Promise<boolean> {
     return await this.repository.createQueryBuilder('entity')
       .where('entity.id = :entityId', { entityId })
@@ -125,11 +93,6 @@ export class UserService {
       .then(count => count > 0);
   }
 
-  /**
-   * Método que retorna um usuário pelo seu e-mail
-   *
-   * @param email O e-mail do usuário
-   */
   public async getUserByEmail(email: string): Promise<UserEntity> {
     const user = await this.repository.findOne({
       where: {
@@ -148,12 +111,6 @@ export class UserService {
 
   //#region Private Methods
 
-  /**
-   * Método que verifica se já existe um usuário com um determinado e-mail
-   *
-   * @param email O e-mail a ser verificado
-   * @param ignoreUserId A identificação do usuário que deve ignorar
-   */
   private async alreadyHasUserWith(email: string, ignoreUserId: number = 0): Promise<boolean> {
     return await this.repository.createQueryBuilder('user')
       .where('user.email = :email AND user.id != :ignoreUserId', { email, ignoreUserId })
@@ -161,12 +118,6 @@ export class UserService {
       .then(count => count > 0);
   }
 
-  /**
-   * Método que retorna as informações de uma entidade a partir das informações do payload
-   *
-   * @param payload As informações do payload
-   * @param entityId A identificação da entidade
-   */
   private getEntityFromPayload(payload: CreateUserPayload | UpdateUserPayload, entityId?: number): UserEntity {
     return new UserEntity({
       ...isValid(entityId) && { id: entityId },

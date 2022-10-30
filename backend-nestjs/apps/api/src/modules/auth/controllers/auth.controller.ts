@@ -10,9 +10,6 @@ import { AuthService } from '../services/auth.service';
 
 //#endregion
 
-/**
- * A classe que representa o construtor que lida com as autenticações
- */
 @ApiTags('auth')
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('auth')
@@ -20,9 +17,6 @@ export class AuthController {
 
   //#region Constructor
 
-  /**
-   * Construtor padrão
-   */
   constructor(
     private readonly authService: AuthService,
   ) {
@@ -32,12 +26,6 @@ export class AuthController {
 
   //#region Public Methods
 
-  /**
-   * Método que retorna o token do usuário
-   *
-   * @param req As informações da requisição
-   * @param payload As informações para o login
-   */
   @ApiOperation({ summary: 'Autentica um usuário' })
   @ApiOkResponse({ description: 'O usuário foi logado com sucesso', type: TokenProxy })
   @ApiUnauthorizedResponse({ description: 'A senha digitada está incorreta.' })

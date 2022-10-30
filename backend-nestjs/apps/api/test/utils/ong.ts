@@ -9,9 +9,6 @@ import { getUserToken } from './auth';
 
 //#endregion
 
-/**
- * Método que retorna um payload de criação de ong válido
- */
 export function getValidCreateOngPayload(): CreateOngPayload {
   return {
     name: 'APAD',
@@ -23,9 +20,6 @@ export function getValidCreateOngPayload(): CreateOngPayload {
   };
 }
 
-/**
- * Método que retorna um payload de atualização de ong válido
- */
 export function getValidUpdateOngPayload(): UpdateOngPayload {
   return {
     name: 'PAPAD',
@@ -37,12 +31,6 @@ export function getValidUpdateOngPayload(): UpdateOngPayload {
   };
 }
 
-/**
- * Método que retorna uma ong válida
- *
- * @param app A referência para a aplicação NestJS
- * @param token O token de autenticação, basicamente dita para quem vai ser criado essa ong
- */
 export async function createValidOng(app: INestApplication, token?: string): Promise<OngProxy> {
   const createPayload: CreateOngPayload = getValidCreateOngPayload();
   const userToken = token || await getUserToken(app);

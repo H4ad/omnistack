@@ -6,19 +6,11 @@ import { RolesDecoratorMetadataToken } from '../../decorators/roles/tokens';
 
 //#endregion
 
-/**
- * A classe que representa o guard responsável por lidar com as roles dos usuários
- */
 @Injectable()
 export class RolesGuard implements CanActivate {
 
   //#region Public Methods
 
-  /**
-   * Método executado ao ser validado esse guard
-   *
-   * @param context O contexto atual
-   */
   public canActivate(context: ExecutionContext): boolean {
     const roles = new Reflector().get<string[]>(RolesDecoratorMetadataToken, context.getHandler());
 

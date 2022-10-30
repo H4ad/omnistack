@@ -14,17 +14,11 @@ import { TokenProxy } from '../models/token.proxy';
 
 //#endregion
 
-/**
- * A classe que representa o serviço que lida com as autenticações
- */
 @Injectable()
 export class AuthService {
 
   //#region  Constructor
 
-  /**
-   * Construtor padrão
-   */
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
@@ -35,12 +29,6 @@ export class AuthService {
 
   //#region Public Methods
 
-  /**
-   * Método que realiza o login de um usuário
-   *
-   * @param user As informações do usuário
-   * @param expiresInMilliseconds Diz quando o token deve ser expirado
-   */
   public async signIn(user: Partial<UserEntity>, expiresInMilliseconds?: number): Promise<TokenProxy> {
     const { id, roles, createdAt, updatedAt, isActive } = user;
     const expiresIn = expiresInMilliseconds && ms(expiresInMilliseconds) || this.config.get<string>('JWT_EXPIRES_IN')!;
@@ -59,12 +47,6 @@ export class AuthService {
     return new TokenProxy({ token: `Bearer ${ token }`, expiresAt });
   }
 
-  /**
-   * Método que realiza a autenticação de um usuário
-   *
-   * @param email O endereço de e-mail do usuário
-   * @param passwordWithoutEncryption A senha do usuário
-   */
   public async authenticate({ username, password: passwordWithoutEncryption }: LoginPayload): Promise<Partial<UserEntity>> {
     const { password, ...user } = await this.userService.getUserByEmail(username);
 
@@ -76,11 +58,6 @@ export class AuthService {
     return user;
   }
 
-  /**
-   * Método que valida um usuário com o base no payload extraido do token
-   *
-   * @param jwtPayload As informações extraidas do token
-   */
   public async validateUserByPayload(jwtPayload: IJwtPayload): Promise<UserEntity> {
     if (!jwtPayload)
       throw new UnauthorizedException('As informações para a autenticação não foram encontradas.');

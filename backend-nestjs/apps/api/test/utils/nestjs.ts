@@ -14,9 +14,6 @@ import '../patchs/fix-config-get';
 
 //#endregion
 
-/**
- * Método que retorna a instância do módulo global para os testes
- */
 export async function getInstanceOfApplicationFor(modules: Type<any>[]) {
   const moduleFixture: TestingModule = await Test.createTestingModule({
     imports: [

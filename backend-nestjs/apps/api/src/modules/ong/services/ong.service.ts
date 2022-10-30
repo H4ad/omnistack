@@ -4,25 +4,19 @@ import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/co
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TypeOrmValueTypes } from '../../../common/type-orm-value.types';
-import { OngEntity } from '../entities/ong.entity';
 import { isValid } from '../../../infra/utils/functions';
+import { OngEntity } from '../entities/ong.entity';
 import { CreateOngPayload } from '../models/create-ong.payload';
 import { OngManyPaginationOptions } from '../models/ong-many.pagination.options';
 import { UpdateOngPayload } from '../models/update-ong.payload';
 
 //#endregion
 
-/**
- * A classe que representa o serviço que lida com as ongs
- */
 @Injectable()
 export class OngService {
 
   //#region Constructor
 
-  /**
-   * Construtor padrão
-   */
   constructor(
     @InjectRepository(OngEntity)
     private readonly repository: Repository<OngEntity>,
@@ -33,11 +27,6 @@ export class OngService {
 
   //#region Public Methods
 
-  /**
-   * Método que retorna várias ongs cadastradas no banco de dados
-   *
-   * @param options As opções ao buscar várias ongs
-   */
   public async getMany(options?: OngManyPaginationOptions): Promise<OngEntity[]> {
     const { limit = 15, page = 1, relations = [], userId } = options || {};
 
@@ -61,11 +50,6 @@ export class OngService {
     return query.getMany();
   }
 
-  /**
-   * Método que retorna uma ong pela sua identificação
-   *
-   * @param ongId A identificação da ong
-   */
   public async getOne(ongId: number): Promise<OngEntity> {
     const ong = await this.repository.findOne({
       where: {
@@ -80,12 +64,6 @@ export class OngService {
     return ong;
   }
 
-  /**
-   * Método que cria uma nova entidade
-   *
-   * @param requestUserId A identificação do usuário que está fazendo a requisição
-   * @param payload As informações para a criação da entidade
-   */
   public async createOne(requestUserId: number, payload: CreateOngPayload): Promise<OngEntity> {
     const ong = this.getEntityFromPayload(payload);
 
@@ -94,13 +72,6 @@ export class OngService {
     return await this.repository.save(ong);
   }
 
-  /**
-   * Método que atualiza uma entidade
-   *
-   * @param requestUserId A identificação do usuário que está fazendo a requisição
-   * @param ongId A identificação da ong
-   * @param payload As informações para a criação da entidade
-   */
   public async updateOne(requestUserId: number, ongId: number, payload: UpdateOngPayload): Promise<OngEntity> {
     const ongEntity = await this.getOne(ongId);
 
@@ -116,12 +87,6 @@ export class OngService {
 
   //#region Private Methods
 
-  /**
-   * Método que retorna as informações de uma entidade a partir das informações do payload
-   *
-   * @param payload As informações do payload
-   * @param entityId A identificação da entidade
-   */
   private getEntityFromPayload(payload: CreateOngPayload | UpdateOngPayload, entityId?: number): OngEntity {
     return new OngEntity({
       ...isValid(entityId) && { id: entityId },
