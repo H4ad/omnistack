@@ -55,6 +55,8 @@ npm run start:analytics:debug
 npm run start:heartbeat:debug
 ```
 
+> HINT: If you have tmux and tmuxinator, just run: tmuxinator .
+
 # :helicopter: About Microservices
 
 In this API release, I added the analytics microservice that aggregates the count of requests per service (currently only one) and per route path (per service).
