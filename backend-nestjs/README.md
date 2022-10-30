@@ -8,10 +8,10 @@
 
 <p align="center">
   <a href="#book-introduction">Introduction</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#memo-structure">Estrutura</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#memo-structure">Structure</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#rocket-getting-started">Typeorm</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#helicopter-about-microservices">About Microservices</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#hammer-testing">Testing</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#hammer-testing">Testing</a>
 </p>
 
 ## :book: Introduction
@@ -47,11 +47,12 @@ docker compose up -d
 
 This will spinning up the databases used and all the services needed.
 
-Then, you just need to start the default API and the analytics microservice:
+Then, you just need to start the default API, analytics microservice and heartbeat microservice:
 
 ```bash
 npm run start:api:debug
 npm run start:analytics:debug
+npm run start:heartbeat:debug
 ```
 
 # :helicopter: About Microservices
